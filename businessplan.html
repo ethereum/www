@@ -1,0 +1,94 @@
+<h2>Ethereum Action Plan and Monetization</h2>
+
+<p>The plan for the Ethereum project and company is as follows:</p>
+
+<h3>Stage 1: Setup</h3>
+
+<p>Estimated completion time: Dec 20-24</p>
+
+<ol>
+<li>Locate office space in Toronto in order to work on the project full-time.</li>
+<li>Find full-time developers. Specifically, we need a C++ developer and a Python developer. I (Vitalik) will be helping out on both codebases; however, I need someone else to help out with:
+<ul>
+<li>Databases in C++ and Python</li>
+<li>Peer-to-peer networking protocols, including bootstrapping</li>
+<li>Crypto libraries in C++</li>
+</ul></li>
+<li>Finalize and formalize initial investment round, including deciding on valuation.</li>
+<li>Create a formal project management structure (eg. Trello) and organize the marketing team and development team.</li>
+</ol>
+
+<h3>Stage 2: Development</h3>
+
+<p>Estimated completion time: Jan 10-25</p>
+
+<p><strong>Marketing team</strong></p>
+
+<ol>
+<li>Finish the Ethereum video</li>
+<li>Finish the Ethereum website, and start putting up content. We should quietly leak information over time to generate buzz.</li>
+<li>Look for partnerships to help Ethereum get more publicity</li>
+<li>Look for developers interested in writing supplemental applications (eg. SPV clients / web wallets, block explorers)</li>
+<li>Make sure we get business cards, and possibly other paraphernalia (T-shirts, pens, etc)</li>
+</ol>
+
+<p><strong>Development team</strong></p>
+
+<ol>
+<li>Purchase mining hardware and set it mining XPM or LTC for now</li>
+<li>Finish the C++ networking daemon</li>
+<li>Finish the Python networking daemon</li>
+<li>Test both daemons, make sure that the two implementations of the "abstract P2P network protocol" work and communicate with each other</li>
+<li>Finish the C++ non-networking components and miner</li>
+<li>Finish the Python non-networking components and miner</li>
+<li>Test the output of both against each other, make sure that they all validate and invalidate the same transactions and blocks</li>
+<li>Have the Ethereum buy/sell platform ready.</li>
+</ol>
+
+<h3>Stage 3: Release</h3>
+
+<p>Estimated completion time: T - 5 days should be Miami conference</p>
+
+<ul>
+<li><strong>T - 5 days</strong> - make a big release announcement and open-source the code. Make sure we get Bitcoin Magazine, Coindesk, Let's Talk Bitcoin, Ed and Ethan, Free Talk Live, and any other media organizations we can get on this. Ideally, mainstream sources such as BBC, Forbes and TechChrunch should also be contacted.</li>
+<li><strong>T - 0 days</strong> - release the official client including the genesis block, and start mining it ourselves. Launch the Ethereum buy/sell platform. Announce that if any group wants to work with us to make a DAC on our platform, we are available as paid consultants</li>
+<li><strong>T + 3 days</strong> - launch block explorer and web client, get another round of media attention</li>
+</ul>
+
+<h3>Stage 4: Build Ethereum Services</h3>
+
+<p>The next stage is to create services on top of the Ethereum network. These will be designed with heavier monetization in mind, potentially bringing a large amount of value into the company. At this stage, we may also be interested in collecting another funding round at higher valuation, but that will depend on the state of the company and other factors which may not yet be foreseeable.</p>
+
+<p><strong>EtherDNS</strong> - a Namecoin alternative on top of the Ethereum network.</p>
+
+<p>This will be the first major service on top of Ethereum. The main differences from Namecoin will be:</p>
+
+<ol>
+<li>The fee structure will be set via proof-of-stake voting, with the default policy of pegging to USD value around $4 to register a domain and more for short domains. This solves the main problem with Namecoin: everything is already booked.</li>
+<li>The fee will follow a "tax choice" model: you can either have the fee go to support Ethereum development (ie. us), Ethereum miners, charity (I'll get a partnership with Sean's Outpost and BitGive easily) and possibly a few other things (the default split in the interface will be 50/25/25). To have decentralization, the allowed fee recipients will be changeable via proof-of-stake voting.</li>
+<li>EtherDNS will run on ether, not its own coin. The fact that Namecoin is its own currency rather than simply a Bitcoin addon is one of the major aspects of Namecoin that many people did not like.</li>
+</ol>
+
+<p>Going to *.etherdns.org (or some shorter domain) will automatically send you to the site associated with the domain. We will then immediately get to work on developing a browser plugin and a Win/Mac/Linux software package to work with EtherDNS (ideally, with the plugin installed "domainname.ether" should redirect to the EtherDNS entry under "domainname" automatically). We will also have a promotion where we create an ether faucet on a ".ether" site (email, facebook or cellphone verification required to limit mass collection by one person), encouraging thousands of people to sign up and get the plugin. This will potentially give EtherDNS broader reach than anything Namecoin ever had, and the charity donation aspect will also likely get substantial community goodwill and support behind the project.</p>
+
+<p><strong>EtherHedge</strong> - an Ethereum-based decentralized hedging platform, so you can store a constant fiat balance on the Ethereum network without issuers.</p>
+
+<p>The basic idea is that there are two parties in a contract: the hedger and the speculator. Say 1 ether = $0.1, and both put in 1000 ether. After a month, the contract will return $100 to the hedger, and the rest to the speculator. This is a service that will add high value to the cryptocurrency community, as it provides a way to store fiat (or gold) balance on a cryptocurrency network without issuers, providing a potentially significant advantage over Ripple.</p>
+
+<p>We may also want to do research into the legal ramifications of handling the other side of the hedge ourselves; if we can do this, then we can collect maybe a 0.5% fee and add even more value to the service.</p>
+
+<p><strong>EtherPay</strong> - an Ethereum-based BitPay/Coinbase style merchant platform</p>
+
+<p>EtherPay will open up several benefits of Ethereum to the masses:</p>
+
+<ol>
+<li><strong>Recurring payments</strong> - the idea is that if Bob wants to make a recurring payment to netflix.com, he can set up a contract that Netflix can query to recover $10 per month, and pay $100 into it. If he wants to end his subscription, he can do so by sending the contract a message, and immediately recover all remaining funds. This is essentially a decentralized alternative to Coinbase's service. Recurring payments can easily be pegged to the USD.</li>
+<li><strong>Auto-Hedging</strong> - Bitpay-style instant conversion-to-fiat without the BitPay through EtherHedge.</li>
+<li><strong>Chargebacks/Escrow</strong> - credit card-like chargeback and escrow mechanisms can easily be done with Ethereum. Note that we would need to hire an arbitrator or firm (I will likely contact Stephan Kinsella for advice) to handle the disputes.</li>
+</ol>
+
+<p>We can create a platform that makes each of these applications easy and accessible for the masses, and charge a fee for the services.</p>
+
+<p><strong>Data Storage</strong> - we have a strong possible lead from Robert David of the Vancouver Bitcoin meetup group who is interested in making a decentralized Dropbox-style application. We can work with Robert to create the application and an easy-to-use interface for such a system, where we can probably collect a 5% fee.</p>
+
+<p><strong>LTB-coin</strong> - Let's Talk Bitcoin has already expressed interest in working with Ethereum as a platform to create their own "coin".</p>

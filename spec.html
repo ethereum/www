@@ -1,0 +1,155 @@
+<h2>Ethereum: Components</h2>
+
+<p>The Ethereum client will be built in a modular fashion, containing several parts:</p>
+
+<h3>Networking daemon</h3>
+
+<p><strong>Purpose</strong>: the networking daemon must be able to connect to other Ethereum nodes, and accept and share data, so as to serve as the backbone for the Ethereum network. The daemon itself should be as neutral as possible; ideally, it should be useful as part of any currency or cryptographic protocol without modification. It should include anti-DDoS features; perhaps maintain a running score preventing any single IP from making more than one request per second.</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li>every time the daemon receives a new message (ie. <code>H(M)</code> is not equal to <code>H(Mprev)</code> for any <code>Mprev</code> received previously), it should send a POST request to <code>http://localhost:&lt;outputport&gt;</code> containing the data, where <code>outputport</code> can be set in the <code>~/.ethereum/ethereum.conf</code> file (default 1242 if not set)</li>
+<li>the daemon should listen on port <code>inputport</code>, where <code>inputport</code> can be set in the <code>~/.ethereum/ethereum.conf</code> file (default 1243 if not set), and if it receives a message in a post request it should push the data out to all connected nodes in the network.</li>
+</ul>
+
+<p><strong>Dependencies:</strong> internet, bootstrapping nodes</p>
+
+<h3>Block class</h3>
+
+<p><strong>Purpose</strong>: the block class should be able to parse blocks, serialize blocks and handle certain updating operations to blocks.</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>deserialize: string -&gt; void (constructor)</code></li>
+<li><code>get_balance: number address -&gt; number</code></li>
+<li><code>get_contract_state: number address, number index -&gt; number</code></li>
+<li><code>update_balance: number address, number newbalance -&gt; void</code></li>
+<li><code>update_contract_state: number address, number index, number newvalue -&gt; void</code></li>
+<li><code>get_contract_size: number address -&gt; number</code></li>
+<li><code>serialize: void -&gt; string</code></li>
+</ul>
+
+<p><strong>Dependencies</strong>: database</p>
+
+<h3>Transaction class</h3>
+
+<p><strong>Purpose</strong>: the transaction class should be able to parse transactions, sign transactions and serialize transactions. Note that the serialize method should fail for transactions without a signature; transactions that are created inside a block and not deserialized should never actually be stored or serialized in any form.</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>deserialize: string -&gt; void (constructor)</code></li>
+<li><code>sign: privkey -&gt; void</code></li>
+<li><code>serialize: void -&gt; string</code></li>
+<li><code>create: number address, number value, number fee, array[number] data -&gt; void (constructor)</code></li>
+<li><code>hash: void -&gt; number</code></li>
+<li><code>to, from, value, fee, data</code> (accessible and settable member variables)</li>
+</ul>
+
+<p><strong>Dependencies</strong>: none</p>
+
+<h3>Message class</h3>
+
+<p><strong>Purpose</strong>: the message class should be a data storage object for messages</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>create: string type, array[string] params -&gt; void (constructor)</code></li>
+<li><code>type, params</code> (accessible member variables)</li>
+</ul>
+
+<h3>Data parser</h3>
+
+<p><strong>Purpose</strong>: determine if data is a valid transaction, valid block, valid message or invalid, and if the data is valid it should convert the data into an object of the correct class.</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li>class Object = Block || Transaction || Message || null</li>
+<li>parse: string -> Object</li>
+</ul>
+
+<p><strong>Dependencies</strong>: Block class, Transaction class, Message class</p>
+
+<h3>State updater</h3>
+
+<p><strong>Purpose</strong>: take a state, a list of pending transactions, and a timestamp. Then, perform the following steps:</p>
+
+<ol>
+<li>Calculate the new difficulty based on the given timestamp, the previous state's difficulty and the previous state's timestamp.</li>
+<li>Continue running EVALSTEP (a function which evaluates the first transaction in the state) until the number of pending transactions becomes zero.</li>
+<li>Send the block reward to the coinbase address, split the block reward for each sibling 90/10 between the sibling and the miner, and and distribute the total fees among the previous 64 miners (including siblings), sending the remainder (0-63 wei) to the last miner. Return the new state.</li>
+</ol>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>update(state, transactions, timestamp) -&gt; void</code></li>
+</ul>
+
+<p><strong>Dependencies</strong>: database</p>
+
+<h3>Message responder</h3>
+
+<p><strong>Purpose</strong>: the message responder should be able to respond to network messages. Accepted message types are:</p>
+
+<ol>
+<li><code>getobj</code> - gets the object (block, transaction, transaction list, sibling list, Merkle trie node) with the specified hash. This is basically a database query.</li>
+<li><code>getbalance</code> - gets the balance of a given address at the current block</li>
+<li><code>getcontractroot</code> - gets the root of a given contract at the current block</li>
+<li><code>getcontractsize</code> - gets the size of a given contract at the current block</li>
+<li><code>getcontractstate</code> - gets the state of a given contract at a given index at the current closk</li>
+</ol>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>evalMessage(msg) -&gt; number/string</code>.</li>
+</ul>
+
+<p><strong>Dependencies</strong>: Block class, Message class, database</p>
+
+<h3>Miner</h3>
+
+<p><strong>Purpose</strong>: given the header of a previous block, try to make a valid proof of work for the next block</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>compute_pow: string (block header) -&gt; nonce</code></li>
+</ul>
+
+<p><strong>Dependencies</strong>: none</p>
+
+<h3>Manager</h3>
+
+<p><strong>Purpose</strong>: pull all of the above components together into a working node.</p>
+
+<p><strong>Interface</strong>: none</p>
+
+<p><strong>Dependencies</strong>: database, networking daemon, parser, Block class, Transaction class, Message class, state updater</p>
+
+<h3>Wallet</h3>
+
+<p><strong>Purpose</strong>: provide a higher-level interface to Ethereum sending and receiving</p>
+
+<p><strong>Interface</strong>:</p>
+
+<ul>
+<li><code>generate_receiving_address: void -&gt; number</code></li>
+<li><code>send: number to, number value, number fee, optional array[number] data -&gt; void</code></li>
+<li><code>mkcontract: array[number] data -&gt; void</code></li>
+</ul>
+
+<p><strong>Dependencies</strong>: networking daemon</p>
+
+<h3>Block Explorer</h3>
+
+<p><strong>Purpose</strong>: provide an interface to retrieving address balances, transactions and contract states</p>
+
+<p><strong>Interface</strong>: all message responder methods</p>
+
+<p><strong>Dependencies</strong>: networking daemon</p>

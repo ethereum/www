@@ -1,0 +1,16 @@
+@charset "UTF-8";
+/* Internet Explorer Stylesheet */
+
+#mc_embed_signup input[type="text"] {
+    background: #FAFAFA;
+    color: #999999;
+    font-size: 14px;
+    height: 48px;
+    outline-width: 0;
+    padding-left: 15px;
+    width: 300px;
+	margin-bottom: 20px;
+}
+#mc_embed_signup input[type="text"]:focus{
+	outline-width: 0;
+}

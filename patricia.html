@@ -1,0 +1,163 @@
+<h2>Merkle Patricia Tree Specification</h2>
+
+<p>Merkle Patricia trees provide a cryptographically authenticated data structure that can be used to store all (key, value) bindings, although for the scope of this paper we are restricting keys and values to strings (to remove this restriction, just use any serialization format for other data types). They are fully deterministic, meaning that a Patricia tree with the same (key,value) bindings is guaranteed to be exactly the same down to the last byte and therefore have the same root hash, provide the holy grail of <code>O(log(n))</code> efficiency for inserts, lookups and deletes, and are much easier to understand and code than more complex comparison-based alternatives like red-black trees.</p>
+
+<h3>Preamble: Basic Radix Trees</h3>
+
+<p>In a basic radix tree, every node looks as follows:</p>
+
+<pre><code>[ value, i0, i1 ... in]
+</code></pre>
+
+<p>Where <code>i0 ... in</code> represent the symbols of the alphabet (often binary or hex). <code>value</code> is the terminal value at the node, and the values in the <code>i0 ... in</code> slots are either <code>NULL</code> or pointers to (in our case, hashes of) other nodes. This forms a basic (key, value) store; for example, if you are interested in the value that is currently mapped to <code>dog</code> in the tree, you would first convert dog into the alphabet (giving <code>646f67</code> if we're using hex), and then descend down the tree following that path until at the end of the path you read the value. That is, you would do the following:</p>
+
+<pre><code>&gt; a = memory_lookup(root)
+[ NULL, NULL, NULL, 'af1259bb', '10bcf892', 'fe824bca', '725db325', '6b6c782e, '8924bce3', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ]
+&gt; a['6']
+'6b6c782e'
+&gt; b = memory_lookup(a['6'])
+[ NULL, '18724bce', NULL, NULL , NULL, 'd8e7b12f', NULL, NULL, '87ac6db3', '8a71bcc2', NULL, NULL, NULL, NULL, NULL, NULL, 'cef18742', 'ce82625a' ]
+&gt; b['4']
+'d8e7b12f'
+&gt; c = memory_lookup(b['4'])
+&gt; c['6']
+'789265b4'
+&gt; d = memory_lookup(c['6'])
+[ NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, 'ab72cb25' ]
+&gt; e = memory_lookup(d['f'])
+[ 'or do not there is no try', NULL, NULL, NULL, NULL, NULL, '345d78bf', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ]
+&gt; f = memory_lookup(e['6'])
+[ NULL, NULL, NULL, NULL, NULL, NULL, NULL, '12b302cc', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ]
+&gt; g = memory_lookup(f['7'])
+[ 'cat', NULL, NULL, NULL, NULL, NULL, NULL, '83b88608', NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL, NULL ]
+</code></pre>
+
+<p>Note that if the key was <code>do</code>, the hex would have been <code>646f</code> and the lookup would have returned the value <code>'or do not there is no try'</code>. On the other hand, if the key was <code>doge</code>, the hex would have been <code>646f6765</code>, and the descent would have continued two more steps.</p>
+
+<p>The update and delete operations for radix trees are simple, and can be defined roughly as follows:</p>
+
+<pre><code>def update(node,key,value):
+    if key == '':
+        curnode = memory_lookup(node) if node else [ NULL ] * 17
+        newnode = curnode.copy()
+        newnode['value'] = value
+    else:
+        curnode = memory_lookup(node) if node else [ NULL ] * 17
+        newnode = curnode.copy()
+        newindex = update(curnode[key[0]],key[1:],value)
+        newnode[key[0]] = newindex
+    memory_save(hash(newnode),newnode)
+    return hash(newnode)
+
+def delete(node,key):
+    if key == '' or node is NULL:
+        return NULL
+    else:
+        curnode = memory_lookup(node)
+        newnode = curnode.copy()
+        newindex = delete(curnode[key[0]],key[1:])
+        newnode[key[0]] = newindex
+        if len(filter(x -&gt; x is not NULL, newnode)) == 0:
+            return NULL
+        else:
+            memory_save(hash(newnode),newnode)
+            return hash(newnode)
+</code></pre>
+
+<p>However, radix trees have one major limitation: their inefficiency. If you want to store just one (key,value) binding where the key is a few hundred characters long, you will need over a kilobyte of extra space to store one level per character, and each lookup or delete will take hundreds of steps. The Patricia tree introduced here solves this issue.</p>
+
+<h3>Specification: Compact encoding of hex sequence with optional terminator</h3>
+
+<p>The traditional compact way of encoding a hex string is to convert it into binary - that is, a string like <code>0f1248</code> would become three bytes <code>[ 15, 18, 72 ]</code> (or in string representation <code>\x0f\x18H</code>). However, this approach has one slight problem: what if the length of the hex string is odd? In that case, there is no way to distinguish between, say, <code>0f1248</code> and <code>f1248</code>. Additionally, our application in the Merkle Patricia tree requires the additional feature that a hex string can also have a special "terminator symbol" at the end (denoted by the number 16). A terminator symbol can occur only once, and only at the end. To solve both of these issues, we construct the following encoding:</p>
+
+<pre><code>def compact_encode(hexarray):
+    term = 1 if hexarray[-1] == 16 else 0
+    if term: hexarray = hexarray[:-1]
+    oddlen = len(hexarray)
+    if oddlen: hexarray = [0] + hexarray
+    o = chr(2 * term + oddlen)
+    for i in range(0,len(hexarray),2):
+        o += chr(16 * hexarray[i] + hexarray[i+1])
+    return o
+</code></pre>
+
+<p>Examples:</p>
+
+<pre><code>&gt; [ 1, 2, 3, 4, 5 ]
+'\x01\x23\x45'
+&gt; [ 0, 1, 2, 3, 4, 5 ]
+'\x00\x01\x23\x45'
+&gt; [ 0, 15, 1, 12, 11, 8, 16 ]
+'\x02\x0f\x1c\xb8'
+&gt; [ 15, 1, 12, 11, 8, 16 ]
+'\x03\x0f\x1c\xb8'
+</code></pre>
+
+<h3>Main specification: Merkle Patricia Tree</h3>
+
+<p>Merkle Patricia trees solve the inefficiency issue by adding some extra complexity to the data structure. A node in a Merkle Patricia tree is one of the following:</p>
+
+<ol>
+<li>NULL (represented as the empty string)</li>
+<li>A two-item array <code>[ key, value ]</code></li>
+<li>A 17-item array <code>[ v0 ... v15, vt ]</code></li>
+</ol>
+
+<p>The idea is that in the event that there is a long path of nodes each with only one element, we shortcut the descent by setting up a <code>[ key, value ]</code> node, where the key gives the hexadecimal path to descend, in the compact encoding described above, and the value is just the hash of the node like in the standard radix tree. Also, we add another conceptual change: internal nodes can no longer have values, only leaves with no children of their own can; however, since to be fully generic we want the key/value store to be able to store keys like 'dog' and 'doge' at the same time, we simply add a terminator symbol (16) to the alphabet so there is never a value "en-route" to another value. Here is the extended code for getting a node in the Merkle Patricia tree:</p>
+
+<pre><code>def get_helper(node,key):
+    if key == []: return node
+    if node = '': return ''
+    curnode = memory_lookup(node)
+    if len(curnode) == 2:
+        (k2, v2) = curnode
+        k2 = compact_decode(k2)
+        if k2 == key[:len(k2)]:
+            return get(v2, key[len(k2):])
+        else:
+            return ''
+    elif len(curnode) == 17:
+        return get_helper(curnode[key[0]],key[1:])
+
+def get(node,key):
+    key2 = []
+    for i in range(len(key)):
+        key2.push(int(ord(key) / 16))
+        key2.push(ord(key) % 16)
+    key2.push(16)
+    return get_helper(node,key2)
+</code></pre>
+
+<p>Example: suppose we had a tree containing the pairs <code>('dog', 'puppy'), ('horse', 'stallion'), ('do', 'verb'), ('doge', 'coin')</code>. First, we convert the keys over to hex format:</p>
+
+<pre><code>[ 6, 4, 6, 15, 16 ] : 'verb'
+[ 6, 4, 6, 15, 6, 7, 16 ] : 'puppy'
+[ 6, 4, 6, 15, 6, 7, 6, 5, 16 ] : 'coin'
+[ 6, 8, 6, 15, 7, 2, 7, 3, 6, 5, 16 ] : 'stallion'
+</code></pre>
+
+<p>Now, we build the tree:</p>
+
+<pre><code>ROOT: [ '\x01\x06', A ]
+A: [ '', '', '', '', B, '', '', '', C, '', '', '', '', '', '', '', '' ]
+B: [ '\x00\x6f', D ]
+D: [ '', '', '', '', '', '', E, '', '', '', '', '', '', '', '', '', 'verb' ]
+E: [ '\x01\x07', F ]
+F: [ '', '', '', '', '', '', G, '', '', '', '', '', '', '', '', '', 'puppy' ]
+G: [ '\x03\x05', 'coin' ]
+C: [ '\x02\x6f\x72\x73\x65', 'stallion' ]
+</code></pre>
+
+<p>Where a node is referenced inside a node, what is included is the binary sha256 hash of the <a href="/etheruem/rlp.html">RLP encoding</a> of that node. The hashes of the nodes above should be:</p>
+
+<pre><code>C: 'd54340cccb3516f7dfd8792eadc689534d47c20a85691d6ba172c07b227abd53'
+G: 'ff3c345ec52471b47510a8df2eb9374d847319b6c1211c9c524d73661b366265'
+F: 'ccd5bcee726a7e4f9ac27c3c1e871e53b2d349117d456132a7fc4b7a221c84ab'
+E: '8d287432ee53b1f427bda080ace1b9f3991e99834ea0029062e4ad9b3c7c1894'
+D: 'ba43386fae95a6c52c3874b5ddcb72b7be9cbdf99b210b37cf5ce1b25d9aa09c'
+B: '3792a8abeeec65627bb8c1caee325e888aabef62dca3459cf321521e708888db'
+A: '4b9529783a9d471efddc17f9682e52328269a14d8e6b3ffa6513451c1204c1b0'
+ROOT: '8b651f7dd9e8abf5f35d6e13b2b54f9e597f28cf3a64b898910fdb1c309c0e3a'
+</code></pre>
+
+<p>The above hashes should be correct regardless of which order the keys were added, or if some keys were added and deleted along the way.</p>
