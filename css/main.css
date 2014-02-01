@@ -476,6 +476,10 @@ select#mobileNav, #mainNavRegular select {
 	letter-spacing: 1px;
 	text-shadow: 3px 2px 1px rgba(34,61,118,.9);
 }
+.elementSec h3 {
+	font-size: 48px;
+	padding-top: 20px;
+}
 /*Anota*/
 #anota {
 	background:#2d3a49;
