@@ -122,7 +122,8 @@ ul#navi li a, ul#naviRegular li a, select#mobileNav, #mainNavRegular select, .te
 	text-align:center;
 	background-color: #04060d;
 	background-repeat: no-repeat;
-	background-position: center 55%;
+	background-position: center 45%;
+	min-height:750px;
 }
 #teaser img{
 	width:100%;
@@ -141,26 +142,25 @@ ul#navi li a, ul#naviRegular li a, select#mobileNav, #mainNavRegular select, .te
 	color:#90A0F0;
 }
 #teaser a {
-	color:#90A0F0;
+	color:white;
 	background:#ffffff; 
 	filter:alpha(opacity = 40);
-	background:rgba(255,255,255,0.4);
-	font-size:15px;
-	border:1px solid #90A0F0;
-	border-radius:40px;
-	-webkit-border-radius: 40px;
-	-moz-border-radius: 40px;
-	-ms-border-radius: 40px;
-	-o-border-radius: 40px;78px
-	width:80%;
-	padding:6px 35px;
+	background:#90A0F0;
+	box-shadow:0px 0px 2px rgba(0,0,0,.3);
+	font-size:13px;
+	width:490px;
+	display:block;
+	padding:10px 35px;
 	text-transform:uppercase;
+	border:3px solid rgba(255,255,255,.4);
+
 }
 #teaser a:hover {
 	background:#ffffff;
 	background:#ffffff;
 	filter:alpha(opacity = 70);
 	background:rgba(255,255,255,0.7);
+	color:#444;
 }
 .holder960,#feed{
 	width:960px;
@@ -360,6 +360,7 @@ select#mobileNav, #mainNavRegular select {
 	background-color: transparent;
 	background-color: rgba(0,0,0,.4);
 	padding: 40px 43px;
+	width:470px;
 }
 #mc_embed_signup input[type="email"] {
     background: #FAFAFA;
@@ -474,7 +475,7 @@ select#mobileNav, #mainNavRegular select {
 	text-transform: lowercase;
 	font-family: 'print_clearlyregular', sans-serif;
 	letter-spacing: 1px;
-	text-shadow: 3px 2px 1px rgba(34,61,118,.9);
+	text-shadow: 2px 2px 0px rgba(34,61,118,.9);
 }
 .elementSec h3 {
 	font-size: 48px;
@@ -548,9 +549,10 @@ select#mobileNav, #mainNavRegular select {
 	font-family: 'print_clearlyregular', sans-serif;
 	letter-spacing: 1px;
 	line-height: 1;
-	text-shadow: 3px 2px 1px rgba(34,61,118,.9);
+	text-shadow: 2px 2px 0px rgba(0,0,0,.9);
 	font-weight: 500;
 	margin-bottom: 20px;
+	margin-top:10px;
 }
 .title h4{
 	font-size:11px;
@@ -576,6 +578,13 @@ select#mobileNav, #mainNavRegular select {
 .video-wrap {
 	max-width: 560px;
 	margin: 0 auto;
+	padding-top:20px;
+}
+.codesite{
+	max-width:560px;
+	margin: 0 auto;
+	margin-top:50px;
+
 }
 #footer .titleInner {
 	margin-top: 0;

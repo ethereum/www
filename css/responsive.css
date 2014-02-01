@@ -1,22 +1,23 @@
 /*-------------------------------------------------------------------------*/
 @media only screen and (min-width:1400px) {
 	#teaser {
-		background-image: url('/images/ethereumsplash-bg-web01ws-min.jpg');
+		background-image: url('../images/ethereumsplash-bg-web01ws-min.jpg');
+	
 	}
 }
 @media only screen and (min-width:960px) and (max-width:1399px) {
 	#teaser {
-			background-image: url('/images/ethereumsplash-bg-web01-min.jpg');        
+		background-image: url('../images/ethereumsplash-bg-web01-min.jpg');        
 	}
 }
 @media only screen and (min-width:480px) and (max-width:959px) {
 	#teaser {
-			background-image: url('/images/ethereumsplash-bg-web01-med-min.jpg');
+			background-image: url('../images/ethereumsplash-bg-web01-med-min.jpg');
 	}
 }
 @media only screen and (max-width:479px) {
 	#teaser {
-		background-image: url('/images/ethereumsplash-bg-web02-mobi-min.jpg');
+		background-image: url('../images/ethereumsplash-bg-web02-mobi-min.jpg');
 		padding-bottom: 2em;
 	}
 }
