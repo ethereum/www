@@ -207,6 +207,8 @@
 
 /* Mobile Landscape Size -> Tablet Portrait size*/
 @media only screen and (min-width: 480px) and (max-width: 767px) {
+	.mc-field-group{width:380px; padding:20px;}
+	.codesite a{width:354px;}
 	#logo-img { height: 70px; }
 	/*Generale rules for the header, the navigation, the slider, the fixed header image, breadcrump and the teaser abd the anota section*/
 	html{-webkit-text-size-adjust: none;-moz-text-size-adjust:none;-ms-text-size-adjust:none;}
@@ -363,7 +365,8 @@
 }
 /* Mobile Portrait Size -> Mobile Landscape Size */
 @media only screen and (max-width:479px) {
-	
+	.mc-field-group{width:180px; padding:20px;}
+	.codesite a{width:155px;}
 	/*Generale rules for the header, the navigation, the slider, the fixed header image, breadcrump and the teaser abd the anota section*/
 	html{-webkit-text-size-adjust: none;-moz-text-size-adjust:none;-ms-text-size-adjust:none;}
 	header {margin-bottom: 49px;}
@@ -435,7 +438,7 @@
 	.error h1 {font-size: 32px;margin-bottom:13px;line-height:43px;}
 	.elementsContent{padding-bottom:0;}
 	.subscribe { margin: 20px 0 0; }
-	.mc-field-group { padding: 35px; }
+	
 	#mc_embed_signup input[type="email"] { width: 133px; margin-bottom: 20px;  }	
 	#subtitle { margin: 30px 0 0; }
 	

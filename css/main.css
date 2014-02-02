@@ -141,7 +141,7 @@ ul#navi li a, ul#naviRegular li a, select#mobileNav, #mainNavRegular select, .te
 	text-transform:uppercase;
 	color:#90A0F0;
 }
-#teaser a {
+.codesite a {
 	color:white;
 	background:#ffffff; 
 	filter:alpha(opacity = 40);
@@ -155,7 +155,7 @@ ul#navi li a, ul#naviRegular li a, select#mobileNav, #mainNavRegular select, .te
 	border:3px solid rgba(255,255,255,.4);
 
 }
-#teaser a:hover {
+.codesite a:hover {
 	background:#ffffff;
 	background:#ffffff;
 	filter:alpha(opacity = 70);
