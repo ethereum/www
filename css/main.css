@@ -211,7 +211,7 @@ ul#navi li a, ul#naviRegular li a, select#mobileNav, #mainNavRegular select, .te
 	text-align: center;
 }
 #mainNav li, #mainNavRegular li {	
-	margin:0 2.35%;
+	margin:0 2.65%;
 	display: inline-block;
 	zoom: 1;*display: inline;
 	position: relative;
