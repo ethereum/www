@@ -60,7 +60,8 @@
 
 @media only screen and (min-width: 959px) {
 	#mainNav #navi {
-		display: block;
+		display: table;
+		width: 100%;
 	}
 }
 @media only screen and (min-width: 768px) {
