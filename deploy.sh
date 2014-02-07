@@ -1,4 +1,4 @@
-PACKAGE=~/dev/ethereum/www/
+PACKAGE=.
 REMOTEDIR=/var/www/www_ethereum_org/public_html/
 KEYPATH=~/Downloads/prod-web.pem
 SERVERS=(54.213.131.123 54.213.131.108)
