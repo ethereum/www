@@ -678,6 +678,7 @@ select#mobileNav, #mainNavRegular select {
 	display: inline-block;
 	zoom:1;*display: inline;
 	line-height: 1.55;
+	text-indent: -1px;
 }
 .info .social a:hover {
 	filter:alpha(opacity = 100);
