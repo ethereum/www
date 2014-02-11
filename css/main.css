@@ -164,6 +164,7 @@ ul#navi li a, ul#naviRegular li a, select#mobileNav, #mainNavRegular select, .te
 }
 .holder960,#feed{
 	width:960px;
+	max-width: 100%;
 	margin: 0 auto;
 	position:relative;
 	padding-left:20px;
@@ -614,7 +615,7 @@ select#mobileNav, #mainNavRegular select {
 }
 #photogrid > div {
 	float: left;
-	width: 25%;
+	width: 20%;
 }
 #namegrid {
 	padding-left:20px;
@@ -2139,7 +2140,18 @@ a.nolink {
 	.link i { font-size: 30px;left: -44px;line-height: 200px;}
 	/* WHO */
 	#photogrid > div {
-		width: 25%;
+		width: 20%;
+	}
+	#who h2 {
+		font-size: 1.15em;
+		font-weight: bold;
+	}
+	#who h4 {
+		font-size: 1em;
+	}
+	.info .social a {
+		font-size: .75em;
+		margin: 0 1px;
 	}
 	/*Blog*/
 	.container.blogPosts{width:430px;}
