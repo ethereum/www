@@ -677,7 +677,7 @@ select#mobileNav, #mainNavRegular select {
 	opacity: .85;
 	display: inline-block;
 	zoom:1;*display: inline;
-	line-height: 1.5;
+	line-height: 1.55;
 }
 .info .social a:hover {
 	filter:alpha(opacity = 100);
