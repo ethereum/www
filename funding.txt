@@ -1,8 +1,0 @@
-### Funding Plan 1
-
-Step 1: generate an Ethereum key.
-
-Ethereum privkey = [ 256 bits random data ]
-Ethereum pubkey = ethereum address ++ sha256(ethereum pubkey)
-
-
