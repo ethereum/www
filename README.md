@@ -1,37 +1,34 @@
-# Ethereum.org website
+# ethereum-plexus
 
-## Server installation
-OS: Ubuntu 13.04 64-bit
-```
-sudo su
-apt-get update && apt-get upgrade
-apt-get install apache2
-```
+## Server setup
 
-## Site configuration
-Basic configuration for a single site. Additional sites need simialr steps run.
+### Linux/Debian/Ubuntu
+Ensure you have an updated version of nodejs and npm installed. Ubuntu repos often contain an old version, so it's recommend to use a more [up-to-date repo](https://launchpad.net/~chris-lea/+archive/node.js/).
+If you already had nodejs installed and need it updated, make sure to `sudo apt-get update && sudo apt-get upgrade`. Otherwise a `sudo apt-get install nodejs npm` should be sufficient.
+
+Assuming nodejs/npm is correctly installed, the next step is to install Sails with `sudo npm -g install sails`. If you get lots of errors, you may not have an old version of nodejs installed. Use the PPA above if possible :)
+
+To install gem for ruby, run:
+sudo apt-get install libgemplugin-ruby
+
+### Mac
+`brew install node`
+
+### Windows
+Install node from http://nodejs.org/download/ and open the node command prompt.
+
+## Project setup
 ```
-cd /var/www
-mkdir www_ethereum_org
-cd www_ethereum_org
-mkdir public_html
-mkdir logs
-chown ubuntu public_html/ logs/
-cd /etc/apache2/sites-available
-cat > www_ethereum_org.conf << EOF
-<VirtualHost *:80>
-  ServerName www.ethereum.org
-  #ServerAlias ethereum.org
-  ServerAdmin webmaster@localhost
-  DocumentRoot /var/www/www_ethereum_org/public_html
-  #LogLevel info ssl:warn
-  ErrorLog ${APACHE_LOG_DIR}/error.log
-  CustomLog ${APACHE_LOG_DIR}/access.log combined
-</VirtualHost>
-EOF
-a2ensite www_ethereum_org
-service apache2 reload
+npm -g install sails
+cd ~
+git clone git@github.com:holon000/ethereum-plexus.git
+cd ethereum-plexus
+git submodule init
+sudo gem install sass
+sudo npm install -d
+sails lift
 ```
 
-## Deployment
-Configure `deploy.sh` for your local environment and run it. You will need access to a secured copy (`chmod 600`) of the server certificate.
+Sails will report the interface/port it's listening on. To make configuration changes for different environments, modify config/local.js.
+
+Happy hacking!

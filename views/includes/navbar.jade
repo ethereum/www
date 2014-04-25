@@ -1,0 +1,40 @@
+html
+    nav.navbar.navbar-default(role='navigation')
+      .container-fluid
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#responsive-menu')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+        #responsive-menu.collapse.navbar-collapse
+          ul.nav.navbar-nav
+            li
+              a.scroll(href='#news') News
+            li
+              a.scroll(href='#what') What
+            li
+              a.scroll(href='#why') Why
+            li
+              a.scroll(href='#philosophy') Philosophy
+            li
+              a.scroll(href='#how') How
+            li
+              a.scroll(href='#who') Who
+            li
+              a.scroll(href='#join') Meetup
+
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | Community
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='http://wiki.ethereum.org') Wiki
+                li
+                  a(href='http://blog.ethereum.org') Blog
+                li
+                  a(href='http://forum.ethereum.org') Forum
+
+        // /.navbar-collapse
+      // /.container-fluid

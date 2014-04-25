@@ -1,0 +1,31 @@
+#meetupmap {
+  margin-top: 20px;
+  padding-top: 10px; 
+  padding-bottom: 10px;
+  border: 1px solid lightgrey;
+}
+
+.active {
+  fill: grey;
+}
+
+.mapbackground {
+  fill: #f5f5f5;
+}
+
+path {
+  stroke: black;
+  stroke-width: 0.25px;
+  fill: white;
+}
+
+.meetup-tooltip {
+  text-align: center;
+  font-size: 12px;
+  line-height: 20px;
+  padding: 4px 12px 4px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  color: #fff;
+  border-radius: 2px;
+  font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+}

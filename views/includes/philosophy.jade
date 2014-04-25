@@ -1,0 +1,66 @@
+div#philosophy-left.text-left.pull-left.col-xs-12.col-sm-12.col-md-6
+  h2 philosophy
+
+  #philosophy-slider.liquid-slider
+    div.video-responsive
+      h3.title Simplicity
+      p Ethereum is a protocol that is open to all. Any programmer should be able to write smart contracts and Ethereum apps in languages they already are familiar with.
+      p Programmers should also be able to implement the entire specification with relative ease, in order to minimize the influence that any specific individual or group could have on the protocol.
+      p The Ethereum protocol should be as simple as possible, and optimizations which add complexity should not be included unless they provide a very substantial benefit.
+
+    div
+      h3.title Universality
+      p Ethereum does not have "features". Instead, Ethereum provides a scripting language which you can use to construct any program you can think on top of a distributed network.
+      p This has implications going far beyond finance and smart contracts. Imagine what sort of problems could be solved if software was executed in a cloud, was always auditable, and always trustable. This opens the door to the development of voting machines, health care systems, traffic navigation, etc. where users stay in control of their funds and personal information at all times, as part of a network that's both censorship and collusion-proof.
+
+    div
+      h3.title Modularity
+      p Different elements of the Ethereum protocol should be designed to be as modular and autonomous as possible. During the course of development, it should be easy to make small modifications to the protocol in one place and have the entire stack continue to function as normal.
+      p Innovations such as our <a href="https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-Dagger" target="_blank">Proof of Work algorithm</a>, <a href="https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-Patricia-Tree" target="_blank">Patricia Trees</a> and <a href="https://github.com/ethereum/wiki/wiki/%5BEnglish%5D-RLP" target="_blank">RLP</a> should be implemented as separate libraries and made feature-complete even if Ethereum does not require their entire feature set.
+      p The development of Ethereum should benefit the entire cryptocurrency ecosystem.
+
+    div
+      h3.title Non-Discrimination
+      p The protocol should not attempt to actively restrict or prevent specific categories of usage. The regulatory mechanisms in the protocol should only be designed to regulate harm, not attempt to oppose specific undesirable applications.
+      p For example, you should be able to run an infinite loop on top of Ethereum for as long as you are willing to keep paying the per computational step fee for it.
+
+    div
+      h3.title Agility
+      p The details of the Ethereum protocol are not set in stone, although of course we will be extremely judicious about making modifications to high-level constructs such as the low-level VM language and the address system.
+      p Computational tests taking place later on in the development process may lead us to discover that certain modifications to the algorithms or scripting languages could substantially improve scalability or security. If any such opportunities are found, we will certainly make use of them.
+
+
+
+
+
+div#philosophy-right.pull-right.col-xs-12.col-sm-12.col-md-6
+  div.philobg
+    div.pull-left.col-xs-2.philosophy-icon1
+       a(href='#Simplicity', data-liquidslider-ref='#philosophy-slider')
+        i.fa.fa-desktop.philosophy-icons.philosophy-icon1
+        div.philotext
+          | Simplicity
+
+    div.pull-left.col-xs-2.philosophy-icon2
+       a(href='#Universality', data-liquidslider-ref='#philosophy-slider')
+        i.fa.fa-cog.philosophy-icons.philosophy-icon2
+        div.philotext
+          | Universality
+
+    div.pull-left.col-xs-2.philosophy-icon3
+       a(href='#Modularity', data-liquidslider-ref='#philosophy-slider')
+        i.fa.fa-code-fork.philosophy-icons.philosophy-icon3
+        div.philotext
+          | Modularity
+
+    div.pull-left.col-xs-2.philosophy-icon4
+       a(href='#Non-Discrimination', data-liquidslider-ref='#philosophy-slider')
+        i.fa.fa-puzzle-piece.philosophy-icons.philosophy-icon4
+        div.philotext
+          | Non-Discrimination
+
+    div.pull-left.col-xs-2.philosophy-icon5
+       a(href='#Agility', data-liquidslider-ref='#philosophy-slider')
+        i.fa.fa-sitemap.philosophy-icons.philosophy-icon5
+        div.philotext
+          | Agility
