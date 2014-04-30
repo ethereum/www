@@ -646,9 +646,9 @@ a:hover {
 
 .I {
   font-family: serif;
-  font-weight: 500;
-  padding-left: 3.5px;
-  font-size: 120%;
+  font-weight: 400;
+  font-size: 118%;
+  padding-left: 3px;
 }
 
 /* Pill style */
