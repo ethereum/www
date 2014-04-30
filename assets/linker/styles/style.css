@@ -645,16 +645,10 @@ a:hover {
 }
 
 .I {
-  display: inline-block;
-  line-height: 1.4ex !important;
-  border-top: 1.5px solid #333;
-  border-bottom: 1.5px solid #333;
-
-  margin-left: 3px;
-  margin-right: 0;
-
-  padding-left: 2px;
-  padding-right: 2px;
+  font-family: serif;
+  font-weight: 500;
+  padding-left: 2.5px;
+  font-size: 113%;
 }
 
 /* Pill style */
