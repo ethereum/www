@@ -1,13 +1,13 @@
 /**
  * Gruntfile
  *
- * If you created your Sails app with `sails new foo --linker`,
+ * If you created your Sails app with `sails new foo --linker`, 
  * the following files will be automatically injected (in order)
  * into the EJS and HTML files in your `views` and `assets` folders.
  *
  * At the top part of this file, you'll find a few of the most commonly
  * configured options, but Sails' integration with Grunt is also fully
- * customizable.  If you'd like to work with your assets differently
+ * customizable.  If you'd like to work with your assets differently 
  * you can change this file to do anything you like!
  *
  * More information on using Grunt to work with static assets:
@@ -23,8 +23,8 @@ module.exports = function (grunt) {
    * (uses Grunt-style wildcard/glob/splat expressions)
    *
    * By default, Sails also supports LESS in development and production.
-   * To use SASS/SCSS, Stylus, etc., edit the `sails-linker:devStyles` task
-   * below for more options.  For this to work, you may need to install new
+   * To use SASS/SCSS, Stylus, etc., edit the `sails-linker:devStyles` task 
+   * below for more options.  For this to work, you may need to install new 
    * dependencies, e.g. `npm install grunt-contrib-sass`
    */
 
@@ -36,7 +36,6 @@ module.exports = function (grunt) {
     'linker/styles/animate.css',
     'linker/styles/roboto.css',
     'linker/styles/zocial.css',
-    'linker/styles/printclearly.css',
     'linker/**/*.css'
   ];
 
@@ -45,13 +44,13 @@ module.exports = function (grunt) {
    * Javascript files to inject in order
    * (uses Grunt-style wildcard/glob/splat expressions)
    *
-   * To use client-side CoffeeScript, TypeScript, etc., edit the
+   * To use client-side CoffeeScript, TypeScript, etc., edit the 
    * `sails-linker:devJs` task below for more options.
    */
 
   var jsFilesToInject = [
 
-    // Below, as a demonstration, you'll see the built-in dependencies
+    // Below, as a demonstration, you'll see the built-in dependencies 
     // linked in the proper order order
 
     // Bring in the socket.io client
@@ -82,7 +81,24 @@ module.exports = function (grunt) {
     'linker/js/meetupmap.js',
     'linker/js/video-background.js',
     'linker/js/bootstrap.min.js',
+    'linker/js/jquery.knob.js',
+    'linker/js/numeral.js',
+    'linker/js/underscore-min.js',
+    'linker/js/moment.min.js',
     'linker/js/main.js',
+
+    'linker/js/ethersale/angular.min.js',
+    'linker/js/ethersale/qrcode.min.js',
+    'linker/js/ethersale/jquery.qrcode.min.js',
+    'linker/js/ethersale/bitcoinjs-min.js',
+    'linker/js/ethersale/aes.js',
+    'linker/js/ethersale/pbkdf2.js',
+    'linker/js/ethersale/sha256.js',
+    'linker/js/ethersale/sha3.js',
+    'linker/js/ethersale/xethtool.js',
+    'linker/js/ethersale/base64.js',
+    'linker/js/ethersale/app.js',
+    'linker/js/ethersale/password-dict.js'
 
     // DO NOT USE. INSERT STATIC PATH ABOVE
     // Uncommenting the line below will result in revoking push access
@@ -94,8 +110,8 @@ module.exports = function (grunt) {
    * Client-side HTML templates are injected using the sources below
    * The ordering of these templates shouldn't matter.
    * (uses Grunt-style wildcard/glob/splat expressions)
-   *
-   * By default, Sails uses JST templates and precompiles them into
+   * 
+   * By default, Sails uses JST templates and precompiles them into 
    * functions for you.  If you want to use jade, handlebars, dust, etc.,
    * edit the relevant sections below.
    */
@@ -132,17 +148,17 @@ module.exports = function (grunt) {
   /////////////////////////////////////////////////////////////////
   /////////////////////////////////////////////////////////////////
 
-  // Modify css file injection paths to use
+  // Modify css file injection paths to use 
   cssFilesToInject = cssFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
 
-  // Modify js file injection paths to use
+  // Modify js file injection paths to use 
   jsFilesToInject = jsFilesToInject.map(function (path) {
     return '.tmp/public/' + path;
   });
-
-
+  
+  
   templateFilesToInject = templateFilesToInject.map(function (path) {
     return 'assets/' + path;
   });
@@ -251,7 +267,7 @@ module.exports = function (grunt) {
         ]
       }
     },
-
+    
     coffee: {
       dev: {
         options:{
@@ -474,7 +490,7 @@ module.exports = function (grunt) {
     'jst:dev',
     'less:dev',
     'sass:dev',
-    'copy:dev',
+    'copy:dev',    
     'coffee:dev'
   ]);
 

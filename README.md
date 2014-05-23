@@ -1,4 +1,4 @@
-# ethereum-plexus
+# www / presale
 
 ## Server setup
 
@@ -21,11 +21,12 @@ Install node from http://nodejs.org/download/ and open the node command prompt.
 ```
 npm -g install sails
 cd ~
-git clone git@github.com:holon000/ethereum-plexus.git
-cd ethereum-plexus
+git clone git@github.com:ethereum/www.git
+cd www
 git submodule init
+git submodule update
 sudo gem install sass
-sudo npm install -d
+npm install -d
 sails lift
 ```
 
