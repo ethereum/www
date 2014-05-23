@@ -444,6 +444,19 @@ footer {
    text-align: center;
  }
 
+ #press-slider pre {
+   background-color: transparent;
+   border: none;
+   border-radius: 0;
+ }
+
+ #press-slider h4 {
+   text-align: center;
+ }
+
+.pressimg {
+  padding: 10px;
+}
 
 .fa-8x {
   font-size: 900%;
@@ -681,6 +694,14 @@ a:hover {
 
 #scrollUp:hover {
   background: #000;
+}
+
+.media1 {
+  margin-bottom: 0px;
+}
+
+.padbottom {
+  margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {

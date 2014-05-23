@@ -106,6 +106,17 @@ $(function() {
     // dynamicArrowRightText: '<i class="fa fa-angle-right fa-3x" data-liquidslider-ref="#code-slider">',
     crossLinks: true
   });
+  $('#press-slider').liquidSlider({
+    autoSlide: false,
+    dynamicTabs: false,
+    slideEaseDuration: 600,
+    autoHeight: true,
+    dynamicArrows: false,
+    dynamicArrowsGraphical: false,
+    // dynamicArrowLeftText: '<i class="fa fa-angle-left fa-3x" data-liquidslider-ref="#code-slider">',
+    // dynamicArrowRightText: '<i class="fa fa-angle-right fa-3x" data-liquidslider-ref="#code-slider">',
+    crossLinks: true
+  });
   $('#philosophy-slider').liquidSlider({
     autoSlide: false,
     dynamicTabs: false,
