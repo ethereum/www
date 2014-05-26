@@ -10,6 +10,8 @@ html
         #responsive-menu.collapse.navbar-collapse
           ul.nav.navbar-nav
             li
+              a.scroll(href="#status", onclick="api.setNextPanel(1); api.updateClass($(this));") Status
+            li
               a.scroll(href='#news') News
             li
               a.scroll(href='#what') What

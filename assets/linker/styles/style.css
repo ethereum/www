@@ -105,17 +105,6 @@ footer {
 
 .logo-text {
   float: left;
-  display: inline-block;
-  margin-top: -12px;
-}
-
-.logo-text > a:hover, .logo-text > a:link {
-  color: #333;
-  text-decoration: none;
-}
-
-.logo-text h1 {
-  letter-spacing: 0.3ex;
   color:#787878;
   font-family:RobotoRegular;
 }
@@ -435,27 +424,45 @@ footer {
 }
 
 #code-slider pre {
-   background-color: transparent;
-   border: none;
-   border-radius: 0;
- }
+  background-color: transparent;
+  border: none;
+  border-radius: 0;
+}
 
- #code-slider h4 {
-   text-align: center;
- }
+#code-slider h4 {
+ text-align: center;
+}
 
- #press-slider pre {
-   background-color: transparent;
-   border: none;
-   border-radius: 0;
- }
+#press-slider pre {
+ background-color: transparent;
+ border: none;
+ border-radius: 0;
+}
 
- #press-slider h4 {
-   text-align: center;
- }
+#press-slider h4 {
+ text-align: center;
+}
 
 .pressimg {
   padding: 10px;
+}
+
+#pressmedia-content {
+  height: 900px;
+}
+
+#media-slider pre {
+ background-color: transparent;
+ border: none;
+ border-radius: 0;
+}
+
+#media-slider h4 {
+ text-align: center;
+}
+
+.mediaimage {
+  padding: 5px;
 }
 
 .fa-8x {
