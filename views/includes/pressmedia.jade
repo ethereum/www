@@ -1,56 +1,56 @@
 div#press-feed
-  div.row.col-sm-10.pull-right.clear-left
-    div.row
+  div.row
+    div.col-md-12.text-center
       h2.pressimg.text-left press &amp; media sources
 
-div.row.col-sm-10.pull-right.clear-left
-  div.col-sm-1
-    a(href='#left', data-liquidslider-ref='#press-slider')
-      i.fa.fa-fw.fa-angle-left.fa-3x
-  div.col-sm-8
-    include press
-  div.col-sm-1.pull-left
-    a(href='#right', data-liquidslider-ref='#press-slider')
-      i.fa.fa-fw.fa-angle-right.fa-3x
+div.row.pull-right
+  div#media-contact.col-md-2.pull-left
+    img.padbottom(height= '150', width='75', src='/images/main_logo_360.png')
+    p.media1 Contact media ethereum
+    p.media1 --
+    p.media1 Stephan Tual CCO
+    | stephan@ethereum.org
+    p.media1 --
+    p.media1 Hub Locations
+    p.media1 --
+    p.media1 Ethereum Switzerland GmbH
+    | Grienbachstrasse 55
+    | Baar-Inwil 6340
+    p.media1 --
+    p.media1 Ethereum Toronto
+    | Financial District, Toronto, Canada
+    p.media1 --
+    p.media1 Ethereum New York
+    p.media1 --
+    p.media1 Ethereum London
+    p.media1 --
+    p.media1 Ethereum Berlin
+    p.media1 --
+    p.media1 Ethereum Amsterdam
+    p.media1 --
 
-div.row.col-sm-10.pull-right.clear-left
-  div.col-sm-1
-    a(href='#left', data-liquidslider-ref='#media-slider')
-      i.fa.fa-fw.fa-angle-left.fa-3x
-  div.col-sm-8
-    include media
-  div.col-sm-1.pull-left.clear-right
-    a(href='#right', data-liquidslider-ref='#media-slider')
-      i.fa.fa-fw.fa-angle-right.fa-3x
+  div.col-md-10.pull-right
+    div.col-md-1
+      a(href='#left', data-liquidslider-ref='#press-slider')
+        i.fa.fa-fw.fa-angle-left.fa-3x
+    div.col-md-8
+      include press
+    div.col-md-1
+      a(href='#right', data-liquidslider-ref='#press-slider')
+        i.fa.fa-fw.fa-angle-right.fa-3x
 
-div#media-contact.row.col-sm-2.pull-left.clear-right.clear-both
-  img.padbottom(height= '150', width='75', src='/images/main_logo_360.png')
-  p.media1 Contact media ethereum
-  p.media1 --
-  p.media1 Stephan Tual CCO
-  | stephan@ethereum.org
-  p.media1 --
-  p.media1 Hub Locations
-  p.media1 --
-  p.media1 Ethereum Switzerland GmbH
-  | Grienbachstrasse 55
-  | 6340 Baar-Inwil
-  p.media1 --
-  p.media1 Ethereum Toronto
-  | Financial District, Toronto, Canada
-  p.media1 --
-  p.media1 Ethereum New York
-  p.media1 --
-  p.media1 Ethereum London
-  p.media1 --
-  p.media1 Ethereum Berlin
-  p.media1 --
-  p.media1 Ethereum Amsterdam
-  p.media1 --
+  div.col-md-10.pull-right
+    p news articles will go in an iframe here
+    p news article
+    p news article
+    p news article
 
-div.container.pull-right.col-sm-10
-  p news articles will go in an iframe here
-  p news article
-  p news article
-  p news article
-
+  div.col-md-12.pull-right
+    div.col-md-1
+      a(href='#left', data-liquidslider-ref='#media-slider')
+        i.fa.fa-fw.fa-angle-left.fa-3x
+    div.col-md-10
+      include media
+    div.col-md-1
+      a(href='#right', data-liquidslider-ref='#media-slider')
+        i.fa.fa-fw.fa-angle-right.fa-3x

@@ -305,9 +305,11 @@ footer {
 }
 
 .ethereum-logo {
-  font-family:PrintClearly;
-  letter-spacing:0.35em;
+  font-family: PrintClearly;
+  letter-spacing:0.15em;
   color:#333;
+  font-size: 35px;
+  margin-top: 15px;
 }
 
 .dl-box {
@@ -445,10 +447,6 @@ footer {
 
 .pressimg {
   padding: 10px;
-}
-
-#pressmedia-content {
-  height: 900px;
 }
 
 #media-slider pre {
