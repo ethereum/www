@@ -124,16 +124,16 @@ $(function() {
   $downloadLink.click(function(e){
     e.preventDefault();
   });
-  
+
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
     var ETHER_FOR_BTC=2000,
         FUNDRAISING_ADDRESS="1FfmbHfnpaZjKFvyi1okTjJJusN455paPH",
         SATOSHIS_IN_BTC=100000000,
-        START_DATETIME= "2014-03-22 00:00:00",
-        END_DATETIME= "2014-05-29 00:00:00",
+        START_DATETIME= "2014-12-31 23:59:59",
+        END_DATETIME= "2015-01-01 00:00:00",
         appStepsSlider;
-    
+
 
     var knobDefaults = {
       readOnly: true,
@@ -155,12 +155,12 @@ $(function() {
       var cd = 24 * 60 * 60 * 1000,
           ch = 60 * 60 * 1000,
           cm = 60 * 1000,
-          
+
           d = Math.floor(t / cd),
           h = Math.floor( (t - d * cd) / ch),
           m = Math.floor( (t - d * cd - h * ch) / cm),
           s = Math.round( (t - d * cd - h * ch - m * cm) / 1000);
-      
+
       return {
         days: d,
         hours: h,
@@ -169,7 +169,7 @@ $(function() {
       };
     };
 
-    
+
 
     var setupTimerDials = function($container,maxdays){
       createKnob($container.find(".dial.days"), {max: maxdays });
@@ -181,7 +181,7 @@ $(function() {
     setupTimerDials($saleDurationDials, dhms(endsAt.diff(startsAt)).days);
     setupTimerDials($rateCountdownDials, 0);
 
-    
+
     $(".countdown-dials input").css({
       height: "26px",
       "margin-top": "7px",
@@ -191,7 +191,7 @@ $(function() {
     var updateTimerDial = function($container, type, delta){
       $container.find(".dial." + type).val(delta[type]).change();
     };
-    
+
     var updateTimerDials = function($container, delta){
       updateTimerDial($container, "days", delta);
       updateTimerDial($container, "hours", delta);
@@ -234,7 +234,7 @@ $(function() {
     var $confDial = $("#confirmations-dial"),
         confDialInterval,
         confDialVal = 0;
-    
+
     $confDial.knob({
       readOnly: true,
       thickness: 0.05,
@@ -258,9 +258,9 @@ $(function() {
       confDialInterval = 0;
     };
 
-    
+
     var $emailConfDial = $("#email-confirmations-dial");
-    
+
     $emailConfDial.knob({
       readOnly: true,
       thickness: 0.05,
@@ -275,7 +275,7 @@ $(function() {
     $emailConfDial.val("2").change();
     $("#email-dial-shim").text("2/3");
 
-    
+
 
     window.onWalletReady = function(){
       $entropyProgress.hide();
@@ -284,35 +284,35 @@ $(function() {
       spinConfDial();
     };
 
-    
+
 
     // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address){
       $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address});
     };
-    
+
     window.onTransactionComplete = function(downloadLinkHref){
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(2);
       $(".step-breadcrumbs").attr("data-step", "3");
-      
+
       $purchaseCancel.hide();
 
       $downloadLink.attr("href", downloadLinkHref);
-      
+
       stopConfDial();
     };
 
     //when nesting sliders, inner ones should be initialised first.
     //fuck knows why...
-    appStepsSlider = $("#app-steps-content").liquidSlider({ 
+    appStepsSlider = $("#app-steps-content").liquidSlider({
       autoSlide: false,
       dynamicTabs: false,
       dynamicArrows: false,
       hideSideArrows: false,
       slideEaseDuration: 600
     }).data("liquidSlider");
-    
+
     $('#presale-counters-slider').liquidSlider({
       autoSlide: false,
       dynamicTabs: false,
@@ -329,6 +329,6 @@ $(function() {
     //onWalletReady();//DEBUG
     //onTransactionComplete();//DEBUG
   };
-  
+
   initPresaleCounters();
 });
