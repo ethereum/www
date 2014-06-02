@@ -449,6 +449,14 @@ footer {
   padding: 10px;
 }
 
+.presslink {
+  text-decoration: none;
+}
+
+.pressdate {
+  margin: 0;
+}
+
 #media-slider pre {
  background-color: transparent;
  border: none;
