@@ -771,3 +771,9 @@ a:hover {
   }
 
 }
+
+@media (min-width: 768px) {
+  #feature {
+    max-height: 1200px;
+  }
+}
