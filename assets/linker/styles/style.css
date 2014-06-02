@@ -457,6 +457,15 @@ footer {
   margin: 0;
 }
 
+#presslist {
+  list-style: none;
+  list-style-type: none;
+}
+
+#presslist a:hover{
+  text-decoration: none;
+}
+
 #media-slider pre {
  background-color: transparent;
  border: none;
