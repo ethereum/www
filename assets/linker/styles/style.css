@@ -446,8 +446,29 @@ footer {
 }
 
 .pressimg {
-  padding: 10px;
+  display: block;
+  padding: 21px;
   padding-top: 10px;
+  float: left;
+}
+
+.press-slider-panel {
+  min-height: 178px;
+}
+
+.leftSliderArrow, .rightSliderArrow {
+  position: absolute;
+  display: block;
+  top: 50%;
+  margin-top: -34px;
+}
+
+.leftSliderArrow {
+  left: -15px;
+}
+
+.rightSliderArrow {
+  right: -15px;
 }
 
 .presslink {
@@ -461,10 +482,19 @@ footer {
 #presslist {
   list-style: none;
   list-style-type: none;
+  padding-left: 21px;
+}
+
+#presslist li {
+  margin-bottom: 20px;
 }
 
 #presslist a:hover{
   text-decoration: none;
+}
+
+.media-slider-wrapper {
+  min-height: 203px;
 }
 
 #media-slider pre {

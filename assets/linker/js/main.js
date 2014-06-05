@@ -108,6 +108,7 @@ $(function() {
   });
   $('#press-slider').liquidSlider({
     autoSlide: false,
+    pauseOnHover: true,
     dynamicTabs: false,
     slideEaseDuration: 600,
     autoHeight: true,
