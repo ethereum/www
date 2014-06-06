@@ -136,5 +136,5 @@ $(function() {
     slideEaseDuration: 600,
     crossLinks: true,
   });
-
+  $(".nano").nanoScroller();
 });
