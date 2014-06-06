@@ -235,9 +235,10 @@ footer {
 
 #feature .video-content {
   position: absolute;
-  top: 80px;
+  top: 50%;
   left: 0;
   right:0;
+  margin-top: -125px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -310,6 +311,7 @@ footer {
   color:#333;
   font-size: 35px;
   margin-top: 15px;
+  margin-bottom: 0px;
 }
 
 .dl-box {
