@@ -707,6 +707,7 @@ a:hover {
 
 #presale-counters a{
   text-decoration: none;
+  cursor: pointer;
 }
 
 #presale-counters h4{
@@ -789,7 +790,7 @@ a:hover {
   line-height: 30px;
 }
 
-#counters-secondary .btn-buy-ether{
+#counters-secondary .btn-buy-ether, #presale-counters .fancy-black-btn{
   background-color: #333;
   padding: 5px;
   width: 150px;
@@ -990,4 +991,86 @@ a:hover {
   #ethersale-app .container{
     width: 970px;
   }
+}
+
+#terms-text-container{
+  background-color: #eee;
+  margin: 20px 30px 0 0;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: inset 0 0 10px #999;
+  overflow: auto;
+}
+#terms-modal .got-it{
+  padding: 10px;
+  text-align: center;
+}
+#terms-modal .got-it p{
+  margin: 5px;
+}
+#terms-modal .got-it label{
+  padding-left: 5px;
+}
+
+#terms-modal .close-modal{
+  position: absolute;
+  right: 12px;
+  top: 20px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: block;
+  height: 20px;
+  line-height: 18px;
+  width: 20px;
+  text-align: center;
+  transition: border-color ease-in-out 0.3s;
+}
+
+#terms-modal a{
+  cursor: pointer;
+  text-decoration: none;
+}
+#terms-modal h1, #terms-modal h2, #terms-modal h3{
+  text-transform: none;
+}
+
+#terms-modal h1{
+  font-size: 26px;
+}
+
+#terms-modal h2{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#terms-modal .close-modal:hover{
+  border-color: #333;
+}
+
+#terms-modal .logo{
+  text-align: center;
+  margin: 20px 0 0 17px;
+}
+
+#terms-modal .logo h3{
+  font-size: 18px;
+}
+
+#terms-modal .controls{
+  font-size: 12px;
+  overflow: hidden;
+  color: #777;
+  position: absolute;
+  left: 25px;
+  bottom: 20px;
+  width: 120px;
+}
+
+#terms-modal .controls i{
+  margin-right: 2px;
+}
+
+#terms-modal .disabled{
+  color: #aaa;
 }

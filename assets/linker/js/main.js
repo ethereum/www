@@ -115,25 +115,82 @@ $(function() {
     crossLinks: true
   });
 
-  var $qrDepAddr = $("#qr-deposit-address"),
-      $purchaseCancel = $("#purchase-cancel"),
-      $entropyProgress = $("#entropy-progress"),
-      $downloadLink = $("#downloadLink");
-
-
-  $downloadLink.click(function(e){
-    e.preventDefault();
-  });
 
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
     var ETHER_FOR_BTC=2000,
         FUNDRAISING_ADDRESS="1FfmbHfnpaZjKFvyi1okTjJJusN455paPH",
         SATOSHIS_IN_BTC=100000000,
-        START_DATETIME= "2014-12-31 23:59:59",
-        END_DATETIME= "2015-01-01 00:00:00",
+        START_DATETIME= "2014-06-02 23:59:59",
+        END_DATETIME= "2014-06-17 00:00:00",
+        $qrDepAddr = $("#qr-deposit-address"),
+        $purchaseCancel = $("#purchase-cancel"),
+        $entropyProgress = $("#entropy-progress"),
+        $downloadLink = $("#downloadLink"),
+        purchaseInputs = {
+          $email: $("#purchase-email"),
+          $emailRepeat: $("#purchase-email-repeat"),
+          $password: $("#password"),
+          $passwordRepeat: $("#password-checks")
+        },
+        $startBtn = $("#start-ether-purchase"),
+        $terms = $("#terms-modal"),
+        $termsText = $("#terms-text-container"),
+        mainSlider,
         appStepsSlider;
 
+    $downloadLink.click(function(e){
+      e.preventDefault();
+    });
+
+    $purchaseCancel.click(function(){
+      purchaseInputs.$email.val("");
+      purchaseInputs.$emailRepeat.val("");
+      purchaseInputs.$password.val("");
+      purchaseInputs.$passwordRepeat.val("");
+    });
+
+    var resizeTerms = function(){
+      $termsText.height($(window).height() - 185);
+    };
+
+    var closeTerms = function(){
+      $terms.modal("hide");
+      $(window).off("resize", resizeTerms);
+      $terms.find("[name=confirm-terms]").prop("checked", false);
+    };
+
+    $startBtn.click(function(e){
+      $terms.modal();
+      resizeTerms();
+      $(window).on("resize", resizeTerms);
+      return false;
+    });
+
+    $terms.find(".close-modal").click(function(e){
+      closeTerms();
+      return false;
+    });
+
+    $terms.find(".print").click(function(){
+      $termsText.css("overflow", "visible").printArea();
+      $termsText.css("overflow", "auto");
+      return false;
+    });
+
+    $termsText.scroll(function(){
+      if($termsText.scrollTop() + $termsText.innerHeight() + 30 > $termsText.prop("scrollHeight")){
+        $terms.find("[name=confirm-terms]").attr("disabled", false);
+        $terms.find("[for=confirm-terms]").removeClass("disabled");
+      }
+    });
+
+    $terms.find("[name=confirm-terms]").change(function(){
+      if($(this).is(":checked")){
+        mainSlider.setNextPanel(2);
+        closeTerms();
+      }
+    });
 
     var knobDefaults = {
       readOnly: true,
@@ -304,7 +361,7 @@ $(function() {
     };
 
     //when nesting sliders, inner ones should be initialised first.
-    //fuck knows why...
+    //fuck knows why... liquid slider does something weird to jquery
     appStepsSlider = $("#app-steps-content").liquidSlider({
       autoSlide: false,
       dynamicTabs: false,
@@ -313,18 +370,14 @@ $(function() {
       slideEaseDuration: 600
     }).data("liquidSlider");
 
-    $('#presale-counters-slider').liquidSlider({
+    mainSlider = $('#presale-counters-slider').liquidSlider({
       autoSlide: false,
       dynamicTabs: false,
       dynamicArrows: false,
       hideSideArrows: true,
       slideEaseDuration: 600,
       firstPanelToLoad: 2 //DEBUG: 3; RELEASE: 2
-    });
-    //a hack to disable the idiotic css settings liquid-slider defaults to:
-    // $("#presale-counters-slider-wrapper, #app-steps-content").css({
-    //   "max-width": "100%"
-    // });
+    }).data("liquidSlider");
 
     //onWalletReady();//DEBUG
     //onTransactionComplete();//DEBUG

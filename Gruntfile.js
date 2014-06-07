@@ -85,6 +85,7 @@ module.exports = function (grunt) {
     'linker/js/numeral.js',
     'linker/js/underscore-min.js',
     'linker/js/moment.min.js',
+    'linker/js/jquery.PrintArea.js',
     'linker/js/main.js',
 
     'linker/js/ethersale/angular.min.js',

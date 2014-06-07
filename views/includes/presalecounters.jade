@@ -1,5 +1,9 @@
 div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
   #ethersale-charts.container
+    .col-md-4
+    .col-md-4
+    .col-md-4
+      a(href="#right", data-liquidslider-ref="#presale-counters-slider").fancy-black-btn Back
   div#sale-counters-container.container
     div#counters-primary.row
       div.sale-duration-container.col-md-4.countdown-dials
@@ -61,7 +65,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
         a(href="#left", data-liquidslider-ref="#presale-counters-slider").btn-buy-ether.hide-after-end Charts
       .col-md-4
       .col-md-4
-        a(href="#right", data-liquidslider-ref="#presale-counters-slider").btn-buy-ether.hide-after-end Buy Ether
+        a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
       #entropy-progress
@@ -141,7 +145,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                         p This will serve as your wallet passphrase
                         div Passphrase strength:
                           ul#strength(check-strength="password")
-                      input.form-control(type="password", name="password", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
+                      input#password.form-control(type="password", name="password", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
                       .label-container
                         ul#password-checks
                           li(ng-class="{active: passChecks.longStr}") <i class="fa fa-check"></i> 8+ characters
