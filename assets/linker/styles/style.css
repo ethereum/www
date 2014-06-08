@@ -476,9 +476,12 @@ footer {
 .presslink {
   text-decoration: none;
 }
+.presslink:hover {
+  text-decoration: none;
+}
 
 .pressdate {
-  margin: 0;
+  margin-bottom: 5px;
 }
 
 #presslist {
