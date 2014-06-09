@@ -27,11 +27,11 @@
       p.media1 --
 
     div.col-md-9.pull-right
-      div#press-feed
       div.row
         div.col-md-12.text-center
           h2.pressimg.text-left(style="margin-top:0px; padding-top: 0px;") press &amp; media sources
-        div.col-sm-12(style="height: 187px")
+        div.clearfix
+        div.col-sm-12
           include press
           a.leftSliderArrow(href='#left', data-liquidslider-ref='#press-slider')
             i.fa.fa-fw.fa-angle-left.fa-3x
@@ -116,10 +116,9 @@
                 h5.pressdate 01/23/2014
                 a.presslink(href='http://bitcoinmagazine.com/9671/ethereum-next-generation-cryptocurrency-decentralized-application-platform/', target='_blank') [Bitcoin Magazine] A Next-Generation Cryptocurrency and Decentralized Application Platform
 
-    div.col-md-12.pull-right
-      div.col-sm-12
-        include media
-        a.leftSliderArrow(href='#left', data-liquidslider-ref='#media-slider')
-          i.fa.fa-fw.fa-angle-left.fa-3x
-        a.rightSliderArrow(href='#right', data-liquidslider-ref='#media-slider')
-          i.fa.fa-fw.fa-angle-right.fa-3x
+    div.col-sm-12.pull-right
+      include media
+      a.leftSliderArrow(href='#left', data-liquidslider-ref='#media-slider')
+        i.fa.fa-fw.fa-angle-left.fa-3x
+      a.rightSliderArrow(href='#right', data-liquidslider-ref='#media-slider')
+        i.fa.fa-fw.fa-angle-right.fa-3x
