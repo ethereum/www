@@ -1076,6 +1076,23 @@ a:hover {
   color: #aaa;
 }
 
+.label-container.email{
+  text-align: left;
+}
+
+#app-steps-content .label-container.email label{
+  display: inline;
+}
+
+.label-container.email span{
+  color: #888;
+  padding-right: 10px;
+  font-size: 10px;
+}
+
+.label-container.email span.active{
+  color: #000;
+}
 
 
 /* animated CSS loader */
