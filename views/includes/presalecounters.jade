@@ -76,11 +76,11 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
           .col-md-4
             h3 purchase ether
             .step-breadcrumbs(data-step="1")
-              span.step1 step 1 >
-              span.step2 step 2 >
-              span.step3 step 3
+              span.step1 info >
+              span.step2 purchase >
+              span.step3 download
           .col-md-4
-            a#purchase-cancel(href="#left", data-liquidslider-ref="#presale-counters-slider") < cancel
+            a#purchase-cancel(ng-click="reset()") < cancel
         #app-steps-content.liquid-slider
           .step1-content
             .row
@@ -120,14 +120,14 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section.row
                     .col-md-5
                       p amount BTC:
-                      .amount-box 1
+                      input(type="text", ng-model="btcToSend", numeric, ng-change="updateEthToBuy()").amount-box 
                     .col-md-2.delimiter
                       span.exchange-delimiter =
                     .col-md-5
                       p amount ETH:
-                      .amount-box.eth-to-btc 2,000
+                      input(type="text", ng-model="ethToBuy", numeric, ng-change="updateBtcToSend()").amount-box.eth-to-btc
                   section
-                    p.copy A passphrase is needed to encrypt and recover your payment keys. In addition to generating a downloadable backup, we will also send you an email with recovery information attached.
+                    p.copy Enter amount to purchase. A passphrase is needed to encrypt and recover your payment keys. In addition to generating a downloadable backup, we will also send you an email with recovery information attached.
                 section
                   p.important Do not forget your passphrase!
               .col-md-2
@@ -157,12 +157,12 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       .label-container
                         label.error(ng-show="purchase_form.password_repeat.$error.match") Passphrases do not match
                 section
-                  p.important(ng-if="!wallet.ethaddr") {{ "Move your mouse to generate entropy" }}
+                  p.important(ng-if="collectingEntropy") {{ "Move your mouse to generate entropy" }}
           .step2-content
             h4 You are about to buy 
-              span.eth-to-btc 2,000
+              span.eth-to-btc {{ethToBuy}}
               span.currency-code ETH 
-              | for 1
+              | for {{btcToSend}}
               span.currency-code BTC
             div
               .row
@@ -174,37 +174,33 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       div#qr-deposit-address
                   section
                     p.copy payment address:
-                    a.payment-address.nowrap(href="bitcoin:{{wallet.btcaddr}}") {{wallet.btcaddr}}
+                    span.payment-address.nowrap(href="bitcoin:{{wallet.btcaddr}}") {{wallet.btcaddr}}
                   section
                     p.copy Send bitcoin to the above address to buy Ether. Once we have your payment confirmed the option to download your wallet will appear.                    
                 .col-md-2
                 .col-md-5
                   p purchase status:
                   #confirmations-container
-                    input#confirmations-dial(type="text", value="0")
+                    .loader Loading...
                   section
                     p.copy Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
                   section
                     p.copy Once we have confirmed the payment, the option to download your wallet will appear. Your will also be emailed a back up of this file.
           .step3-content
-            a#print-purchase-page(onclick="window.print();") <i class="fa fa-print fa-2x"></i> print page
-            h4 You are buying 
-              span.eth-to-btc 2,000
-              span.currency-code ETH 
-              | for 1
-              span.currency-code BTC
+            a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
+            h4 Thank you for your purchase
             div
               .row
                 .col-md-5
                   section
                     p.important bitcoin transaction ID:
                     p.btc-transaction-id {{transactionHash}}
-                  section#email-confirmations-container
+                  section#email-confirmations-container.no-print
                     input#email-confirmations-dial(type="text")
                     #email-dial-shim.confirmations-dial-shim X/X
                   section
-                    p confirmations until back up is emailed to your address
+                    p Only transactions with a minimum of six confirmations will be considered valid
                     p.important {{email}}
                   section
                     p.copy Your ethereum address:
@@ -212,12 +208,15 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-md-2
                 .col-md-5
                   section
-                    p.copy This file represents your private key to your wallet, encrypted by your passphrase in a .json file. When he ethereum block-chain is live you can import this file in your wallet and the balance will be adjusted automatically with the purchased amount.
+                    p.copy.no-print This file represents your private key to your wallet, encrypted by your passphrase in a .json file. When the ethereum block-chain is live you can import this file in your wallet and the balance will be adjusted automatically with the purchased amount.
                   section
-                    a#downloadLink(download="ethereum_wallet.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+                    a#downloadLink.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
                   section
                     p.copy Recommendations
                     ol#recommendations
                       li Make sure you do not forget your passphrase!
                       li Create backups on multiple mediums
-                      li Visit our forums if you have any questions
+                      li Visit our <strong><a href="http://blog.ethereum.org/">forums</a></strong> if you have any questions
+                  section
+                    a#back-to-start.no-print(ng-click="reset()") Done
+

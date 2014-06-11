@@ -1,4 +1,5 @@
 ETHERSALE_URL = "http://sale.ethereum.org:16180";
+//ETHERSALE_URL = "http://localhost:5000";//TODO remove debug
 
 var ethereum = angular.module('ethereum', []);
 
@@ -19,8 +20,10 @@ var isPassInDictionary = function(pass){
   return lastPassCheckResult = (_.indexOf(PASSWORD_DICT, pass, true) !== -1);
 };
 
+var $downloadLink = $("#downloadLink");
+
 ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', function(Purchase, DownloadDataURI, $scope) {
-  $scope.requiredEntropyLength = 50;
+  $scope.requiredEntropyLength = 300;
   window.wscope = $scope;
   $scope.entropy = '';
   $scope.didPushTx = false;
@@ -29,6 +32,18 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   // $scope.email_repeat = 'asdf@ asdf.asdf'; // TODO remove debug
   // $scope.password = 'asd'; // TODO remove debug
   // $scope.password_repeat = 'asd'; // TODO remove debug
+  // $scope.passwordOK = true; // TODO remove debug
+
+  $scope.btcToSend = 1.5;
+  $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
+
+  $scope.updateEthToBuy = function(){
+    $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend,10) || 0);
+  };
+
+  $scope.updateBtcToSend = function(){
+    $scope.btcToSend = window.btcForEth(parseFloat($scope.ethToBuy,10) || 0);
+  };
 
   $scope.mkQRCode = function(address) {
     // $scope.qrcode = new QRCode("qr_deposit_address", { // reaching back into the DOM is bad
@@ -50,22 +65,38 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     if(val.length <= max) $scope.entropyPercent = (Math.round(100 * val.length / max));
   });
 
+  var authDetailsOK = function(){
+    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && 
+      ($scope.password === $scope.password_repeat);
+  };
+
+  $scope.$watch("[email,email_repeat,password,password_repeat]", function(){
+    if(authDetailsOK() && !$scope.btcAddress) $scope.collectingEntropy = true;
+  },true);
+
   window.onmousemove = function(e) {
     // only work when the first steps are done
-    if (!$scope.email_repeat || ($scope.password != $scope.password_repeat)) return;
+    if (!authDetailsOK()){
+      $scope.entropy = "";
+      return;
+    }
+
     // only work if a btcAddress doesn' t already exist
     if (!$scope.btcAddress) {
-
+      $scope.collectingEntropy = true;
+      
       var roundSeed = '' + e.x + e.y + new Date().getTime() + Math.random();
 
       Bitcoin.Crypto.SHA256(roundSeed, {
         asBytes: true
       }).slice(0, 3).map(function(c) {
         $scope.entropy += 'abcdefghijklmnopqrstuvwxyz234567' [c % 32];
+        console.log($scope.entropy);
         if (!$scope.$$phase) $scope.$apply();
       });
 
       if ($scope.entropy.length > $scope.requiredEntropyLength && !$scope.wallet) {
+        $scope.collectingEntropy = false;
         $scope.wallet = 1;
         //$scope.entropy = 'qwe'; // TODO remove debug;
         console.log('generating wallet'); // Add loading thingy
@@ -85,8 +116,6 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     }
   };
 
-
-
   $scope.$watch("password", function(newV, oldV){
     if(!newV){
       $scope.passChecks = {};
@@ -98,57 +127,78 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV),
         unique: !isPassInDictionary(newV)
       };
+
+      $scope.passwordOK = _.all($scope.passChecks, _.identity);
+      
     }
   });
 
-  var timerUnspent = setInterval(function() {
+  $scope.reset = function(){
+    $scope.email = "";
+    $scope.email_repeat = "";
+    $scope.password = "";
+    $scope.password_repeat =  "";
+    $scope.collectingEntropy = false;
+    $scope.btcAddress = false;
+    $scope.entropy = "";
+    $scope.passwordOK = false;
+    $scope.wallet = null;
+    timerUnspent = startUnspentInterval();
+  };
 
-    if (!$scope.wallet || !$scope.wallet.btcaddr) return;
-    //$scope.status = 'Connecting...' //need to force drawing of this first time only
-    Purchase.getUnspent($scope.wallet.btcaddr, function(e, unspent) {
-      if (e || (!e && !unspent)) {
-        return $scope.status = e || 'Error connecting, please try later.';
-      }
-      var tx = finalize($scope.wallet, unspent, $scope.pwkey);
-      TX = tx;
-      if (!tx) {
-        $scope.status = 'Waiting for deposit...';
-      } else {
-        var data = {
-          'tx': tx.serializeHex(),
-          'email': $scope.email,
-          'emailjson': $scope.backup
-        };
-        $scope.didPushTx = true;
+  var timerUnspent = startUnspentInterval();
 
-        Purchase.sendTx(data, function(e, r) {
-          if (e) {
-            $scope.error = e;
-            return e;
-          }
-          $scope.pushtxsuccess = true;
-          $scope.transactionHash = Bitcoin.convert.bytesToHex(tx.getHash());
-          doc = JSON.stringify($scope.wallet);
-          $scope.debug = doc;
-          clearInterval(timerUnspent);
-          $scope.status = 'Transaction complete!\n\nDownload your wallet now then check your email for a backup.';
+  function startUnspentInterval(){
+    return setInterval(function() {
 
-          (window.onTransactionComplete || function(){})(
-            'data:application/octet-stream;base64,' + Base64.encode(doc)
-          );
-          var downloadLinkEle = angular.element('#downloadLink');
-          downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
-        });
-      }
-    });
-  }, 3000);
+      if (!$scope.wallet || !$scope.wallet.btcaddr) return;
+      //$scope.status = 'Connecting...' //need to force drawing of this first time only
+      Purchase.getUnspent($scope.wallet.btcaddr, function(e, unspent) {
+        if (!$scope.wallet || !$scope.wallet.btcaddr) return;
+        
+        if (e || (!e && !unspent)) {
+          return $scope.status = e || 'Error connecting, please try later.';
+        }
+        var tx = finalize($scope.wallet, unspent, $scope.pwkey);
+        TX = tx;
+        if (!tx) {
+          $scope.status = 'Waiting for deposit...';
+        } else {
+          var data = {
+            'tx': tx.serializeHex(),
+            'email': $scope.email,
+            'emailjson': $scope.backup
+          };
+          $scope.didPushTx = true;
+
+          Purchase.sendTx(data, function(e, r) {
+            if (e) {
+              $scope.error = e;
+              return e;
+            }
+            $scope.pushtxsuccess = true;
+            $scope.transactionHash = Bitcoin.convert.bytesToHex(tx.getHash());
+            doc = JSON.stringify($scope.wallet);
+            $scope.debug = doc;
+            clearInterval(timerUnspent);
+            $scope.status = 'Transaction complete!\n\nDownload your wallet now then check your email for a backup.';
+
+            (window.onTransactionComplete || function(){})(
+              'data:application/octet-stream;base64,' + Base64.encode(doc)
+            );
+            var downloadLinkEle = angular.element('#downloadLink');
+            downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
+          });
+        }
+      });
+    }, 3000);
+  };
+
 
   $scope.downloadWallet = function() {
-    var downloadLinkEle = angular.element('#downloadLink');
-
     DownloadDataURI({
-      filename: downloadLinkEle.attr('download'),
-      data: downloadLinkEle.attr('href')
+      filename: $downloadLink.attr('download'),
+      data: $downloadLink.attr('href')
     });
   };
 }]);
@@ -263,6 +313,26 @@ ethereum.directive('checkStrength', function() {
     },
     template: '<li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li><li class="point"></li>'
   };
+});
+
+ethereum.directive('numeric', function() {
+  return {
+    require: 'ngModel',
+    link: function (scope, element, attr, ngModelCtrl) {
+      function fromUser(text) {
+        var val = text.replace(/[^0-9.]/g, '');
+
+        while(val.split(".").length > 2) val = val.replace(".", "");
+
+        if(val !== text) {
+          ngModelCtrl.$setViewValue(val);
+          ngModelCtrl.$render();
+        }
+        return val;  // or return Number(transformedInput)
+      }
+      ngModelCtrl.$parsers.push(fromUser);
+    }
+  }; 
 });
 
 ethereum.factory('DownloadDataURI', ['$http', function($http) {

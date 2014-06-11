@@ -125,6 +125,7 @@ $(function() {
         END_DATETIME= "2014-06-17 00:00:00",
         $qrDepAddr = $("#qr-deposit-address"),
         $purchaseCancel = $("#purchase-cancel"),
+        $backToStart = $("#back-to-start"),
         $entropyProgress = $("#entropy-progress"),
         $downloadLink = $("#downloadLink"),
         purchaseInputs = {
@@ -136,19 +137,34 @@ $(function() {
         $startBtn = $("#start-ether-purchase"),
         $terms = $("#terms-modal"),
         $termsText = $("#terms-text-container"),
+        btcToSend = 1,
         mainSlider,
-        appStepsSlider;
+        appStepsSlider,
+        ethForBtc = 2000,
+        nextEthForBtc = 1980,
+        $purchaseForm = $("[name=purchase_form]");
 
     $downloadLink.click(function(e){
       e.preventDefault();
     });
 
-    $purchaseCancel.click(function(){
+    var reset = function(){
       purchaseInputs.$email.val("");
       purchaseInputs.$emailRepeat.val("");
       purchaseInputs.$password.val("");
       purchaseInputs.$passwordRepeat.val("");
-    });
+      appStepsSlider.setNextPanel(0);
+      mainSlider.setNextPanel(1);
+      $purchaseCancel.show();
+      $purchaseForm.find("input").each(function(){
+        $(this).attr("disabled", false);
+      });
+      $entropyProgress.show();
+      return false;
+    };
+
+    $purchaseCancel.click(reset);
+    $backToStart.click(reset);
 
     var resizeTerms = function(){
       $termsText.height($(window).height() - 185);
@@ -264,7 +280,7 @@ $(function() {
         delta.minutes = 60 - delta.minutes - 1;
         delta.seconds = 60 - delta.seconds;
 
-        $(".eth-to-btc").text(numeral(Math.round(2000 * (100-delta.days) / 100)).format("0,0"));
+        ethForBtc =  Math.round(2000 * (100-delta.days) / 100);
         $(".next-eth-to-btc").text(numeral(Math.round(2000 * (99-delta.days) / 100)).format("0,0"));
         delta.days = 0;
         updateTimerDials($rateCountdownDials, delta);
@@ -272,6 +288,26 @@ $(function() {
         $(".hide-after-end").hide();
       }
     };
+
+    _.extend(window, {
+      ethForBtc: function(btc){ 
+        return Math.round((typeof btc == "number" ? btc : 1) * ethForBtc * 10000) / 10000;
+      },
+      btcForEth: function(eth){
+        return Math.round((typeof eth == "number" ? eth : 1) / ethForBtc * 10000) / 10000;
+      }
+    });
+
+    var $step3 = $(".step3-content");
+
+    $("#print-purchase-page").click(function(e){
+      e.preventDefault();
+      $step3.css("width", "100%");
+      var $noPrint = $step3.find(".no-print").hide();
+      $step3.printArea();
+      $noPrint.show();
+      $step3.css("width", "20%");
+    });
 
     updateAllDials();
 
@@ -287,33 +323,6 @@ $(function() {
     });
 
 
-
-    var $confDial = $("#confirmations-dial"),
-        confDialInterval,
-        confDialVal = 0;
-
-    $confDial.knob({
-      readOnly: true,
-      thickness: 0.05,
-      width: 90,
-      fgColor: "#333",
-      bgColor: "#ddd",
-      font: "inherit",
-      displayInput: false
-    });
-
-
-
-    var spinConfDial = function(){
-      if(!confDialInterval) confDialInterval = window.setInterval(function(){
-        $confDial.val(confDialVal = (confDialVal + 2) % 102).change();
-      },50);
-    };
-
-    var stopConfDial = function(){
-      window.clearInterval(confDialInterval);
-      confDialInterval = 0;
-    };
 
 
     var $emailConfDial = $("#email-confirmations-dial");
@@ -338,13 +347,13 @@ $(function() {
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(1);
       $(".step-breadcrumbs").attr("data-step", "2");
-      spinConfDial();
     };
 
 
 
     // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address){
+      $qrDepAddr.empty();
       $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address});
     };
 
@@ -356,8 +365,6 @@ $(function() {
       $purchaseCancel.hide();
 
       $downloadLink.attr("href", downloadLinkHref);
-
-      stopConfDial();
     };
 
     //when nesting sliders, inner ones should be initialised first.
