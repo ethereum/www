@@ -71,7 +71,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   };
 
   $scope.$watch("[email,email_repeat,password,password_repeat]", function(){
-    if(authDetailsOK() && !$scope.btcAddress) $scope.collectingEntropy = true;
+    if(authDetailsOK() && !$scope.wallet) $scope.collectingEntropy = true;
   },true);
 
   window.onmousemove = function(e) {
@@ -82,7 +82,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     }
 
     // only work if a btcAddress doesn' t already exist
-    if (!$scope.btcAddress) {
+    if (!$scope.wallet) {
       $scope.collectingEntropy = true;
       
       var roundSeed = '' + e.x + e.y + new Date().getTime() + Math.random();
@@ -91,7 +91,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         asBytes: true
       }).slice(0, 3).map(function(c) {
         $scope.entropy += 'abcdefghijklmnopqrstuvwxyz234567' [c % 32];
-        console.log($scope.entropy);
+        
         if (!$scope.$$phase) $scope.$apply();
       });
 
@@ -139,11 +139,12 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.password = "";
     $scope.password_repeat =  "";
     $scope.collectingEntropy = false;
-    $scope.btcAddress = false;
     $scope.entropy = "";
     $scope.passwordOK = false;
     $scope.wallet = null;
     timerUnspent = startUnspentInterval();
+    $scope.btcToSend = 1.5;
+    $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
   };
 
   var timerUnspent = startUnspentInterval();
