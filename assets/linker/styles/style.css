@@ -181,27 +181,32 @@ footer {
   text-decoration: none;
 }
 
-.contact-card {
-  text-align: center;
-  width: 150px;
-  height: 7em;
-  margin: 1em;
-  float:left;
-  overflow: hidden;
-  padding: 5px;
-}
-
-.contact-card img {
+.person-photo {
   width: 50%;
   height: auto;
   max-width: 50%;
   border-radius: 50%;
   border: 3px solid #ccc;
-  margin: 5px;
+  margin: auto;
+  overflow: hidden;
 }
 
+.person-photo img {
+  -ms-transform: scale(1.10,1.10); /* IE 9 */
+  -webkit-transform: scale(1.10,1.10); /* Chrome, Safari, Opera */
+  transform: scale(1.10,1.10);
+}
+.contact-cord {
+  overflow: auto;
+}
+.contact-card dl{
+  margin-bottom: 5px
+}
 .contact-card.active img {
   border-color: #fff;
+}
+.panel-wrapper .list-inline > li{
+  margin-bottom: 10px
 }
 
 .alert-info {
