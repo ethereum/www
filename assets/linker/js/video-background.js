@@ -45,7 +45,11 @@ $(function() {
 			(adjSize = function() { // Create function called adjSize
 
 				$width = $(window).width(); // Width of the screen
+<<<<<<< HEAD
+				$height = Math.max(390, $(window).height() - 200); // Height of the screen
+=======
 				$height = $(window).height() - 200; // Height of the screen
+>>>>>>> presale
 
 				$boxRatio = $width / $height; // The ratio the screen is in
 
@@ -61,7 +65,10 @@ $(function() {
 					// Else just set the video to the width of the screen/container
 					$vid = $('#feature video').css({'width' : $width+'px'});
 				}
+<<<<<<< HEAD
+=======
 
+>>>>>>> presale
 			})(); // Run function immediately
 
 			// Run function also on window resize.
@@ -70,6 +77,8 @@ $(function() {
 		});
 	}
 
+<<<<<<< HEAD
+=======
 	$('#feature').on('click', function(){
 		if($(this).find('video').get(0).paused)
 	        $(this).find('video').get(0).play();
@@ -78,4 +87,5 @@ $(function() {
 	});
 
 
+>>>>>>> presale
 });
