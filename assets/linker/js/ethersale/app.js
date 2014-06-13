@@ -28,11 +28,6 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   $scope.entropy = '';
   $scope.didPushTx = false;
   $scope.debug = '(Debug output)';
-  // $scope.email = 'asdf@ asdf.asdf'; // TODO remove debug
-  // $scope.email_repeat = 'asdf@ asdf.asdf'; // TODO remove debug
-  // $scope.password = 'asd'; // TODO remove debug
-  // $scope.password_repeat = 'asd'; // TODO remove debug
-  // $scope.passwordOK = true; // TODO remove debug
 
   $scope.btcToSend = 1.5;
   $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
@@ -50,19 +45,8 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     return $scope.emailValid = re.test(val);
   });
 
-  $scope.mkQRCode = function(address) {
-    // $scope.qrcode = new QRCode("qr_deposit_address", { // reaching back into the DOM is bad
-    //   text: 'bitcoin:' + address,
-    //   width: 250,
-    //   height: 250,
-    //   colorDark: "#000000",
-    //   colorLight: "#ffffff",
-    //   correctLevel: QRCode.CorrectLevel.H
-    // });
-
-    //unfortunately had to reserve to this hack, as the damn qrcode refuses to render otherwise
-    //not sure why, but I'd blame liquid-slider for this
-    (window.showQrCode || function(){})(address);
+  $scope.mkQRCode = function(address, amount) {
+    (window.showQrCode || function(){})(address, amount);
   };
 
   $scope.$watch("entropy", function(val){
@@ -71,7 +55,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   });
 
   var authDetailsOK = function(){
-    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && 
+    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK &&
       ($scope.password === $scope.password_repeat);
   };
 
@@ -86,24 +70,24 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       return;
     }
 
-    // only work if a btcAddress doesn' t already exist
+    // only work if a btcAddress doesn't already exist
     if (!$scope.wallet) {
       $scope.collectingEntropy = true;
-      
+
       var roundSeed = '' + e.x + e.y + new Date().getTime() + Math.random();
 
       Bitcoin.Crypto.SHA256(roundSeed, {
         asBytes: true
       }).slice(0, 3).map(function(c) {
         $scope.entropy += 'abcdefghijklmnopqrstuvwxyz234567' [c % 32];
-        
+
         if (!$scope.$$phase) $scope.$apply();
       });
 
       if ($scope.entropy.length > $scope.requiredEntropyLength && !$scope.wallet) {
         $scope.collectingEntropy = false;
         $scope.wallet = 1;
-        //$scope.entropy = 'qwe'; // TODO remove debug;
+        $scope.entropy = 'qwe'; // TODO remove debug;
         console.log('generating wallet'); // Add loading thingy
         $scope.pwkey = pbkdf2($scope.password);
         console.log(1);
@@ -111,7 +95,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         console.log(2);
         $scope.backup = mkbackup($scope.wallet, $scope.pwkey);
         console.log(3);
-        $scope.mkQRCode($scope.wallet.btcaddr);
+        $scope.mkQRCode($scope.wallet.btcaddr, $scope.btcToSend);
 
         $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcaddr: " + $scope.wallet.btcaddr;
         if (!$scope.$$phase) $scope.$apply();
@@ -129,12 +113,11 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         longStr: newV.length > 7,
         bothCase: /[a-z]+/.test(newV) && /[A-Z]+/.test(newV),
         numbers: /[0-9]+/.test(newV),
-        symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV),
+        symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV), //"
         unique: !isPassInDictionary(newV)
       };
 
       $scope.passwordOK = _.all($scope.passChecks, _.identity);
-      
     }
   });
 
@@ -158,10 +141,10 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     return setInterval(function() {
 
       if (!$scope.wallet || !$scope.wallet.btcaddr) return;
-      //$scope.status = 'Connecting...' //need to force drawing of this first time only
+      $scope.status = 'Connecting...' //need to force drawing of this first time only
       Purchase.getUnspent($scope.wallet.btcaddr, function(e, unspent) {
         if (!$scope.wallet || !$scope.wallet.btcaddr) return;
-        
+
         if (e || (!e && !unspent)) {
           return $scope.status = e || 'Error connecting, please try later.';
         }
@@ -190,7 +173,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
             $scope.status = 'Transaction complete!\n\nDownload your wallet now then check your email for a backup.';
 
             (window.onTransactionComplete || function(){})(
-              'data:application/octet-stream;base64,' + Base64.encode(doc)
+              'data:application/octet-stream;base64,' + Base64.encode(doc), Bitcoin.convert.bytesToHex(tx.getHash())
             );
             var downloadLinkEle = angular.element('#downloadLink');
             downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
@@ -338,7 +321,7 @@ ethereum.directive('numeric', function() {
       }
       ngModelCtrl.$parsers.push(fromUser);
     }
-  }; 
+  };
 });
 
 ethereum.factory('DownloadDataURI', ['$http', function($http) {

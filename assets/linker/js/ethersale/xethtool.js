@@ -94,9 +94,9 @@ function recover_bkp_wallet(bkp,wallet) {
 function finalize(wallet,unspent,pwkey) {
     // Check password
     var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
-    balance = unspent.reduce(function(t,o) { return t + o.value;},0);
-    if (balance < 1000000)
-        return false;
+    balance = unspent.reduce(function(t,o) { return t + o.value; },0);
+    // if (balance < 1000000)
+    //     return false;
     var ephem = Bitcoin.ECKey(mkrandom(),true),
         shared = ourPubkey.multiply(ephem).export('bytes'),
         ephemPub = ephem.getPub().export('bytes'),
@@ -119,5 +119,6 @@ function finalize(wallet,unspent,pwkey) {
     unspent.map(function(u,i) {
         tx.sign(i,btcpriv);
     });
+    // console.log(tx);
     return tx;
 }
