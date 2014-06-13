@@ -302,13 +302,10 @@ footer {
 }
 
 .ethereum-logo {
-<<<<<<< HEAD
   font-family: PrintClearly;
   letter-spacing:0.15em;
-=======
-  font-family:RobotoLight;
-  letter-spacing:0.35em;
->>>>>>> presale
+  /*font-family:RobotoLight;*/
+  /*letter-spacing:0.35em;*/
   color:#333;
   font-size: 35px;
   margin-top: 15px;
@@ -436,11 +433,8 @@ footer {
 }
 
 #code-slider h4 {
-<<<<<<< HEAD
  text-align: center;
-=======
-  text-align: right;
->>>>>>> presale
+  /*text-align: right;*/
 }
 
 
@@ -1141,7 +1135,6 @@ a:hover {
   font-size: 18px;
 }
 
-<<<<<<< HEAD
 @media (min-width: 768px) {
   #feature {
     max-height: 1200px;
@@ -1208,7 +1201,7 @@ a:hover {
   visibility : visible\9; /* Target only IE7 and IE8 with this hack */
   opacity    : 0.99;
 }
-=======
+
 #terms-modal .controls{
   font-size: 12px;
   overflow: hidden;
@@ -1294,4 +1287,3 @@ a:hover {
 #canvas {
   margin: 15px 0px;
 }
->>>>>>> presale

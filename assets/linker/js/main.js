@@ -137,11 +137,8 @@ $(function() {
     slideEaseDuration: 600,
     crossLinks: true
   });
-<<<<<<< HEAD
-  $(".nano").nanoScroller();
-});
-=======
 
+  $(".nano").nanoScroller();
 
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
@@ -478,4 +475,3 @@ $(function() {
     var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData);
   });
 });
->>>>>>> presale
