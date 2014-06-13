@@ -28,26 +28,34 @@ footer {
   padding-top: 1em;
 }
 
+
+/*
+  #maincontent > div {
+  max-width:900px;
+  margin:0 auto;
+  padding-top:30px;
+  }
+  */
+
 .maincontent {
-  background-image:url('/images/bg-img.jpg?20140310130500');
+  position: relative;
+  background-image:url('/images/bg-img.jpg');
   background-color: #f5f5f5;
   background-size:100%;
   background-repeat: no-repeat;
+  z-index: 101;
 }
 
-#interactive {
-  padding-top:10px;
+#interactive, #presale-counters {
+  padding-top:5px;
   padding-bottom:20px;
-  margin-top:-60px;
+  margin-top:-87px;
 }
 
 #tagline {
   margin-top: 0px;
 }
 
-.dropdown-menu {
-  min-width:111px;
-}
 
 #news-slider-nav-ul > li > a {
   text-transform: lowercase;
@@ -96,7 +104,7 @@ footer {
 }
 
 .jumbotron {
-  background: #f5f5f5 url('/images/poster.jpg?20140310130500') no-repeat center center fixed;
+  background: #f5f5f5 url('/images/poster.jpg') no-repeat center center fixed;
   margin:0;
   padding-bottom:45px;
   padding-top:15px;
@@ -133,13 +141,12 @@ footer {
   color: #333;
   text-transform: lowercase;
   clear:left;
-  display: table;
-  table-layout: fixed;
-  float:none;
+  float:left;
   list-style:none;
-  margin:0 auto;
+  margin:0;
   padding:0;
   position:relative;
+  left:50%;
   text-align:center;
 }
 
@@ -165,6 +172,7 @@ footer {
   margin:0;
   padding:0;
   position:relative;
+  right:50%;
 }
 
 .navbar-nav > li > a {
@@ -173,32 +181,27 @@ footer {
   text-decoration: none;
 }
 
-.person-photo {
+.contact-card {
+  text-align: center;
+  width: 150px;
+  height: 7em;
+  margin: 1em;
+  float:left;
+  overflow: hidden;
+  padding: 5px;
+}
+
+.contact-card img {
   width: 50%;
   height: auto;
   max-width: 50%;
   border-radius: 50%;
   border: 3px solid #ccc;
-  margin: auto;
-  overflow: hidden;
+  margin: 5px;
 }
 
-.person-photo img {
-  -ms-transform: scale(1.10,1.10); /* IE 9 */
-  -webkit-transform: scale(1.10,1.10); /* Chrome, Safari, Opera */
-  transform: scale(1.10,1.10);
-}
-.contact-cord {
-  overflow: auto;
-}
-.contact-card dl{
-  margin-bottom: 5px
-}
 .contact-card.active img {
   border-color: #fff;
-}
-.panel-wrapper .list-inline > li{
-  margin-bottom: 10px
 }
 
 .alert-info {
@@ -208,6 +211,7 @@ footer {
   border-radius: 0;
 }
 
+
 .hr {
   border-bottom: 1px solid #494949;
 }
@@ -216,7 +220,6 @@ footer {
   padding-left:1px;
   display: inline-block !important;
   vertical-align: top !important;
-  margin-bottom: 20px;
 }
 
 #profile .person-description {
@@ -226,11 +229,10 @@ footer {
 #feature {
   position: relative;
   overflow: hidden;
-  height:450px;
+  height:375px;
   padding:0;
   top:-60px;
   margin-top:-60px;
-  z-index:-100;
 }
 
 #feature .video-content {
@@ -243,9 +245,10 @@ footer {
   margin-right:auto;
 }
 
-#interactive-content {
+#interactive-content, #presale-counters-content {
   background-color:#fff;
 }
+
 
 .interactive-middle {
   padding:30px 0 !important;
@@ -266,13 +269,6 @@ footer {
 
 #philosophy-content {
   background-color:#fff;
-}
-
-#philosophy-right{
-  text-align: center;
-  padding-right: 0;
-  padding-top: 35px;
-  padding-left: 75px;
 }
 
 #how-content {
@@ -306,8 +302,13 @@ footer {
 }
 
 .ethereum-logo {
+<<<<<<< HEAD
   font-family: PrintClearly;
   letter-spacing:0.15em;
+=======
+  font-family:RobotoLight;
+  letter-spacing:0.35em;
+>>>>>>> presale
   color:#333;
   font-size: 35px;
   margin-top: 15px;
@@ -404,6 +405,7 @@ footer {
 }
 
 .squr {
+  position: relative;
   width: 0;
   height: 0;
   border-left: 45px solid transparent;
@@ -434,7 +436,11 @@ footer {
 }
 
 #code-slider h4 {
+<<<<<<< HEAD
  text-align: center;
+=======
+  text-align: right;
+>>>>>>> presale
 }
 
 
@@ -510,30 +516,6 @@ footer {
   color: gray;
 }
 
-.how-icons{
-  text-align: center;
-  vertical-align: middle;
-}
-
-#how-circle{
-  text-align: center;
-  vertical-align: middle;
-}
-
-#what-make{
-  text-align: center;
-  margin-top: 60px;
-}
-
-.fa-pencil-square-o{
-  padding-left: 10px;
-  padding-top: 5px;
-}
-
-.fa-briefcase{
-  padding-top: 10px;
-}
-
 #content-circle > span {
   display:none;
 }
@@ -560,10 +542,6 @@ img[usemap] {
 }
 
 .philosophy-icons:focus {
-  color:#fff;
-}
-
-.philosophy-icons:active{
   color:#fff;
 }
 
@@ -668,7 +646,7 @@ a:hover {
   height: 20px;
   max-height: 20px;
   min-height: 20px;
-  /*border: 1px solid blue;*/
+/*border: 1px solid blue;*/
 }
 #apps-examples .apps {
   margin-top: -1em;
@@ -697,13 +675,6 @@ a:hover {
 
 .inline-block {
   display: inline-block
-}
-
-.I {
-  font-family: serif;
-  font-weight: 400;
-  font-size: 118%;
-  padding-left: 3px;
 }
 
 /* Pill style */
@@ -761,48 +732,416 @@ a:hover {
 
   .fa-8x {
     font-size:500%;
-   }
+  }
 
-   #content-circle {
-     width:150px;
-     height:150px;
-     padding:1.2em;
-     margin:0;
-     margin-bottom:1em;
-   }
+  #content-circle {
+    width:150px;
+    height:150px;
+    padding:1.2em;
+    margin:0;
+    margin-bottom:1em;
+  }
 
-   #how button.paging {
-     top:55px;
-   }
+  #how button.paging {
+    top:55px;
+  }
 
-   button.paging prev {
-     margin-left:-65px;
-   }
-   .button-previous {
-     margin-left:-20em;
-   }
-   .navbar-nav > li {
-     display:block;
-     float:left;
-     list-style:none;
-     margin:0;
-     padding:0;
-     position:relative;
-     right:50%;
-     clear:both;
-   }
-   .navbar-default .navbar-collapse, .navbar-default .navbar-form {
+  button.paging prev {
+    margin-left:-65px;
+  }
+  .button-previous {
+    margin-left:-20em;
+  }
+  .navbar-nav > li {
+    display:block;
+    float:left;
+    list-style:none;
+    margin:0;
+    padding:0;
+    position:relative;
+    right:50%;
+    clear:both;
+  }
+  .navbar-default .navbar-collapse, .navbar-default .navbar-form {
     padding-bottom:150px;
     max-height: none;
     overflow-x: hidden;
   }
-
-  #philosophy-right{
-    padding-left: 15px
-  }
-
 }
 
+#sale-counters-container{
+  padding-top: 50px;
+}
+
+#presale-counters a{
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#presale-counters h4{
+  margin:0;
+}
+
+#presale-counters p.subheader{
+  font-weight: bold;
+  margin: 5px 0 10px;
+}
+
+.countdown-dials .dial-container{
+  display: inline-block;
+  width: 60px;
+  height: 65px;
+  overflow: hidden;
+  font-size: 22px;
+  position: relative;
+}
+.countdown-dials .dial-label{
+  position: absolute;
+  left:0;
+  top: 45px;
+  width: 60px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: bold;
+  color: #777;
+}
+
+#counters-primary .counter-header, #counters-primary .counter-subheader,
+#counters-secondary .counter-header, #counters-secondary .counter-subheader{
+  display: block;
+}
+#counters-primary .headers{
+  padding: 13px;
+}
+
+#counters-primary h4 {
+  text-transform:none;
+  font-weight:bold;
+  font-size: 16px;
+  margin-bottom: 25px;
+}
+
+
+.countdown-dials .dial-shim {
+  position:absolute;
+  top:23px;
+  left: -50%;
+  margin-left: 44px;
+}
+.countdown-dials .delimiter{
+  font-size: 20px;
+  line-height: 40px;
+  vertical-align: top;
+}
+
+#total-sold-container .total{
+  font-size: 45px;
+}
+
+#total-sold-container .total-currency-label{
+  font-size: 22px;
+}
+
+#total-sold-container .amount{
+  font-size: 22px;
+}
+
+#total-sold-container .amount-currency-label{
+  font-size: 16px;
+}
+#total-sold-container a{
+  font-size: 12px;
+  display: block;
+}
+#total-sold-container h4.subheadline, #ethersale-charts h4{
+  margin-bottom: 0;
+  line-height: 30px;
+}
+
+.infoText {
+  font-size: 10px;
+  letter-spacing: 0;
+}
+
+#ethersale-charts {
+  padding-top: 50px;
+  min-height: 397px;
+}
+#ethersale-charts h4 {
+  text-transform: none;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+#counters-secondary .btn-buy-ether, #presale-counters .fancy-black-btn{
+  background-color: #333;
+  padding: 5px;
+  width: 150px;
+  display: block;
+  margin: 0 auto;
+  color: #fff;
+}
+#ethersale-app{
+  position: relative;
+  border: 0;
+}
+#ethersale-app h3{
+  font-size: 20px;
+  margin-top: 15px;
+  margin-bottom: 7px;
+}
+
+#ethersale-app .step-breadcrumbs{
+  margin-bottom: 10px;
+}
+
+#ethersale-app .step-breadcrumbs span{
+  padding: 0 3px;
+  color: #aaa;
+}
+
+#ethersale-app .step-breadcrumbs[data-step="1"] .step1, #ethersale-app .step-breadcrumbs[data-step="2"] .step2, #ethersale-app .step-breadcrumbs[data-step="3"] .step3{
+  color: #000;
+}
+
+#entropy-progress{
+  position: absolute;
+  width: 100%;
+}
+
+#entropy-progress .bar{
+  background-color: #777;
+  height: 3px;
+}
+
+#purchase-cancel{
+  margin-top: 25px;
+  text-align: right;
+  display: block;
+}
+
+.step1-content p {
+  margin-bottom: 5px;
+}
+
+#app-steps-content .currency-code{
+  font-size: 0.8em;
+}
+
+#app-steps-content section{
+  margin-bottom: 20px;
+}
+#app-steps-content .amount-box{
+  padding: 3px;
+  background-color: #ccc;
+  border: 1px solid #aaa;
+  font-size: 22px;
+  width: 125px;
+  text-align: center;
+}
+#app-steps-content .exchange-delimiter{
+  margin-top: 30px;
+  display: block;
+  font-size: 20px;
+}
+
+#app-steps-content .copy{
+  text-align: justify;
+}
+
+#app-steps-content h4{
+  text-transform: none;
+  margin-bottom: 30px;
+}
+
+#app-steps-content p.important{
+  font-size: 20px;
+}
+
+#app-steps-content label{
+  text-align: left;
+  display: block;
+}
+
+#app-steps-content .label-container{
+  height: 25px;
+}
+
+#app-steps-content label.error{
+  font-size: 12px;
+  line-height: 20px;
+  color: #f00;
+}
+
+#app-steps-content label.mini{
+  font-size: 12px;
+}
+
+#app-steps-content input{
+  background-color: #ccc;
+  border: 1px solid #aaa;
+  border-radius: 0;
+}
+
+#app-steps-content i.fa{
+  vertical-align: middle;
+}
+
+#strength{
+  padding-left: 15px;
+}
+#strength li{
+  display: inline-block;
+  width: 20px;
+  height: 5px;
+  margin-right: 3px;
+}
+
+.step1-content .fix-height{
+  height: 340px;
+}
+
+#qr-deposit-address{
+  height: 175px;
+  margin: auto 15px;
+}
+
+.step2-content .payment-address{
+  font-size: 16px;
+  text-align: left;
+  display: block;
+}
+
+#app-steps-content #confirmations-container, #app-steps-content #email-confirmations-container{
+  height: 115px;
+  width: 90px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.confirmations-dial-shim{
+  position: absolute;
+  left: 21px;
+  top: 3px;
+  background-color: #fff;
+  font-size: 30px;
+  height: 45px;
+  margin-top: 20px;
+}
+
+#print-purchase-page{
+  position: absolute;
+  font-weight: bold;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+}
+
+#downloadLink, #back-to-start{
+  display: block;
+  background-color: #555;
+  color: #fff;
+  padding: 10px 30px;
+  margin: auto 40px;
+}
+
+#recommendations{
+  text-align: left;
+}
+
+#password-checks{
+  margin: 0;
+  text-align:left;
+  padding: 0;
+}
+
+#password-checks li{
+  list-style-type:none;
+  display:inline-block;
+  margin-right: 3px;
+  color: #888;
+  font-size: 10px;
+}
+
+#password-checks li.active{
+  color: #000;
+}
+
+.btc-transaction-id{
+  font-size: 12px;
+}
+
+@media (min-width: 1200px){
+  #ethersale-app .container{
+    width: 970px;
+  }
+}
+
+#terms-text-container{
+  background-color: #eee;
+  margin: 20px 30px 0 0;
+  border-radius: 5px;
+  padding: 15px;
+  box-shadow: inset 0 0 10px #999;
+  overflow: auto;
+}
+#terms-modal .got-it{
+  padding: 10px;
+  text-align: center;
+}
+#terms-modal .got-it p{
+  margin: 5px;
+}
+#terms-modal .got-it label{
+  padding-left: 5px;
+}
+
+#terms-modal .close-modal{
+  position: absolute;
+  right: 12px;
+  top: 20px;
+  font-size: 20px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  display: block;
+  height: 20px;
+  line-height: 18px;
+  width: 20px;
+  text-align: center;
+  transition: border-color ease-in-out 0.3s;
+}
+
+#terms-modal a{
+  cursor: pointer;
+  text-decoration: none;
+}
+#terms-modal h1, #terms-modal h2, #terms-modal h3{
+  text-transform: none;
+}
+
+#terms-modal h1{
+  font-size: 26px;
+}
+
+#terms-modal h2{
+  font-size: 18px;
+  font-weight: bold;
+}
+
+#terms-modal .close-modal:hover{
+  border-color: #333;
+}
+
+#terms-modal .logo{
+  text-align: center;
+  margin: 20px 0 0 17px;
+}
+
+#terms-modal .logo h3{
+  font-size: 18px;
+}
+
+<<<<<<< HEAD
 @media (min-width: 768px) {
   #feature {
     max-height: 1200px;
@@ -869,3 +1208,90 @@ a:hover {
   visibility : visible\9; /* Target only IE7 and IE8 with this hack */
   opacity    : 0.99;
 }
+=======
+#terms-modal .controls{
+  font-size: 12px;
+  overflow: hidden;
+  color: #777;
+  position: absolute;
+  left: 25px;
+  bottom: 20px;
+  width: 120px;
+}
+
+#terms-modal .controls i{
+  margin-right: 2px;
+}
+
+#terms-modal .disabled{
+  color: #aaa;
+}
+
+.label-container.email{
+  text-align: left;
+}
+
+#app-steps-content .label-container.email label{
+  display: inline;
+}
+
+.label-container.email span{
+  color: #888;
+  padding-right: 10px;
+  font-size: 10px;
+}
+
+.label-container.email span.active{
+  color: #000;
+}
+
+
+/* animated CSS loader */
+
+.loaderHolder {
+  margin-bottom: 50px !important;
+}
+
+.loader {
+  margin: 5em auto;
+  font-size: 10px;
+  position: relative;
+  text-indent: -9999em;
+  border-top: 1.1em solid rgba(0, 0, 0, 0.2);
+  border-right: 1.1em solid rgba(0, 0, 0, 0.2);
+  border-bottom: 1.1em solid rgba(0, 0, 0, 0.2);
+  border-left: 1.1em solid #333333;
+  -webkit-animation: load8 1.1s infinite linear;
+  animation: load8 1.1s infinite linear;
+}
+.loader,
+.loader:after {
+  border-radius: 50%;
+  width: 12em;
+  height: 12em;
+}
+@-webkit-keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+@keyframes load8 {
+  0% {
+    -webkit-transform: rotate(0deg);
+    transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+    transform: rotate(360deg);
+  }
+}
+
+#canvas {
+  margin: 15px 0px;
+}
+>>>>>>> presale

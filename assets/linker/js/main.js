@@ -1,3 +1,4 @@
+
 $(function() {
 
   $(".scroll").click(function(event) {
@@ -134,7 +135,347 @@ $(function() {
     dynamicTabs: false,
     dynamicArrows: false,
     slideEaseDuration: 600,
-    crossLinks: true,
+    crossLinks: true
   });
+<<<<<<< HEAD
   $(".nano").nanoScroller();
 });
+=======
+
+
+  var initPresaleCounters = function(){
+    /* UPDATE these constants with real values */
+    var ETHER_FOR_BTC=2000,
+        FUNDRAISING_ADDRESS="1FfmbHfnpaZjKFvyi1okTjJJusN455paPH",
+        SATOSHIS_IN_BTC=100000000,
+        START_DATETIME= "2014-05-2 00:00:00",
+        DECREASE_DATETIME= "2014-05-17 00:00:00",
+        END_DATETIME= "2014-07-01 23:59:59",
+        $qrDepAddr = $("#qr-deposit-address"),
+        $purchaseCancel = $("#purchase-cancel"),
+        $backToStart = $("#back-to-start"),
+        $entropyProgress = $("#entropy-progress"),
+        $downloadLink = $("#downloadLink"),
+        purchaseInputs = {
+          $email: $("#purchase-email"),
+          $emailRepeat: $("#purchase-email-repeat"),
+          $password: $("#password"),
+          $passwordRepeat: $("#password-checks")
+        },
+        $startBtn = $("#start-ether-purchase"),
+        $terms = $("#terms-modal"),
+        $termsText = $("#terms-text-container"),
+        btcToSend = 1,
+        mainSlider,
+        appStepsSlider,
+        ethForBtc = 2000,
+        nextEthForBtc = ethForBtc - 15,
+        timerConfirmations,
+        $purchaseForm = $("[name=purchase_form]");
+
+    $downloadLink.click(function(e){
+      e.preventDefault();
+    });
+
+    var dhms = function(t){
+      var cd = 24 * 60 * 60 * 1000,
+          ch = 60 * 60 * 1000,
+          cm = 60 * 1000,
+
+          d = Math.floor(t / cd),
+          h = Math.floor( (t - d * cd) / ch),
+          m = Math.floor( (t - d * cd - h * ch) / cm),
+          s = Math.round( (t - d * cd - h * ch - m * cm) / 1000);
+
+      return {
+        days: d,
+        hours: h,
+        minutes: m,
+        seconds: s
+      };
+    };
+
+    var reset = function(){
+      purchaseInputs.$email.val("");
+      purchaseInputs.$emailRepeat.val("");
+      purchaseInputs.$password.val("");
+      purchaseInputs.$passwordRepeat.val("");
+      appStepsSlider.setNextPanel(0);
+      mainSlider.setNextPanel(1);
+      $purchaseCancel.show();
+      $purchaseForm.find("input").each(function(){
+        $(this).attr("disabled", false);
+      });
+      $entropyProgress.show();
+      $(".step-breadcrumbs").attr("data-step", "1");
+      return false;
+    };
+
+    $purchaseCancel.click(reset);
+    $backToStart.click(reset);
+
+    var resizeTerms = function(){
+      $termsText.height($(window).height() - 185);
+    };
+
+    var closeTerms = function(){
+      $terms.modal("hide");
+      $(window).off("resize", resizeTerms);
+      $terms.find("[name=confirm-terms]").prop("checked", false);
+    };
+
+    $startBtn.click(function(e){
+      $terms.modal();
+      resizeTerms();
+      $(window).on("resize", resizeTerms);
+      $termsText.animate({scrollTop: 0}, 1000);
+      $terms.find("[name=confirm-terms]").attr("disabled", '');
+      $terms.find("[for=confirm-terms]").removeClass("disabled").addClass("disabled");
+      return false;
+    });
+
+    $terms.find(".close-modal").click(function(e){
+      closeTerms();
+      return false;
+    });
+
+    $terms.find(".print").click(function(){
+      $termsText.css("overflow", "visible").printArea();
+      $termsText.css("overflow", "auto");
+      return false;
+    });
+
+    $termsText.scroll(function(){
+      if($termsText.scrollTop() + $termsText.innerHeight() + 30 > $termsText.prop("scrollHeight")){
+        $terms.find("[name=confirm-terms]").attr("disabled", false);
+        $terms.find("[for=confirm-terms]").removeClass("disabled");
+      }
+    });
+
+    $terms.find("[name=confirm-terms]").change(function(){
+      if($(this).is(":checked")){
+        mainSlider.setNextPanel(2);
+        closeTerms();
+      }
+    });
+
+    var knobDefaults = {
+      readOnly: true,
+      thickness: 0.05,
+      width: 40,
+      fgColor: "#333",
+      bgColor: "#ddd",
+      font: "inherit"
+    };
+    var startsAt = moment(START_DATETIME).zone(0),
+        decreasesAt = moment(DECREASE_DATETIME).zone(0),
+        endsAt = moment(END_DATETIME).zone(0),
+        $saleDurationDials = $(".sale-duration-container"),
+        $rateCountdownDials = $(".rate-countdown-container");
+
+    var createKnob = function($el, settings){
+      $el.knob(_.extend({}, knobDefaults, settings));
+    };
+
+
+    var setupTimerDials = function($container,maxdays){
+      createKnob($container.find(".dial.days"), {max: maxdays });
+      createKnob($container.find(".dial.hours"), {max: 24});
+      createKnob($container.find(".dial.minutes"), {max: 60});
+      createKnob($container.find(".dial.seconds"), {max: 60});
+    };
+
+    setupTimerDials($saleDurationDials, dhms(endsAt.diff(startsAt)).days);
+
+    var deltaForTimeTillNextRate = dhms(1000*(decreasesAt.unix() - moment().zone(0).unix())).days;
+
+    setupTimerDials($rateCountdownDials, deltaForTimeTillNextRate);
+
+
+    $(".countdown-dials input").css({
+      height: "26px",
+      "margin-top": "7px",
+      "font-size": "18px"
+    });
+
+    var updateTimerDial = function($container, type, delta){
+      $container.find(".dial." + type).val(delta[type]).change();
+    };
+
+    var updateTimerDials = function($container, delta){
+      // console.log(delta);
+      updateTimerDial($container, "days", delta);
+      updateTimerDial($container, "hours", delta);
+      updateTimerDial($container, "minutes", delta);
+      updateTimerDial($container, "seconds", delta);
+    };
+    var updateAllDials = function(){
+      if(endsAt.isAfter(moment().zone(0)))
+      {
+        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.unix() - moment().zone(0).unix())));
+
+        var delta = dhms(moment().zone(0).diff(decreasesAt));
+        delta.hours = 24 - delta.hours - 1;
+        delta.minutes = 60 - delta.minutes - 1;
+        delta.seconds = 60 - delta.seconds;
+
+        // console.log(delta);
+
+        if(delta.days > -15)
+        {
+          ethForBtc = ETHER_FOR_BTC - 15 * Math.max(delta.days - 15, 0);
+        }
+        else
+        {
+          ethForBtc = ETHER_FOR_BTC;
+        }
+
+        nextEthForBtc = ethForBtc - 15;
+
+        $(".eth-to-btc").text( numeral(ethForBtc).format("0,0") );
+        $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
+
+        updateTimerDials($rateCountdownDials, delta.days <= 15 ? dhms(1000*(decreasesAt.unix() - moment().zone(0).unix())) : delta);
+      }
+      else
+      {
+        $(".hide-after-end").hide();
+      }
+    };
+
+    _.extend(window, {
+      ethForBtc: function(btc){
+        return Math.round((typeof btc == "number" ? btc : 1) * ethForBtc * 10000) / 10000;
+      },
+      btcForEth: function(eth){
+        return Math.round((typeof eth == "number" ? eth : 1) / ethForBtc * 10000) / 10000;
+      }
+    });
+
+    var $step3 = $(".step3-content");
+
+    $("#print-purchase-page").click(function(e){
+      e.preventDefault();
+      $step3.css("width", "100%");
+      var $noPrint = $step3.find(".no-print").hide();
+      $step3.printArea();
+      $noPrint.show();
+      $step3.css("width", "20%");
+    });
+
+    updateAllDials();
+
+    window.setInterval(function(){
+      updateAllDials();
+    },1000);
+
+
+    $.get("https://blockchain.info/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS ,function(received){
+      var btc = Math.round(parseInt(received,10)/SATOSHIS_IN_BTC);
+      $("#total-sold-container .total").text(numeral(btc).format("0,0"));
+    });
+
+
+
+
+    var $emailConfDial = $("#email-confirmations-dial");
+
+    $emailConfDial.knob({
+      readOnly: true,
+      thickness: 0.05,
+      width: 90,
+      fgColor: "#333",
+      bgColor: "#ddd",
+      font: "inherit",
+      max: 3,
+      displayInput: false
+    });
+
+    $emailConfDial.val("0").change();
+    $("#email-dial-shim").text("0/6");
+
+
+
+    window.onWalletReady = function(){
+      $entropyProgress.hide();
+      appStepsSlider.setNextPanel(1);
+      $(".step-breadcrumbs").attr("data-step", "2");
+    };
+
+
+
+    // hack to make qr code render (not sure why the original code doesn't work)
+    window.showQrCode = function(address, amount){
+      $qrDepAddr.empty();
+      $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address + '?amount=' + amount + '&label=Ether%20presale ' + amount + ' BTC'});
+    };
+
+    window.onTransactionComplete = function(downloadLinkHref, transactionHash){
+      $entropyProgress.hide();
+      appStepsSlider.setNextPanel(2);
+      $(".step-breadcrumbs").attr("data-step", "3");
+
+      $purchaseCancel.hide();
+
+      console.log(ETHERSALE_URL);
+
+      timerConfirmations = startConfirmationsInterval(transactionHash);
+
+      $downloadLink.attr("href", downloadLinkHref);
+    };
+
+
+
+    function startConfirmationsInterval(transactionHash){
+      return setInterval(function() {
+        $.getJSON(ETHERSALE_URL + "/confirmations/" + transactionHash ,function(data){
+          if(data == 6)
+          {
+            clearInterval(timerConfirmations);
+          }
+          $('.confirmations-dial-shim').text(data + "/6");
+        }, 10000);
+      });
+    }
+
+    appStepsSlider = $("#app-steps-content").liquidSlider({
+      autoSlide: false,
+      dynamicTabs: false,
+      dynamicArrows: false,
+      hideSideArrows: false,
+      slideEaseDuration: 600
+    }).data("liquidSlider");
+
+    mainSlider = $('#presale-counters-slider').liquidSlider({
+      autoSlide: false,
+      dynamicTabs: false,
+      dynamicArrows: false,
+      hideSideArrows: true,
+      slideEaseDuration: 600,
+      firstPanelToLoad: 2
+    }).data("liquidSlider");
+  };
+
+  initPresaleCounters();
+
+  $('.btn-show-charts').on('click', function(){
+    $('#canvas').attr('width', '968').attr('height', '250');
+
+    var lineChartData = {
+      labels : ["01 Jun 2014","02 Jun 2014","03 Jun 2014","05 Jun 2014","06 Jun 2014","07 Jun 2014","08 Jun 2014"],
+      datasets : [
+        {
+          fillColor : "rgba(151,187,205,0.5)",
+          strokeColor : "rgba(151,187,205,1)",
+          pointColor : "rgba(151,187,205,1)",
+          pointStrokeColor : "#fff",
+          data : [1791,4890,10298,15902,23187,33981,41097]
+        }
+      ]
+
+    }
+
+    var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData);
+  });
+});
+>>>>>>> presale

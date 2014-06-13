@@ -36,7 +36,6 @@ module.exports = function (grunt) {
     'linker/styles/animate.css',
     'linker/styles/roboto.css',
     'linker/styles/zocial.css',
-    'linker/styles/printclearly.css',
     'linker/**/*.css'
   ];
 
@@ -83,7 +82,26 @@ module.exports = function (grunt) {
     'linker/js/meetupmap.js',
     'linker/js/video-background.js',
     'linker/js/bootstrap.min.js',
+    'linker/js/jquery.knob.js',
+    'linker/js/numeral.js',
+    'linker/js/underscore-min.js',
+    'linker/js/moment.min.js',
+    'linker/js/jquery.PrintArea.js',
+    'linker/js/Chart.min.js',
     'linker/js/main.js',
+
+    'linker/js/ethersale/angular.min.js',
+    'linker/js/ethersale/qrcode.min.js',
+    'linker/js/ethersale/jquery.qrcode.min.js',
+    'linker/js/ethersale/bitcoinjs-min.js',
+    'linker/js/ethersale/aes.js',
+    'linker/js/ethersale/pbkdf2.js',
+    'linker/js/ethersale/sha256.js',
+    'linker/js/ethersale/sha3.js',
+    'linker/js/ethersale/xethtool.js',
+    'linker/js/ethersale/base64.js',
+    'linker/js/ethersale/app.js',
+    'linker/js/ethersale/password-dict.js'
 
     // DO NOT USE. INSERT STATIC PATH ABOVE
     // Uncommenting the line below will result in revoking push access
