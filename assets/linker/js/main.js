@@ -451,27 +451,82 @@ $(function() {
       slideEaseDuration: 600,
       firstPanelToLoad: 2
     }).data("liquidSlider");
+
+    $('.btn-show-charts').on('click', function(){
+      var margin = {top: 20, right: 20, bottom: 30, left: 50},
+          width = 960 - margin.left - margin.right,
+          height = 250 - margin.top - margin.bottom;
+
+      var parseDate = d3.time.format("%d/%m/%Y %H:%M:%S").parse;
+
+      var x = d3.time.scale()
+          .range([0, width]);
+
+      var y = d3.scale.linear()
+          .range([height, 0]);
+
+      var xAxis = d3.svg.axis()
+          .scale(x)
+          .orient("bottom");
+
+      var yAxis = d3.svg.axis()
+          .scale(y)
+          .orient("left");
+
+      var line = d3.svg.line()
+          .x(function(d) { return x(d[0]); })
+          .y(function(d) { return y(d[1]); });
+
+      var svg = d3.select("#fundsChart").append("svg")
+          .attr("width", width + margin.left + margin.right)
+          .attr("height", height + margin.top + margin.bottom)
+        .append("g")
+          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+      d3.text(ETHERSALE_URL + "/chart/" + FUNDRAISING_ADDRESS, function(text) {
+          var data = d3.csv.parseRows(text).map(function(row) {
+            row[1] = parseFloat(row[1]);
+            console.log(row);
+            return row;
+          });
+
+          var total = 0;
+
+          console.log(data);
+
+          data.forEach(function(d) {
+            d[0] = parseDate(d[0]);
+            total += d[1]
+            d[1] = total;
+          });
+
+          console.log(data);
+
+          x.domain(d3.extent(data, function(d) { console.log(d); return d[0]; }));
+          y.domain(d3.extent(data, function(d) { return d[1]; }));
+
+          svg.append("g")
+              .attr("class", "x axis")
+              .attr("transform", "translate(0," + height + ")")
+              .call(xAxis);
+
+          svg.append("g")
+              .attr("class", "y axis")
+              .call(yAxis)
+            .append("text")
+              .attr("transform", "rotate(-90)")
+              .attr("y", 6)
+              .attr("dy", ".71em")
+              .style("text-anchor", "end")
+              .text("Funds (BTC)");
+
+          svg.append("path")
+              .datum(data)
+              .attr("class", "line")
+              .attr("d", line);
+      });
+    });
   };
 
   initPresaleCounters();
-
-  $('.btn-show-charts').on('click', function(){
-    $('#canvas').attr('width', '968').attr('height', '250');
-
-    var lineChartData = {
-      labels : ["01 Jun 2014","02 Jun 2014","03 Jun 2014","05 Jun 2014","06 Jun 2014","07 Jun 2014","08 Jun 2014"],
-      datasets : [
-        {
-          fillColor : "rgba(151,187,205,0.5)",
-          strokeColor : "rgba(151,187,205,1)",
-          pointColor : "rgba(151,187,205,1)",
-          pointStrokeColor : "#fff",
-          data : [1791,4890,10298,15902,23187,33981,41097]
-        }
-      ]
-
-    }
-
-    var myLine = new Chart(document.getElementById("canvas").getContext("2d")).Line(lineChartData);
-  });
 });

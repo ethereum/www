@@ -1289,6 +1289,27 @@ a:hover {
   }
 }
 
-#canvas {
-  margin: 15px 0px;
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.x.axis, .y.axis {
+  font-size: 10px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+#fundsChart {
+  margin: 20px 0px;
 }
