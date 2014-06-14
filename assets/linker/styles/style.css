@@ -113,17 +113,6 @@ footer {
 
 .logo-text {
   float: left;
-  display: inline-block;
-  margin-top: -12px;
-}
-
-.logo-text > a:hover, .logo-text > a:link {
-  color: #333;
-  text-decoration: none;
-}
-
-.logo-text h1 {
-  letter-spacing: 0.3ex;
   color:#787878;
   font-family:RobotoRegular;
 }
@@ -192,27 +181,32 @@ footer {
   text-decoration: none;
 }
 
-.contact-card {
-  text-align: center;
-  width: 150px;
-  height: 7em;
-  margin: 1em;
-  float:left;
-  overflow: hidden;
-  padding: 5px;
-}
-
-.contact-card img {
+.person-photo {
   width: 50%;
   height: auto;
   max-width: 50%;
   border-radius: 50%;
   border: 3px solid #ccc;
-  margin: 5px;
+  margin: auto;
+  overflow: hidden;
 }
 
+.person-photo img {
+  -ms-transform: scale(1.10,1.10); /* IE 9 */
+  -webkit-transform: scale(1.10,1.10); /* Chrome, Safari, Opera */
+  transform: scale(1.10,1.10);
+}
+.contact-cord {
+  overflow: auto;
+}
+.contact-card dl{
+  margin-bottom: 5px
+}
 .contact-card.active img {
   border-color: #fff;
+}
+.panel-wrapper .list-inline > li{
+  margin-bottom: 10px
 }
 
 .alert-info {
@@ -248,9 +242,10 @@ footer {
 
 #feature .video-content {
   position: absolute;
-  top: 80px;
+  top: 50%;
   left: 0;
   right:0;
+  margin-top: -125px;
   margin-left:auto;
   margin-right:auto;
 }
@@ -312,9 +307,14 @@ footer {
 }
 
 .ethereum-logo {
-  font-family:RobotoLight;
-  letter-spacing:0.35em;
+  font-family: PrintClearly;
+  letter-spacing:0.15em;
+  /*font-family:RobotoLight;*/
+  /*letter-spacing:0.35em;*/
   color:#333;
+  font-size: 35px;
+  margin-top: 15px;
+  margin-bottom: 0px;
 }
 
 .dl-box {
@@ -438,9 +438,66 @@ footer {
 }
 
 #code-slider h4 {
-  text-align: right;
+ text-align: center;
+  /*text-align: right;*/
 }
 
+
+#press-slider h4 {
+ text-align: center;
+}
+
+/*.press-slider-panel {
+  min-height: 178px;
+}*/
+
+.leftSliderArrow, .rightSliderArrow {
+  position: absolute;
+  display: block;
+  top: 50%;
+  margin-top: -34px;
+}
+
+.leftSliderArrow {
+  left: -15px;
+}
+
+.rightSliderArrow {
+  right: -15px;
+}
+
+.presslink {
+  text-decoration: none;
+}
+.presslink:hover {
+  text-decoration: none;
+}
+
+/*.pressdate {
+  margin-bottom: 5px;
+}*/
+
+#presslist {
+  list-style: none;
+  list-style-type: none;
+  padding-left: 21px;
+}
+
+#presslist li {
+  margin-bottom: 20px;
+}
+
+#presslist a:hover{
+  text-decoration: none;
+}
+
+/*.media-slider-wrapper {
+  min-height: 203px;
+}
+*/
+#media-slider h4 {
+ text-align: center;
+}
 
 .fa-8x {
   font-size: 900%;
@@ -643,6 +700,14 @@ a:hover {
 
 #scrollUp:hover {
   background: #000;
+}
+
+.media1 {
+  margin-bottom: 0px;
+}
+
+.padbottom {
+  margin-bottom: 10px;
 }
 
 @media (max-width: 768px) {
@@ -1075,6 +1140,73 @@ a:hover {
   font-size: 18px;
 }
 
+@media (min-width: 768px) {
+  #feature {
+    max-height: 1200px;
+  }
+}
+
+.nano { background: none; }
+.nano .nano-content { padding: 10px; }
+.nano .nano-pane   { background: none; }
+.nano .nano-slider { background: none; }
+
+/** initial setup **/
+.nano {
+  position : relative;
+  width    : 100%;
+  height   : 387px;
+  overflow : hidden;
+}
+.nano > .nano-content {
+  position      : absolute;
+  overflow      : scroll;
+  overflow-x    : hidden;
+  top           : 0;
+  right         : 0;
+  bottom        : 0;
+  left          : 0;
+}
+.nano > .nano-content:focus {
+  outline: thin dotted;
+}
+.nano > .nano-content::-webkit-scrollbar {
+  visibility: hidden;
+}
+.has-scrollbar > .nano-content::-webkit-scrollbar {
+  visibility: visible;
+}
+.nano > .nano-pane {
+  background : rgba(0,0,0,.25);
+  position   : absolute;
+  width      : 10px;
+  right      : 0;
+  top        : 0;
+  bottom     : 0;
+  visibility : hidden\9; /* Target only IE7 and IE8 with this hack */
+  opacity    : .01;
+  -webkit-transition    : .2s;
+  -moz-transition       : .2s;
+  -o-transition         : .2s;
+  transition            : .2s;
+  -moz-border-radius    : 5px;
+  -webkit-border-radius : 5px;
+  border-radius         : 5px;
+}
+.nano > .nano-pane > .nano-slider {
+  background: #444;
+  background: rgba(0,0,0,.5);
+  position              : relative;
+  margin                : 0 1px;
+  -moz-border-radius    : 3px;
+  -webkit-border-radius : 3px;
+  border-radius         : 3px;
+}
+.nano:hover > .nano-pane, .nano-pane.active, .nano-pane.flashed {
+  visibility : visible\9; /* Target only IE7 and IE8 with this hack */
+  opacity    : 0.99;
+}
+
 #terms-modal .controls{
   font-size: 12px;
   overflow: hidden;
@@ -1157,6 +1289,27 @@ a:hover {
   }
 }
 
-#canvas {
-  margin: 15px 0px;
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.x.axis, .y.axis {
+  font-size: 10px;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 2px;
+}
+
+#fundsChart {
+  margin: 20px 0px;
 }

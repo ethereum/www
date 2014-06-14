@@ -4,7 +4,7 @@ div.row
     :markdown
       Ethereum is a platform and a programming language that makes it possible for any developer to build and publish next-generation distributed applications.
 
-      Ether, Ethereum's internal currency, powers its applications and acts as a 'token of exchange' on the decentralized network.
+      Ether, Ethereum's cryptofuel, powers its applications and acts as a 'token of exchange' on the decentralized network.
 
       Ethereum can be used to codify, decentralize, secure and trade just about anything: voting, domain names, financial exchanges, crowdfunding, company governance, contracts and agreements of most kind, intellectual property, and even smart property thanks to hardware integration.
 
@@ -13,11 +13,9 @@ div.row
   div.col-sm-7.col-sm-offset-4
     h3 &hellip;will you build with Ethereum?
 div.row
-  div.col-sm-1
-    a(href='#left', data-liquidslider-ref='#code-slider')
-      i.fa.fa-fw.fa-angle-left.fa-3x
-  div.col-sm-8
+  div.col-sm-12
     include code
-  div.col-sm-1.pull-right
-    a(href='#right', data-liquidslider-ref='#code-slider')
+    a.leftSliderArrow(href='#left', data-liquidslider-ref='#code-slider')
+      i.fa.fa-fw.fa-angle-left.fa-3x
+    a.rightSliderArrow(href='#right', data-liquidslider-ref='#code-slider')
       i.fa.fa-fw.fa-angle-right.fa-3x

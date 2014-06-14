@@ -76,6 +76,7 @@ module.exports = function (grunt) {
     'linker/js/jquery.liquid-slider-custom.min.js',
     'linker/js/d3.min.js',
     'linker/js/d3_tooltip.js',
+    'linker/js/nano.scroller.min.js',
 
     'linker/js/topojson.v1.min.js',
     'linker/js/meetupmap.js',
