@@ -1,4 +1,4 @@
-ETHERSALE_URL = "http://sale.ethereum.org:16180";
+ETHERSALE_URL = "http://sale.ethereum.org";
 //ETHERSALE_URL = "http://localhost:5000";//TODO remove debug
 
 var ethereum = angular.module('ethereum', []);
