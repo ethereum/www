@@ -32,12 +32,25 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   $scope.btcToSend = 1.5;
   $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
 
-  $scope.updateEthToBuy = function(){
+  $scope.updateEthToBuy = function()
+  {
+    if($scope.btcToSend < 0.01)
+    {
+      $scope.btcToSend = 0.01;
+    }
+
     $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend,10) || 0);
   };
 
-  $scope.updateBtcToSend = function(){
+  $scope.updateBtcToSend = function()
+  {
     $scope.btcToSend = window.btcForEth(parseFloat($scope.ethToBuy,10) || 0);
+
+    if($scope.btcToSend < 0.01)
+    {
+      $scope.btcToSend = 0.01;
+      $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend,10) || 0);
+    }
   };
 
   $scope.handlePaste = function(){

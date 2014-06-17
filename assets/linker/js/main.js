@@ -345,14 +345,6 @@ $(function() {
       },
       btcForEth: function(eth){
         return Math.round((typeof eth == "number" ? eth : 1) / ethForBtc * 10000) / 10000;
-      },
-      disablePaste: function(id){
-        console.log('#' + id + ' aici')
-        console.log($('#' + id));
-        // console.log($('#' + id).activeElement.val())
-        //$('#' + id).context.activeElement.val('');
-        $('#' + id).val('');
-        $('#' + id).val('');
       }
     });
 
@@ -559,6 +551,6 @@ $(function() {
     var id = getYoutubeID( $(this).attr('href') );
 
     var thumb_url = "/images/videos/" + id + ".jpg";
-    $('<img width="100%" src="' + thumb_url + '" />').appendTo( $(this.parentNode) );
+    $('<img width="100%" src="' + thumb_url + '" />').appendTo( $(this) );
   });
 });
