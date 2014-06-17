@@ -551,6 +551,6 @@ $(function() {
     var id = getYoutubeID( $(this).attr('href') );
 
     var thumb_url = "/images/videos/" + id + ".jpg";
-    $('<img width="100%" src="' + thumb_url + '" />').appendTo( $(this.parentNode) );
+    $('<img width="100%" src="' + thumb_url + '" />').appendTo( $(this) );
   });
 });
