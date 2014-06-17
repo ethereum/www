@@ -144,9 +144,9 @@ $(function() {
     var ETHER_FOR_BTC=2000,
         FUNDRAISING_ADDRESS="1FfmbHfnpaZjKFvyi1okTjJJusN455paPH",
         SATOSHIS_IN_BTC=100000000,
-        START_DATETIME= "2014-05-2 00:00:00",
-        DECREASE_DATETIME= "2014-05-17 00:00:00",
-        END_DATETIME= "2014-07-01 23:59:59",
+        START_DATETIME= "2014-06-17 00:00:00",
+        DECREASE_AFTER= 15,
+        ENDS_AFTER= 60,
         $qrDepAddr = $("#qr-deposit-address"),
         $purchaseCancel = $("#purchase-cancel"),
         $backToStart = $("#back-to-start"),
@@ -263,9 +263,9 @@ $(function() {
       bgColor: "#ddd",
       font: "inherit"
     };
-    var startsAt = moment(START_DATETIME).zone(0),
-        decreasesAt = moment(DECREASE_DATETIME).zone(0),
-        endsAt = moment(END_DATETIME).zone(0),
+    var startsAt = moment( START_DATETIME ).utc( START_DATETIME ),
+        decreasesAt = moment( START_DATETIME ).utc().add( 'days', DECREASE_AFTER ),
+        endsAt = moment( START_DATETIME ).utc().add( 'days', ENDS_AFTER ),
         $saleDurationDials = $(".sale-duration-container"),
         $rateCountdownDials = $(".rate-countdown-container");
 
@@ -281,9 +281,9 @@ $(function() {
       createKnob($container.find(".dial.seconds"), {max: 60});
     };
 
-    setupTimerDials($saleDurationDials, dhms(endsAt.diff(startsAt)).days);
+    setupTimerDials($saleDurationDials, dhms( endsAt.diff(startsAt)).days );
 
-    var deltaForTimeTillNextRate = dhms(1000*(decreasesAt.unix() - moment().zone(0).unix())).days;
+    var deltaForTimeTillNextRate = dhms( 1000 * (decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000 ).days;
 
     setupTimerDials($rateCountdownDials, deltaForTimeTillNextRate);
 
@@ -299,23 +299,20 @@ $(function() {
     };
 
     var updateTimerDials = function($container, delta){
-      // console.log(delta);
       updateTimerDial($container, "days", delta);
       updateTimerDial($container, "hours", delta);
       updateTimerDial($container, "minutes", delta);
       updateTimerDial($container, "seconds", delta);
     };
     var updateAllDials = function(){
-      if(endsAt.isAfter(moment().zone(0)))
+      if(endsAt.isAfter(moment().utc()))
       {
-        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.unix() - moment().zone(0).unix())));
+        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.unix() - moment().utc().unix()) - moment().zone()*60*1000));
 
-        var delta = dhms(moment().zone(0).diff(decreasesAt));
+        var delta = dhms(moment().utc().diff(decreasesAt));
         delta.hours = 24 - delta.hours - 1;
         delta.minutes = 60 - delta.minutes - 1;
         delta.seconds = 60 - delta.seconds;
-
-        // console.log(delta);
 
         if(delta.days > -15)
         {
@@ -331,7 +328,7 @@ $(function() {
         $(".eth-to-btc").text( numeral(ethForBtc).format("0,0") );
         $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
 
-        updateTimerDials($rateCountdownDials, delta.days <= 15 ? dhms(1000*(decreasesAt.unix() - moment().zone(0).unix())) : delta);
+        updateTimerDials($rateCountdownDials, delta.days <= 15 ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
       }
       else
       {
