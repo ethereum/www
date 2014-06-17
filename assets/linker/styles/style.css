@@ -1313,3 +1313,19 @@ a:hover {
 #fundsChart {
   margin: 20px 0px;
 }
+
+.video-big {
+  width: 700px;
+  height: 411px;
+}
+
+.video-small {
+  width: 334px;
+  height: 188px;
+  margin-bottom: 20px;
+}
+
+.video-big iframe, .video-small iframe {
+  width: 100%;
+  height: 100%;
+}

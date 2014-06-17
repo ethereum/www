@@ -79,7 +79,6 @@ $(function() {
     });
   }());
 
-  $(".video-responsive").fitVids();
   $('#news-slider').liquidSlider({
     autoSlide: false,
     dynamicTabs: true,
@@ -453,6 +452,8 @@ $(function() {
     }).data("liquidSlider");
 
     $('.btn-show-charts').on('click', function(){
+      $("#fundsChart").empty();
+
       var margin = {top: 20, right: 20, bottom: 30, left: 50},
           width = 960 - margin.left - margin.right,
           height = 250 - margin.top - margin.bottom;
@@ -529,4 +530,28 @@ $(function() {
   };
 
   initPresaleCounters();
+
+  function getYoutubeID(url) {
+      var id = url.match("[\\?&]v=([^&#]*)");
+
+      id = id[1];
+      return id;
+  };
+
+  $('.video-responsive').on('click', function()
+  {
+    var id = getYoutubeID( $(this).find('a').attr('href') );
+
+    var video_url = "//www.youtube.com/embed/" + id + "?autoplay=1";
+    $(this).html('<iframe src="' + video_url + '" frameborder="0" allowfullscreen></iframe>').css('background', 'none');
+  });
+
+  $('a.youtube').each(function()
+  {
+    var id = getYoutubeID( $(this).attr('href') );
+
+    var thumb_url = "/images/videos/" + id + ".jpg";
+    $('<img width="100%" src="' + thumb_url + '" />').appendTo( $(this.parentNode) );
+
+  });
 });
