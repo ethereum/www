@@ -40,6 +40,13 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.btcToSend = window.btcForEth(parseFloat($scope.ethToBuy,10) || 0);
   };
 
+  $scope.handlePaste = function(){
+    angular.element(':focus').val('');
+    setTimeout(function(){
+      angular.element(':focus').val('');
+    }, 100)
+  };
+
   $scope.$watch("email", function(val){
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return $scope.emailValid = re.test(val);
@@ -141,7 +148,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     return setInterval(function() {
 
       if (!$scope.wallet || !$scope.wallet.btcaddr) return;
-      $scope.status = 'Connecting...' //need to force drawing of this first time only
+      //$scope.status = 'Connecting...' //need to force drawing of this first time only
       Purchase.getUnspent($scope.wallet.btcaddr, function(e, unspent) {
         if (!$scope.wallet || !$scope.wallet.btcaddr) return;
 
