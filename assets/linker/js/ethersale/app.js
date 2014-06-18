@@ -173,6 +173,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         if (!tx) {
           $scope.status = 'Waiting for deposit...';
         } else {
+          $scope.backup.email = $scope.email;
           var data = {
             'tx': tx.serializeHex(),
             'email': $scope.email,
