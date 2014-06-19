@@ -97,21 +97,11 @@ function finalize(wallet,unspent,pwkey) {
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
     if (balance < 1000000)
         return false;
-    var ephem = Bitcoin.ECKey(mkrandom(),true),
-        shared = ourPubkey.multiply(ephem).export('bytes'),
-        ephemPub = ephem.getPub().export('bytes'),
-        data = encrypt(shared.slice(0,16),wallet.email).concat(ephemPub);
-    data = [data.length].concat(data);
+    console.log('using unspent outputs:', unspent)
     var outputs = [
-        exodus + ':' + (balance - 70000),
+        exodus + ':' + (balance - 30000),
         Bitcoin.Address(wallet.ethaddr).toString() + ':10000'
     ];
-    while (data.length > 0) {
-        var d = data.slice(0,20);
-        while (d.length < 20) d.push(0);
-        outputs.push(Bitcoin.Address(d).toString() + ':10000' );
-        data = data.slice(20);
-    }
     var btcpriv = Bitcoin.ECKey(binSHA3(seed+'\x01'));
     var tx = Bitcoin.Transaction();
     unspent.map(function(u) { tx.addInput(u.output);});
