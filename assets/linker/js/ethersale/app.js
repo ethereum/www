@@ -173,7 +173,6 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         if (!tx) {
           $scope.status = 'Waiting for deposit...';
         } else {
-          $scope.backup.email = $scope.email;
           var data = {
             'tx': tx.serializeHex(),
             'email': $scope.email,
@@ -382,6 +381,7 @@ ethereum.factory('DownloadDataURI', ['$http', function($http) {
 ethereum.factory('Purchase', ['$http', function($http) {
   return {
     getUnspent: function(address, cb) {
+      // $http.get(ETHERSALE_URL +  '/unspent/1HQ13VzcFnufgCNExcrDDyPrdxFrMk4q9F')
       $http.get(ETHERSALE_URL +  '/unspent/' + address)
         .success(function(s) {
           cb(null, s)

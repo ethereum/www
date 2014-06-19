@@ -412,6 +412,7 @@ $(function() {
 
       console.log(ETHERSALE_URL);
 
+      clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);
 
       $downloadLink.attr("href", downloadLinkHref);
@@ -427,8 +428,8 @@ $(function() {
             clearInterval(timerConfirmations);
           }
           $('.confirmations-dial-shim').text(data + "/6");
-        }, 10000);
-      });
+        });
+      }, 10000);
     }
 
     appStepsSlider = $("#app-steps-content").liquidSlider({
