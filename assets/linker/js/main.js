@@ -142,7 +142,7 @@ $(function() {
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
     var ETHER_FOR_BTC=2000,
-        FUNDRAISING_ADDRESS="1FfmbHfnpaZjKFvyi1okTjJJusN455paPH",
+        FUNDRAISING_ADDRESS="17DfcVJdAPiKoU2KbdFui6rq9coJqUjWDZ",
         SATOSHIS_IN_BTC=100000000,
         START_DATETIME= "2014-06-17 00:00:00",
         DECREASE_AFTER= 15,
@@ -204,6 +204,7 @@ $(function() {
       });
       $entropyProgress.show();
       $(".step-breadcrumbs").attr("data-step", "1");
+      clearInterval(timerConfirmations);
       return false;
     };
 

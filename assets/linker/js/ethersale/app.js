@@ -31,6 +31,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
   $scope.btcToSend = 1.5;
   $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
+  var timerUnspent
 
   $scope.updateEthToBuy = function()
   {
@@ -155,7 +156,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
   };
 
-  var timerUnspent = startUnspentInterval();
+  timerUnspent = startUnspentInterval();
 
   function startUnspentInterval(){
     return setInterval(function() {
@@ -381,7 +382,6 @@ ethereum.factory('DownloadDataURI', ['$http', function($http) {
 ethereum.factory('Purchase', ['$http', function($http) {
   return {
     getUnspent: function(address, cb) {
-      // $http.get(ETHERSALE_URL +  '/unspent/1HQ13VzcFnufgCNExcrDDyPrdxFrMk4q9F')
       $http.get(ETHERSALE_URL +  '/unspent/' + address)
         .success(function(s) {
           cb(null, s)
