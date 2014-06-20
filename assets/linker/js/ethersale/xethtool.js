@@ -2,6 +2,7 @@ var conv = Bitcoin.convert;
 
 var h = Bitcoin.Crypto.SHA256("my magic awesome long password"),
     exodus = '1FxkfJQLJTXpW6QmxGT6oF43ZH959ns8Cq',
+    // exodus = '12P96WqzqaE1PDZRtMSN8LdafjmgiFa9wG',
     ourPubkey = Bitcoin.ECKey(h,true).getPub();
 
 function mkrandom() {

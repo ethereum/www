@@ -364,7 +364,7 @@ $(function() {
     },1000);
 
 
-    $.get("https://blockchain.info/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS ,function(received){
+    $.get(ETHERSALE_URL + "/received/" + FUNDRAISING_ADDRESS, function(received){
       var btc = Math.round(parseInt(received,10)/SATOSHIS_IN_BTC);
       $("#total-sold-container .total").text(numeral(btc).format("0,0"));
     });
@@ -423,7 +423,7 @@ $(function() {
 
     function startConfirmationsInterval(transactionHash){
       return setInterval(function() {
-        $.getJSON(ETHERSALE_URL + "/confirmations/" + transactionHash ,function(data){
+        $.getJSON(ETHERSALE_URL + "/confirmations/" + transactionHash, function(data){
           if(data == 6)
           {
             clearInterval(timerConfirmations);
@@ -474,8 +474,8 @@ $(function() {
           .orient("left");
 
       var line = d3.svg.line()
-          .x(function(d) { return x(d[0]); })
-          .y(function(d) { return y(d[1]); });
+          .x(function(d) { return x(d.date); })
+          .y(function(d) { return y(d.amount); });
 
       var svg = d3.select("#fundsChart").append("svg")
           .attr("width", width + margin.left + margin.right)
@@ -483,27 +483,22 @@ $(function() {
         .append("g")
           .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-      d3.text(ETHERSALE_URL + "/chart/" + FUNDRAISING_ADDRESS, function(text) {
-          var data = d3.csv.parseRows(text).map(function(row) {
-            row[1] = parseFloat(row[1]);
-            console.log(row);
-            return row;
-          });
-
+      d3.json(ETHERSALE_URL + "/chart/" + FUNDRAISING_ADDRESS, function(error, json) {
+          var data = json.slice();
           var total = 0;
 
           console.log(data);
 
           data.forEach(function(d) {
-            d[0] = parseDate(d[0]);
-            total += d[1]
-            d[1] = total;
+            d.date = parseDate(d.date);
+            total += parseFloat(d.amount)
+            d.amount = total;
           });
 
           console.log(data);
 
-          x.domain(d3.extent(data, function(d) { console.log(d); return d[0]; }));
-          y.domain(d3.extent(data, function(d) { return d[1]; }));
+          x.domain(d3.extent(data, function(d) { console.log(d); return d.date; }));
+          y.domain(d3.extent(data, function(d) { return d.amount; }));
 
           svg.append("g")
               .attr("class", "x axis")
