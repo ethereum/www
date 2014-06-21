@@ -108,7 +108,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       if ($scope.entropy.length > $scope.requiredEntropyLength && !$scope.wallet) {
         $scope.collectingEntropy = false;
         $scope.wallet = 1;
-        $scope.entropy = 'qwe'; // TODO remove debug;
+        // $scope.entropy = 'qwe'; // TODO remove debug;
         console.log('generating wallet'); // Add loading thingy
         $scope.pwkey = pbkdf2($scope.password);
         console.log(1);
