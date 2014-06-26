@@ -1,0 +1,52 @@
+extends layouts/main
+
+block content
+  header.container
+    include includes/navbar
+
+  #feature.jumbotron.text-center
+    include includes/feature
+  div.squr
+  div.maincontent
+
+    //- #interactive-content
+    //-   #interactive.content-box
+    //-     include includes/interactive
+
+    #presale-counters-content
+      #presale-counters.content-box
+        include includes/presalecounters
+
+    #news-content
+      #news.container.content-box.text-center
+        include includes/news
+
+    #what-content
+      #what.container.content-box
+        include includes/what
+
+    #why-content
+      #why.container.content-box
+        include includes/why
+
+    #philosophy-content
+      #philosophy.container.content-box
+        include includes/philosophy
+
+    #how-content
+      #how.container.content-box
+        include includes/how
+
+    #who-content
+      #who.container.content-box.text-center
+        include includes/who
+
+    #pressmedia-content
+      #pressmedia.container.content-box.text-center
+        include includes/pressmedia
+
+    #join-content
+      #join.container.content-box.text-center
+        include includes/join
+
+  include includes/ethersale_terms_modal
