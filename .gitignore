@@ -24,6 +24,7 @@ logs
 results
 
 node_modules
+build
 
 npm-debug.log
 
