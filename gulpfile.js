@@ -10,16 +10,14 @@ var plugins = require('gulp-load-plugins')({
 
 // Default values
 var isProduction = false;
-var jadePretty = true;
 
 if(gutil.env.prod === true) {
-    isProduction = !isProduction;
-    jadePretty = !jadePretty;
+    isProduction = true;
 }
 
 var basePaths = {
   src: 'src/',
-  dest: 'build'
+  dest: 'build/'
 };
 
 var typePaths = {
@@ -29,18 +27,18 @@ var typePaths = {
   },
   styles: {
     src: basePaths.src + 'styles/',
-    dest: basePaths.dest + '/styles'
+    dest: basePaths.dest + 'styles/'
   },
   scripts: {
     src: basePaths.src + 'scripts/',
-    dest: basePaths.dest + '/scripts'
+    dest: basePaths.dest + 'scripts/'
   },
   images: {
     src: basePaths.src + 'images/',
-    dest: basePaths.dest + '/images'
+    dest: basePaths.dest + 'images/'
   },
   extras: {
-    src: basePaths.src + '/extras',
+    src: basePaths.src + 'extras/',
     dest: basePaths.dest + ''
   }
 };
@@ -135,7 +133,7 @@ var styleOrder = [
   'app.min.css'
 ];
 
-var EXPRESS_PORT = 4000;
+var EXPRESS_PORT = 1337;
 var EXPRESS_ROOT = __dirname + '/' + basePaths.dest;
 var LIVERELOAD_PORT = 35729;
 
@@ -156,16 +154,9 @@ function startLivereload() {
 }
 
 function notifyLivereload(event) {
- 
-  // `gulp.watch()` events provide an absolute path
-  // so we need to make it relative to the server root
-  var fileName = require('path').relative(EXPRESS_ROOT, event.path);
- 
-  lr.changed({
-    body: {
-      files: [fileName]
-    }
-  });
+
+  gulp.src(event.path, {read: false})
+      .pipe(require('gulp-livereload')(lr));
 }
 
 gulp.task('clean', function() {
@@ -175,16 +166,16 @@ gulp.task('clean', function() {
 
 gulp.task('templates', ['scripts', 'styles'], function() {
   return gulp.src(appFiles.templates, {cwd: typePaths.templates.src})
-  .pipe(plugins.jade({ pretty: jadePretty }))
+  .pipe(plugins.jade({ pretty: (isProduction ? false : true) }))
 
   .pipe(plugins.inject(
-    gulp.src(typePaths.styles.dest + '/**/*', {read: false})
+    gulp.src(typePaths.styles.dest + '**/*', {read: false})
     .pipe(plugins.order(styleOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
       { addRootSlash: false, ignorePath: 'build/' })
   )
   .pipe(plugins.inject(
-    gulp.src(typePaths.scripts.dest + '/**/*', {read: false})
+    gulp.src(typePaths.scripts.dest + '**/*', {read: false})
     .pipe(plugins.order(scriptOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
       { addRootSlash: false, ignorePath: 'build/' })
@@ -202,7 +193,7 @@ gulp.task('styles', function() {
     gulp.src(typeMap.less, {cwd: typePaths.styles.src})
     .pipe(plugins.less()),
     gulp.src(typeMap.css, {cwd: typePaths.styles.src}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(isProduction ? plugins.csso() : gutil.noop())
   .pipe(plugins.concat('app.min.css'))
   .pipe(plugins.size({title: 'styles', showFiles: true}))
@@ -221,7 +212,7 @@ gulp.task('scripts', function() {
     .pipe(plugins.concat('app.min.js')),
     gulp.src(typeMap.jslibs, {cwd:typePaths.scripts.src}))
   .pipe(plugins.size({title: 'scripts', showFiles: false}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.scripts.dest))
   .on('error', function(err){
     new gutil.PluginError('scripts', err, {showStack: true});
@@ -232,14 +223,14 @@ gulp.task('images', function() {
   return gulp.src(appFiles.images, {cwd: typePaths.images.src})
   .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.images.dest));
 });
 
 gulp.task('extras', function() {
   return gulp.src(appFiles.extras, {cwd: typePaths.extras.src})
   .pipe(plugins.size({title: 'extras', showFiles: false}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.extras.dest));
 });
 
@@ -252,11 +243,6 @@ gulp.task('watch', function() {
 
   //gulp.watch(basePaths.dest + '/**', notifyLivereload);
 
-
-  
-  gulp.src(basePaths.dest + '/index.html')
-  .pipe(plugins.open('', {url: 'http://localhost:' + EXPRESS_PORT}));
-
   // gulp.watch(basePaths.dest + '/**').on('change', function(file) {
   //   server.changed(file.path);
   // });
@@ -264,26 +250,30 @@ gulp.task('watch', function() {
   // server.listen(1337, function(err){
   //   if (err) return console.log(err);
 
-    gulp.watch(typePaths.scripts.src + '**/*.(js|coffee)', ['scripts']);
-    gulp.watch(typePaths.templates.src + '**/*.(jade|html)', ['templates']);
-    gulp.watch(typePaths.styles.src + '**/*.(css|less)', ['styles']);
-    gulp.watch(typePaths.images.src + '**/*', ['images']);
-    gulp.watch(typePaths.extras.src + '**/*', ['extras']);
+    gulp.watch(basePaths.src + '**/*', ['build']);
   // });
 });
 
+gulp.task('open', function(){
+  var uri = 'http://localhost:' + EXPRESS_PORT;
+  gutil.log('Loading content at', uri);
+
+  gulp.src(basePaths.dest + 'favicon.ico')
+  .pipe(plugins.open('', {url: uri}));
+});
+
 // Define the default task as a sequence of the above tasks
-// invode production build with "--prod"
+// Additionally, mimic production build on any task with "--prod"
 gulp.task('build', ['clean'], function(){
-  gulp.start('scripts', 'styles', 'extras', 'images', 'templates');
+  gulp.start('extras', 'scripts', 'styles', 'images', 'templates');
 });
 
 gulp.task('default', ['clean'], function(){
-  gulp.start('scripts', 'styles', 'extras', 'images', 'templates', 'watch');
+  gulp.start('extras', 'scripts', 'styles', 'images', 'templates', 'watch', 'open');
 });
 
 gulp.task('prod', ['clean'], function(){
-  gutil.env.prod = true;
-  gulp.start('scripts', 'styles', 'extras', 'images', 'templates');
+  isProduction = true;
+  gulp.start('build');
 });
 
