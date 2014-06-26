@@ -132,13 +132,13 @@ gulp.task('templates', ['scripts', 'styles'], function() {
   .pipe(plugins.jade({ pretty: jadePretty }))
 
   .pipe(plugins.inject(
-    gulp.src(typePaths.styles.dest + '/*', {read: false})
+    gulp.src(typePaths.styles.dest + '/**/*', {read: false})
     .pipe(plugins.order(styleOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
       { addRootSlash: false, ignorePath: 'build/' })
   )
   .pipe(plugins.inject(
-    gulp.src(typePaths.scripts.dest + '/*', {read: false})
+    gulp.src(typePaths.scripts.dest + '/**/*', {read: false})
     .pipe(plugins.order(scriptOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
       { addRootSlash: false, ignorePath: 'build/' })
