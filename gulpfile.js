@@ -135,6 +135,39 @@ var styleOrder = [
   'app.min.css'
 ];
 
+var EXPRESS_PORT = 4000;
+var EXPRESS_ROOT = __dirname + '/' + basePaths.dest;
+var LIVERELOAD_PORT = 35729;
+
+function startExpress() {
+  var lr = require('connect-livereload')();
+  var express = require('express');
+  var app = express();
+  app.use(lr);
+  app.use(express.static(EXPRESS_ROOT));
+  app.listen(EXPRESS_PORT);
+}
+
+var lr;
+function startLivereload() {
+ 
+  lr = require('tiny-lr')();
+  lr.listen(LIVERELOAD_PORT);
+}
+
+function notifyLivereload(event) {
+ 
+  // `gulp.watch()` events provide an absolute path
+  // so we need to make it relative to the server root
+  var fileName = require('path').relative(EXPRESS_ROOT, event.path);
+ 
+  lr.changed({
+    body: {
+      files: [fileName]
+    }
+  });
+}
+
 gulp.task('clean', function() {
   return gulp.src(basePaths.dest)
   .pipe(plugins.clean());
@@ -169,7 +202,7 @@ gulp.task('styles', function() {
     gulp.src(typeMap.less, {cwd: typePaths.styles.src})
     .pipe(plugins.less()),
     gulp.src(typeMap.css, {cwd: typePaths.styles.src}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(server()))
+  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(isProduction ? plugins.csso() : gutil.noop())
   .pipe(plugins.concat('app.min.css'))
   .pipe(plugins.size({title: 'styles', showFiles: true}))
@@ -188,7 +221,7 @@ gulp.task('scripts', function() {
     .pipe(plugins.concat('app.min.js')),
     gulp.src(typeMap.jslibs, {cwd:typePaths.scripts.src}))
   .pipe(plugins.size({title: 'scripts', showFiles: false}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(server()))
+  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.scripts.dest))
   .on('error', function(err){
     new gutil.PluginError('scripts', err, {showStack: true});
@@ -199,14 +232,14 @@ gulp.task('images', function() {
   return gulp.src(appFiles.images, {cwd: typePaths.images.src})
   .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(server()))
+  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.images.dest));
 });
 
 gulp.task('extras', function() {
   return gulp.src(appFiles.extras, {cwd: typePaths.extras.src})
   .pipe(plugins.size({title: 'extras', showFiles: false}))
-  // .pipe(isProduction ? gutil.noop() : plugins.livereload(server()))
+  // .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.extras.dest));
 });
 
@@ -214,26 +247,43 @@ gulp.task('extras', function() {
 
 // A development task to run anytime a file changes
 gulp.task('watch', function() {
-  var server = plugins.livereload();
+  startExpress();
+  startLivereload();
 
-  gulp.watch(basePaths.dest + '/**').on('change', function(file) {
-    server.changed(file.path);
-  });
+  //gulp.watch(basePaths.dest + '/**', notifyLivereload);
+
+
+  
+  gulp.src(basePaths.dest + '/index.html')
+  .pipe(plugins.open('', {url: 'http://localhost:' + EXPRESS_PORT}));
+
+  // gulp.watch(basePaths.dest + '/**').on('change', function(file) {
+  //   server.changed(file.path);
+  // });
 
   // server.listen(1337, function(err){
   //   if (err) return console.log(err);
 
-  //   gulp.watch(appFiles.scripts, ['scripts']);
-  //   gulp.watch(appFiles.styles, ['styles']);
-  //   gulp.watch(appFiles.templates, ['templates']);
-  //   gulp.watch(appFiles.images, ['images']);
-  //   gulp.watch(appFiles.extras, ['extras']);
+    gulp.watch(typePaths.scripts.src + '**/*.(js|coffee)', ['scripts']);
+    gulp.watch(typePaths.templates.src + '**/*.(jade|html)', ['templates']);
+    gulp.watch(typePaths.styles.src + '**/*.(css|less)', ['styles']);
+    gulp.watch(typePaths.images.src + '**/*', ['images']);
+    gulp.watch(typePaths.extras.src + '**/*', ['extras']);
   // });
 });
 
 // Define the default task as a sequence of the above tasks
 // invode production build with "--prod"
+gulp.task('build', ['clean'], function(){
+  gulp.start('scripts', 'styles', 'extras', 'images', 'templates');
+});
+
 gulp.task('default', ['clean'], function(){
+  gulp.start('scripts', 'styles', 'extras', 'images', 'templates', 'watch');
+});
+
+gulp.task('prod', ['clean'], function(){
+  gutil.env.prod = true;
   gulp.start('scripts', 'styles', 'extras', 'images', 'templates');
 });
 
