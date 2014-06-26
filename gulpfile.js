@@ -121,7 +121,19 @@ var scriptOrder = [
   'ethersale/password-dict.js'
 ];
 
-var styleOrder = [];
+var styleOrder = [
+  'bootstrap.min.css',
+  'bootstrap-theme.min.css',
+  'font-awesome.min.css',
+  'liquid-slider.css',
+  'animate.css',
+  'roboto.css',
+  'zocial.css',
+  'meetupmap.css',
+  'printclearly.css',
+  'style.css',
+  'app.min.css'
+];
 
 gulp.task('clean', function() {
   return gulp.src(basePaths.dest)
