@@ -20,6 +20,8 @@ var basePaths = {
   dest: 'build/'
 };
 
+var GLOBSTAR = '**/*';
+
 var typePaths = {
   templates: {
     src: basePaths.src + 'templates/',
@@ -48,21 +50,21 @@ var typeMap = {
   jade:       ['*.jade'],
 
   // styles
-  css:        ['**/*.css'],
-  less:       ['**/*.less'],
+  css:        [GLOBSTAR + '.css'],
+  less:       [GLOBSTAR + '.less'],
 
   // scripts
-  js:         ['**/*.js', '!libs/**/*.js'],
-  coffee:     ['**/*.coffee'],
+  js:         [GLOBSTAR + '.js', '!libs/**/*.js'],
+  coffee:     [GLOBSTAR + '.coffee'],
   jslibs:     ['libs/**/*.js'],
 
   // images
-  png:        ['**/*.png'],
-  jpg:        ['**/*.jpg', '**/*.jpeg'],
-  gif:        ['**/*.gif'],
+  png:        [GLOBSTAR + '.png'],
+  jpg:        [GLOBSTAR + '.jpg', GLOBSTAR + '.jpeg'],
+  gif:        [GLOBSTAR + '.gif'],
 
   // extras
-  extras:   ['**/*']
+  extras:   [GLOBSTAR]
 
 };
 
@@ -149,13 +151,13 @@ gulp.task('templates', ['scripts', 'styles'], function() {
   .pipe(plugins.jade({ pretty: (isProduction ? false : true) }))
 
   .pipe(plugins.inject(
-    gulp.src(typePaths.styles.dest + '**/*', {read: false})
+    gulp.src(typePaths.styles.dest + GLOBSTAR, {read: false})
     .pipe(plugins.order(styleOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
       { addRootSlash: false, ignorePath: 'build/' })
   )
   .pipe(plugins.inject(
-    gulp.src(typePaths.scripts.dest + '**/*', {read: false})
+    gulp.src(typePaths.scripts.dest + GLOBSTAR, {read: false})
     .pipe(plugins.order(scriptOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
       { addRootSlash: false, ignorePath: 'build/' })
@@ -245,27 +247,32 @@ gulp.task('watch', ['server'], function() {
 
   plugins.livereload.listen();
   
-  gulp.watch(typePaths.styles.src + typeMap.css, ['styles']);
-  gulp.watch(typePaths.styles.src + typeMap.less, ['styles']);
+  gulp.watch(typePaths.styles.src + GLOBSTAR, ['styles']);
+  // gulp.watch(typePaths.styles.src + typeMap.css, ['styles']);
+  // gulp.watch(typePaths.styles.src + typeMap.less, ['styles']);
   
-  gulp.watch(typePaths.scripts.src + typeMap.js, ['scripts']);
-  gulp.watch(typePaths.scripts.src + typeMap.coffee, ['scripts']);
-  gulp.watch(typePaths.scripts.src + typeMap.jslibs, ['scripts']);
+  gulp.watch(typePaths.scripts.src + GLOBSTAR, ['scripts']);
+  // gulp.watch(typePaths.scripts.src + typeMap.js, ['scripts']);
+  // gulp.watch(typePaths.scripts.src + typeMap.coffee, ['scripts']);
+  // gulp.watch(typePaths.scripts.src + typeMap.jslibs, ['scripts']);
 
-  gulp.watch(typePaths.templates.src + '**/*.jade', ['templates']);
+  gulp.watch(typePaths.templates.src + GLOBSTAR, ['templates']);
 
-  // gulp.watch(basePaths.src + '**').on('change', function(file) {
-  //     server.changed(file.path);
-  // });
+  gulp.watch(typePaths.images.src + GLOBSTAR, ['images']);
+  gulp.watch(typePaths.extras.src + GLOBSTAR, ['extras']);
+
+
 });
 
-// gulp.task('open', function(){
-//   var uri = 'http://localhost:' + SERVER_PORT;
-//   gutil.log('Loading content at', uri);
+gulp.task('open', ['server'], function(){
+  var uri = 'http://localhost:' + SERVER_PORT;
+  var source = basePaths.src + '../README.md';
+  isProduction ? gutil.noop() : gutil.log('Loading content at', uri);
 
-//   gulp.src(basePaths.dest + 'favicon.ico')
-//   .pipe(plugins.open('', {url: uri}));
-// });
+  gulp.src(source)
+  .pipe(plugins.using())
+  .pipe(isProduction ? gutil.noop() : plugins.open('', {url: uri}));
+});
 
 // Define the default task as a sequence of the above tasks
 // Additionally, mimic production build on any task with "--prod"
@@ -274,7 +281,7 @@ gulp.task('build', ['clean'], function(){
 });
 
 gulp.task('default', ['clean'], function(){
-  gulp.start('extras', 'scripts', 'styles', 'images', 'templates', 'watch');
+  gulp.start('extras', 'scripts', 'styles', 'images', 'templates', 'watch', 'open');
 });
 
 gulp.task('prod', ['clean'], function(){
