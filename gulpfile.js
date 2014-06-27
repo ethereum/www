@@ -135,7 +135,6 @@ var styleOrder = [
 
 
 var SERVER_PORT = 1337;
-var LIVERELOAD_PORT = 35729;
 
 gulp.task('clean', function() {
   return gulp.src(basePaths.dest)
@@ -232,18 +231,12 @@ gulp.task('extras', function() {
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
 
-
-gulp.task('server', function(next) {
-  var connect = require('connect'),
-      server = connect();
-  server.use(connect.static(basePaths.dest)).listen(process.env.PORT || SERVER_PORT, next);
 });
 
 
 gulp.task('watch', function() {
   plugins.connect.server({
     livereload: true,
-    // livereload.port: LIVERELOAD_PORT,
     port: SERVER_PORT,
     root: basePaths.dest
   });
