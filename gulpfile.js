@@ -4,8 +4,6 @@ var gulp    = require('gulp'),
 
 var plugins = require('gulp-load-plugins')({
   camelize: true
-  // pattern: ['gulp-*', 'gulp.*'],
-  // replaceString: /\bgulp[\-.]/
 });
 
 // Default values
@@ -165,7 +163,7 @@ gulp.task('templates', ['scripts', 'styles'], function() {
 
   .pipe(plugins.size({title: 'templates', showFiles: true}))
   .pipe(gulp.dest(typePaths.templates.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 
 });
 
@@ -185,7 +183,7 @@ gulp.task('styles', function() {
   .pipe(plugins.concat('app.min.css'))
   .pipe(plugins.size({title: 'styles', showFiles: true}))
   .pipe(gulp.dest(typePaths.styles.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
 
 gulp.task('scripts', function() {
@@ -212,7 +210,7 @@ gulp.task('scripts', function() {
 
   .pipe(plugins.size({title: 'scripts', showFiles: false}))
   .pipe(gulp.dest(typePaths.scripts.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
 
 gulp.task('images', function() {
@@ -222,7 +220,7 @@ gulp.task('images', function() {
   .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
   .pipe(gulp.dest(typePaths.images.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
 
 gulp.task('extras', function() {
@@ -231,7 +229,7 @@ gulp.task('extras', function() {
   // .pipe(plugins.plumber())
   .pipe(plugins.size({title: 'extras', showFiles: false}))
   .pipe(gulp.dest(typePaths.extras.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
 
 
@@ -242,35 +240,28 @@ gulp.task('server', function(next) {
 });
 
 
-// A development task to run anytime a file changes
-gulp.task('watch', ['server'], function() {
+gulp.task('watch', function() {
+  plugins.connect.server({
+    livereload: true,
+    // livereload.port: LIVERELOAD_PORT,
+    port: SERVER_PORT,
+    root: basePaths.dest
+  });
 
-  plugins.livereload.listen();
-  
   gulp.watch(typePaths.styles.src + GLOBSTAR, ['styles']);
-  // gulp.watch(typePaths.styles.src + typeMap.css, ['styles']);
-  // gulp.watch(typePaths.styles.src + typeMap.less, ['styles']);
-  
   gulp.watch(typePaths.scripts.src + GLOBSTAR, ['scripts']);
-  // gulp.watch(typePaths.scripts.src + typeMap.js, ['scripts']);
-  // gulp.watch(typePaths.scripts.src + typeMap.coffee, ['scripts']);
-  // gulp.watch(typePaths.scripts.src + typeMap.jslibs, ['scripts']);
-
   gulp.watch(typePaths.templates.src + GLOBSTAR, ['templates']);
-
   gulp.watch(typePaths.images.src + GLOBSTAR, ['images']);
   gulp.watch(typePaths.extras.src + GLOBSTAR, ['extras']);
 
-
 });
 
-gulp.task('open', ['server'], function(){
+gulp.task('open', ['templates'], function(){
   var uri = 'http://localhost:' + SERVER_PORT;
-  var source = basePaths.src + '../README.md';
-  isProduction ? gutil.noop() : gutil.log('Loading content at', uri);
+  var sourceFile = basePaths.src + '../README.md';
 
-  gulp.src(source)
-  .pipe(plugins.using())
+  if (isProduction) gutil.log('Loading content at', uri);
+  gulp.src(sourceFile)
   .pipe(isProduction ? gutil.noop() : plugins.open('', {url: uri}));
 });
 
