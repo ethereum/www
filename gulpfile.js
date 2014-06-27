@@ -133,31 +133,9 @@ var styleOrder = [
   'app.min.css'
 ];
 
-var EXPRESS_PORT = 1337;
-var EXPRESS_ROOT = __dirname + '/' + basePaths.dest;
+
+var SERVER_PORT = 1337;
 var LIVERELOAD_PORT = 35729;
-
-function startExpress() {
-  var lr = require('connect-livereload')();
-  var express = require('express');
-  var app = express();
-  app.use(lr);
-  app.use(express.static(EXPRESS_ROOT));
-  app.listen(EXPRESS_PORT);
-}
-
-var lr;
-function startLivereload() {
- 
-  lr = require('tiny-lr')();
-  lr.listen(LIVERELOAD_PORT);
-}
-
-function notifyLivereload(event) {
-
-  gulp.src(event.path, {read: false})
-      .pipe(require('gulp-livereload')(lr));
-}
 
 gulp.task('clean', function() {
   return gulp.src(basePaths.dest)
@@ -166,6 +144,8 @@ gulp.task('clean', function() {
 
 gulp.task('templates', ['scripts', 'styles'], function() {
   return gulp.src(appFiles.templates, {cwd: typePaths.templates.src})
+  // .pipe(plugins.watch())
+  // .pipe(plugins.plumber())
   .pipe(plugins.jade({ pretty: (isProduction ? false : true) }))
 
   .pipe(plugins.inject(
@@ -183,84 +163,109 @@ gulp.task('templates', ['scripts', 'styles'], function() {
 
   .pipe(plugins.size({title: 'templates', showFiles: true}))
   .pipe(gulp.dest(typePaths.templates.dest))
-  .on('error', function(err){
-    new gutil.PluginError('templates', err, {showStack: true});
-  });
+  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
+
 });
 
 gulp.task('styles', function() {
   return es.merge(
+
     gulp.src(typeMap.less, {cwd: typePaths.styles.src})
+    // .pipe(plugins.watch())
+    // .pipe(plugins.plumber())
     .pipe(plugins.less()),
+ 
     gulp.src(typeMap.css, {cwd: typePaths.styles.src}))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
+    // .pipe(plugins.watch())
+    // .pipe(plugins.plumber())
+
   .pipe(isProduction ? plugins.csso() : gutil.noop())
   .pipe(plugins.concat('app.min.css'))
   .pipe(plugins.size({title: 'styles', showFiles: true}))
-  .pipe(gulp.dest(typePaths.styles.dest));
+  .pipe(gulp.dest(typePaths.styles.dest))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
 });
 
 gulp.task('scripts', function() {
   return es.merge(
     es.merge(
+
       gulp.src(typeMap.coffee, {cwd: typePaths.scripts.src})
+      // .pipe(plugins.watch())
+      // .pipe(plugins.plumber())
       .pipe(plugins.coffee()),
+
       gulp.src(typeMap.js, {cwd: typePaths.scripts.src}))
+      // .pipe(plugins.watch())
+      // .pipe(plugins.plumber())
+
     .pipe(plugins.jshint())
     .pipe(plugins.jshint.reporter('default'))
     .pipe(isProduction ? plugins.uglify() : gutil.noop())
     .pipe(plugins.concat('app.min.js')),
+
     gulp.src(typeMap.jslibs, {cwd:typePaths.scripts.src}))
+    // .pipe(plugins.watch())
+    // .pipe(plugins.plumber())
+
   .pipe(plugins.size({title: 'scripts', showFiles: false}))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
   .pipe(gulp.dest(typePaths.scripts.dest))
-  .on('error', function(err){
-    new gutil.PluginError('scripts', err, {showStack: true});
-  });
+  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
 });
 
 gulp.task('images', function() {
   return gulp.src(appFiles.images, {cwd: typePaths.images.src})
+  // .pipe(plugins.watch())
+  // .pipe(plugins.plumber())
   .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
-  .pipe(gulp.dest(typePaths.images.dest));
+  .pipe(gulp.dest(typePaths.images.dest))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
 });
 
 gulp.task('extras', function() {
   return gulp.src(appFiles.extras, {cwd: typePaths.extras.src})
+  // .pipe(plugins.watch())
+  // .pipe(plugins.plumber())
   .pipe(plugins.size({title: 'extras', showFiles: false}))
-  .pipe(isProduction ? gutil.noop() : plugins.livereload(lr))
-  .pipe(gulp.dest(typePaths.extras.dest));
+  .pipe(gulp.dest(typePaths.extras.dest))
+  .pipe(isProduction ? gutil.noop() : plugins.livereload({ auto: false }));
 });
 
+
+gulp.task('server', function(next) {
+  var connect = require('connect'),
+      server = connect();
+  server.use(connect.static(basePaths.dest)).listen(process.env.PORT || SERVER_PORT, next);
+});
 
 
 // A development task to run anytime a file changes
-gulp.task('watch', function() {
-  startExpress();
-  startLivereload();
+gulp.task('watch', ['server'], function() {
 
-  //gulp.watch(basePaths.dest + '/**', notifyLivereload);
+  plugins.livereload.listen();
+  
+  gulp.watch(typePaths.styles.src + typeMap.css, ['styles']);
+  gulp.watch(typePaths.styles.src + typeMap.less, ['styles']);
+  
+  gulp.watch(typePaths.scripts.src + typeMap.js, ['scripts']);
+  gulp.watch(typePaths.scripts.src + typeMap.coffee, ['scripts']);
+  gulp.watch(typePaths.scripts.src + typeMap.jslibs, ['scripts']);
 
-  // gulp.watch(basePaths.dest + '/**').on('change', function(file) {
-  //   server.changed(file.path);
-  // });
+  gulp.watch(typePaths.templates.src + '**/*.jade', ['templates']);
 
-  // server.listen(1337, function(err){
-  //   if (err) return console.log(err);
-
-    gulp.watch(basePaths.src + '**/*', ['build']);
+  // gulp.watch(basePaths.src + '**').on('change', function(file) {
+  //     server.changed(file.path);
   // });
 });
 
-gulp.task('open', function(){
-  var uri = 'http://localhost:' + EXPRESS_PORT;
-  gutil.log('Loading content at', uri);
+// gulp.task('open', function(){
+//   var uri = 'http://localhost:' + SERVER_PORT;
+//   gutil.log('Loading content at', uri);
 
-  gulp.src(basePaths.dest + 'favicon.ico')
-  .pipe(plugins.open('', {url: uri}));
-});
+//   gulp.src(basePaths.dest + 'favicon.ico')
+//   .pipe(plugins.open('', {url: uri}));
+// });
 
 // Define the default task as a sequence of the above tasks
 // Additionally, mimic production build on any task with "--prod"
@@ -269,7 +274,7 @@ gulp.task('build', ['clean'], function(){
 });
 
 gulp.task('default', ['clean'], function(){
-  gulp.start('extras', 'scripts', 'styles', 'images', 'templates', 'watch', 'open');
+  gulp.start('extras', 'scripts', 'styles', 'images', 'templates', 'watch');
 });
 
 gulp.task('prod', ['clean'], function(){

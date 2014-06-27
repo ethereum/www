@@ -4,9 +4,8 @@
   "description": "'plexus' design",
   "author": "ethereum project",
   "devDependencies": {
-    "connect-livereload": "^0.4.0",
+    "connect": "^2.21.1",
     "event-stream": "^3.1.4",
-    "express": "^4.4.4",
     "gulp": "~3.8.1",
     "gulp-clean": "~0.3.0",
     "gulp-coffee": "^1.4.2",
@@ -21,10 +20,12 @@
     "gulp-load-plugins": "^0.5.2",
     "gulp-open": "^0.2.8",
     "gulp-order": "^1.1.1",
+    "gulp-plumber": "^0.6.3",
     "gulp-size": "^0.4.0",
     "gulp-uglify": "~0.1.0",
     "gulp-using": "0.0.1",
     "gulp-util": "^2.2.17",
+    "gulp-watch": "^0.6.8",
     "marked": "~0.3.0",
     "tiny-lr": "0.0.7"
   }
