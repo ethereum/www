@@ -160,7 +160,7 @@ gulp.task('templates', ['scripts', 'styles'], function() {
       { addRootSlash: false, ignorePath: 'build/' })
   )
 
-  .pipe(plugins.size({title: 'templates', showFiles: true}))
+  .pipe(plugins.size({title: 'templates', showFiles: true, gzip: true}))
   .pipe(gulp.dest(typePaths.templates.dest))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 
@@ -216,7 +216,7 @@ gulp.task('images', function() {
   return gulp.src(appFiles.images, {cwd: typePaths.images.src})
   // .pipe(plugins.watch())
   // .pipe(plugins.plumber())
-  .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 5, progressive: true, interlaced: true }) : gutil.noop())
+  .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
   .pipe(gulp.dest(typePaths.images.dest))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
