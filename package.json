@@ -25,6 +25,7 @@
     "gulp-using": "0.0.1",
     "gulp-util": "^2.2.17",
     "gulp-watch": "^0.6.8",
+    "gulp-zip": "^0.4.0",
     "marked": "~0.3.0",
     "tiny-lr": "0.0.7"
   }

@@ -231,6 +231,14 @@ gulp.task('extras', function() {
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
 
+gulp.task('bundle', function () {
+  var date = new Date();
+  var nicedate = date.toISOString().replace(/(\-|:|\.)/g, '');
+  var archiveName = 'archive-'+ nicedate +'.zip'
+  console.log(archiveName);
+    return gulp.src(basePaths.dest + GLOBSTAR)
+        .pipe(plugins.zip(archiveName))
+        .pipe(gulp.dest(basePaths.src + '..'));
 });
 
 

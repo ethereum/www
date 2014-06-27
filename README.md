@@ -21,14 +21,7 @@ Assuming nodejs/npm is correctly installed, the next step is to install gulp wit
 npm install && gulp build
 ```
 
-This will install all dependencies and compile the site to ./build/ (or whatever is defined as basePaths.dest in gulpfile.js). To instruct gulp to compile for production (including minification), use:
+This will install all dependencies and compile the site to ./build/ (or whatever is defined as basePaths.dest in gulpfile.js). To instruct gulp to compile for production (including minification), use `gulp prod` and possibly `gulp bundle` to compress it into a zip.
 
-```
-gulp --prod
-```
-
-or the default dev task, which launches express (live reload done soon):
-```
-gulp
-```
+Or use the default dev task, which launches a local live-reload server for preview: `gulp`
 
