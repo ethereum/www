@@ -30,13 +30,13 @@ gulp.task('templates', ['scripts', 'styles'], function() {
     gulp.src(config.typePaths.styles.dest + config.GLOBSTAR, {read: false})
     .pipe(plugins.order(config.styleOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
-      { addRootSlash: false, ignorePath: 'build/' })
+      { addRootSlash: false, ignorePath: config.basePaths.dest })
   )
   .pipe(plugins.inject(
     gulp.src(config.typePaths.scripts.dest + config.GLOBSTAR, {read: false})
     .pipe(plugins.order(config.scriptOrder))
     .pipe(plugins.using({prefix: 'Injecting'})),
-      { addRootSlash: false, ignorePath: 'build/' })
+      { addRootSlash: false, ignorePath: config.basePaths.dest })
   )
 
   .pipe(plugins.size({title: 'templates', showFiles: true, gzip: true}))
