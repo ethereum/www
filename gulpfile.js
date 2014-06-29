@@ -58,6 +58,7 @@ gulp.task('styles', function() {
     // .pipe(plugins.plumber())
 
   .pipe(isProduction ? plugins.csso() : gutil.noop())
+  .pipe(plugins.order(config.styleOrder))
   .pipe(plugins.concat('app.min.css'))
   .pipe(plugins.size({title: 'styles', showFiles: true}))
   .pipe(gulp.dest(config.typePaths.styles.dest))
@@ -80,10 +81,11 @@ gulp.task('scripts', function() {
       .pipe(plugins.jshint())
       .pipe(plugins.jshint.reporter('default'))
 
-      .pipe(isProduction ? plugins.uglify() : gutil.noop())
-      .pipe(plugins.concat('app.min.js')),
+      .pipe(isProduction ? plugins.uglify() : gutil.noop()),
 
     gulp.src(config.typeMap.jslibs, {cwd:config.typePaths.scripts.src}))
+    .pipe(plugins.order(config.scriptOrder))
+    .pipe(isProduction ? plugins.concat('app.min.js') : gutil.noop())
     // .pipe(plugins.watch())
     // .pipe(plugins.plumber())
 
