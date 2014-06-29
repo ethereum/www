@@ -118,9 +118,10 @@ gulp.task('bundle', function () {
   var nicedate = date.toISOString().replace(/(\-|:|\.)/g, '');
   var archiveName = 'archive-'+ nicedate +'.zip';
   console.log(archiveName);
-    return gulp.src(config.basePaths.dest + config.GLOBSTAR)
-        .pipe(plugins.zip(archiveName))
-        .pipe(gulp.dest(config.basePaths.src + '..'));
+  return gulp.src(config.basePaths.dest + config.GLOBSTAR)
+    .pipe(plugins.zip(archiveName))
+    .pipe(plugins.size({title: 'Bundle', showFiles: true}))
+    .pipe(gulp.dest(config.basePaths.src + '..'));
 });
 
 
