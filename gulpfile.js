@@ -77,10 +77,11 @@ gulp.task('scripts', function() {
       // .pipe(plugins.watch())
       // .pipe(plugins.plumber())
 
-    .pipe(plugins.jshint())
-    .pipe(plugins.jshint.reporter('default'))
-    .pipe(isProduction ? plugins.uglify() : gutil.noop())
-    .pipe(plugins.concat('app.min.js')),
+      .pipe(plugins.jshint())
+      .pipe(plugins.jshint.reporter('default'))
+
+      .pipe(isProduction ? plugins.uglify() : gutil.noop())
+      .pipe(plugins.concat('app.min.js')),
 
     gulp.src(config.typeMap.jslibs, {cwd:config.typePaths.scripts.src}))
     // .pipe(plugins.watch())
