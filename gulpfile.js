@@ -60,7 +60,7 @@ gulp.task('styles', function() {
   .pipe(isProduction ? plugins.csso() : gutil.noop())
   .pipe(plugins.order(config.styleOrder))
   .pipe(plugins.concat('app.min.css'))
-  .pipe(plugins.size({title: 'styles', showFiles: true}))
+  .pipe(plugins.size({title: 'styles', showFiles: true, gzip: true}))
   .pipe(gulp.dest(config.typePaths.styles.dest))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
@@ -89,7 +89,7 @@ gulp.task('scripts', function() {
     // .pipe(plugins.watch())
     // .pipe(plugins.plumber())
 
-  .pipe(plugins.size({title: 'scripts', showFiles: false}))
+  .pipe(plugins.size({title: 'scripts', showFiles: false, gzip: true}))
   .pipe(gulp.dest(config.typePaths.scripts.dest))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
 });
