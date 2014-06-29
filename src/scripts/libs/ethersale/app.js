@@ -18,7 +18,8 @@ var isPassInDictionary = function(pass){
   if (lastPassCheckVal === pass) return lastPassCheckResult;
   lastPassCheckVal = pass;
 
-  return lastPassCheckResult = (_.indexOf(PASSWORD_DICT, pass, true) !== -1);
+  lastPassCheckResult = (_.indexOf(PASSWORD_DICT, pass, true) !== -1);
+  return lastPassCheckResult;
 };
 
 var $downloadLink = $("#downloadLink");
@@ -32,7 +33,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
   $scope.btcToSend = 1.5;
   $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
-  var timerUnspent
+  var timerUnspent;
 
   $scope.updateEthToBuy = function()
   {
@@ -59,12 +60,13 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     angular.element(':focus').val('');
     setTimeout(function(){
       angular.element(':focus').val('');
-    }, 100)
+    }, 100);
   };
 
   $scope.$watch("email", function(val){
     var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return $scope.emailValid = re.test(val);
+    $scope.emailValid = re.test(val);
+    return $scope.emailValid;
   });
 
   $scope.mkQRCode = function(address, amount) {
@@ -168,7 +170,8 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         if (!$scope.wallet || !$scope.wallet.btcaddr) return;
 
         if (e || (!e && !unspent)) {
-          return $scope.status = e || 'Error connecting, please try later.';
+          $scope.status = e || 'Error connecting, please try later.';
+          return $scope.status;
         }
         var tx = finalize($scope.wallet, unspent, $scope.pwkey);
         TX = tx;
@@ -203,7 +206,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         }
       });
     }, 10000);
-  };
+  }
 
 
   $scope.downloadWallet = function() {
@@ -406,7 +409,7 @@ ethereum.factory('Purchase', ['$http', function($http) {
             });
           }
 
-          cb(null, res)
+          cb(null, res);
         },
         error: function( e )
         {
@@ -418,7 +421,7 @@ ethereum.factory('Purchase', ['$http', function($http) {
             cb(e.status);
           }
         }
-      })
+      });
     },
     sendTx: function(data, cb) {
       $.ajax({
@@ -437,15 +440,15 @@ ethereum.factory('Purchase', ['$http', function($http) {
             })
             .error(function(e) {
               console.log(e);
-            })
+            });
 
-          cb(null, response)
+          cb(null, response);
         },
         error: function( e )
         {
-          cb(e.status)
+          cb(e.status);
         }
-      })
+      });
     }
-  }
+  };
 }]);

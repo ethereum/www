@@ -98,7 +98,7 @@ function finalize(wallet,unspent,pwkey) {
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
     if (balance < 1000000)
         return false;
-    console.log('using unspent outputs:', unspent)
+    console.log('using unspent outputs:', unspent);
     var outputs = [
         exodus + ':' + (balance - 30000),
         Bitcoin.Address(wallet.ethaddr).toString() + ':10000'
