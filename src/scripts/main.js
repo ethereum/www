@@ -438,7 +438,7 @@ $(function() {
     function startConfirmationsInterval(transactionHash){
       return setInterval(function() {
         $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + transactionHash + "?cors=true&format=json", function(data){
-          if( data.block_height == undefined ){
+          if( data.block_height === undefined ){
             $('.confirmations-dial-shim').text("0/6");
             return false;
           }
@@ -452,7 +452,7 @@ $(function() {
               clearInterval(timerConfirmations);
             }
             $('.confirmations-dial-shim').text(confirmations + "/6");
-          })
+          });
         });
       }, 20000);
     }
@@ -515,7 +515,7 @@ $(function() {
 
           data.forEach(function(d) {
             d.date = parseDate(d.date);
-            total += parseFloat(d.amount)
+            total += parseFloat(d.amount);
             d.amount = total;
           });
 
@@ -554,7 +554,7 @@ $(function() {
 
       id = id[1];
       return id;
-  };
+  }
 
   $('.video-responsive').on('click', function()
   {

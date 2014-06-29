@@ -10,7 +10,7 @@ $(function() {
 	// For mobile screens, just show an image called 'poster.jpg'. Mobile
 	// screens don't support autoplaying videos, or for IE.
 	if(screen.width < 800 || iedetect(8) || iedetect(7) || 'ontouchstart' in window) {
-
+		var adjSize;
 		(adjSize = function() { // Create function called adjSize
 
 			$width = $(window).width(); // Width of the screen
@@ -27,7 +27,7 @@ $(function() {
 			// Hide video
 			$('video').hide();
 
-		})(); // Run instantly
+		}).call(); // Run instantly
 
 		// Run on resize too
 		$(window).resize(adjSize);
@@ -41,7 +41,7 @@ $(function() {
 				$vidwidth = this.videoWidth, // Width of video (actual width)
 				$vidheight = this.videoHeight, // Height of video (actual height)
 				$aspectRatio = $vidwidth / $vidheight; // The ratio the video's height and width are in
-
+			var adjSize;
 			(adjSize = function() { // Create function called adjSize
 
 				$width = $(window).width(); // Width of the screen
@@ -62,7 +62,7 @@ $(function() {
 					$vid = $('#feature video').css({'width' : $width+'px'});
 				}
 
-			})(); // Run function immediately
+			}).call(); // Run function immediately
 
 			// Run function also on window resize.
 			$(window).resize(adjSize);
