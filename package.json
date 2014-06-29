@@ -5,7 +5,7 @@
   "author": "ethereum project",
   "devDependencies": {
     "event-stream": "^3.1.4",
-    "gulp": "~3.8.1",
+    "gulp": "^3.8.5",
     "gulp-clean": "~0.3.0",
     "gulp-coffee": "^1.4.2",
     "gulp-concat": "~2.1.7",

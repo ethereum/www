@@ -81,6 +81,7 @@ module.exports = {
     'd3.min.js',
     'd3_tooltip.js',
     'nano.scroller.min.js',
+
     'topojson.v1.min.js',
     'meetupmap.js',
     'video-background.js',
@@ -90,10 +91,9 @@ module.exports = {
     'underscore-min.js',
     'moment.min.js',
     'jquery.PrintArea.js',
-    'ethersale/angular.min.js',
-    'qrcode.min.js',
     'main.js',
 
+    'ethersale/angular.min.js',
     'ethersale/jquery.qrcode.min.js',
     'ethersale/bitcoinjs-min.js',
     'ethersale/aes.js',
@@ -102,12 +102,6 @@ module.exports = {
     'ethersale/sha3.js',
     'ethersale/xethtool.js',
     'ethersale/base64.js',
-    'ethersale/angular-animate.min.js',
-    'ethersale/angular-resource.min.js',
-    'ethersale/angular-route.min.js',
-    'ethersale/jquery-1.10.2.min.js',
-    'jquery.fitvids.js',
-    'Chart.min.js',
     'ethersale/app.js',
     'ethersale/password-dict.js'
   ],

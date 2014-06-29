@@ -168,8 +168,8 @@ $(function() {
         btcToSend = 1,
         mainSlider,
         appStepsSlider,
-        ethForBtc = 2000,
-        nextEthForBtc = ethForBtc - 15,
+        ethForBtcCalc = 2000,
+        nextEthForBtc = ethForBtcCalc - 15,
         timerConfirmations,
         $purchaseForm = $("[name=purchase_form]");
 
@@ -321,16 +321,16 @@ $(function() {
 
         if(delta.days > -15)
         {
-          ethForBtc = ETHER_FOR_BTC - 15 * Math.max(delta.days - 15, 0);
+          ethForBtcCalc = ETHER_FOR_BTC - 15 * Math.max(delta.days - 15, 0);
         }
         else
         {
-          ethForBtc = ETHER_FOR_BTC;
+          ethForBtcCalc = ETHER_FOR_BTC;
         }
 
-        nextEthForBtc = ethForBtc - 15;
+        nextEthForBtc = ethForBtcCalc - 15;
 
-        $(".eth-to-btc").text( numeral(ethForBtc).format("0,0") );
+        $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
         $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
 
         updateTimerDials($rateCountdownDials, delta.days <= 15 ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
@@ -343,10 +343,10 @@ $(function() {
 
     _.extend(window, {
       ethForBtc: function(btc){
-        return Math.round((typeof btc == "number" ? btc : 1) * ethForBtc * 10000) / 10000;
+        return Math.round((typeof btc == "number" ? btc : 1) * ethForBtcCalc * 10000) / 10000;
       },
       btcForEth: function(eth){
-        return Math.round((typeof eth == "number" ? eth : 1) / ethForBtc * 10000) / 10000;
+        return Math.round((typeof eth == "number" ? eth : 1) / ethForBtcCalc * 10000) / 10000;
       }
     });
 
