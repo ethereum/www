@@ -116,7 +116,7 @@ gulp.task('extras', function() {
 gulp.task('bundle', function () {
   var date = new Date();
   var nicedate = date.toISOString().replace(/(\-|:|\.)/g, '');
-  var archiveName = 'archive-'+ nicedate +'.zip'
+  var archiveName = 'archive-'+ nicedate +'.zip';
   console.log(archiveName);
     return gulp.src(config.basePaths.dest + config.GLOBSTAR)
         .pipe(plugins.zip(archiveName))
@@ -143,13 +143,12 @@ gulp.task('open', ['templates'], function(){
   var uri = 'http://localhost:' + config.SERVER_PORT;
   var sourceFile = config.basePaths.src + '../README.md';
 
-  if (!isProduction) gutil.log('Loading content at', uri);
   gulp.src(sourceFile)
   .pipe(isProduction ? gutil.noop() : plugins.open('', {url: uri}));
 });
 
 // Define the default task as a sequence of the above tasks
-// Additionally, mimic production build on any task with "--prod"
+// Additionally, enable production build on any task by adding "--prod"
 gulp.task('build', ['clean'], function(){
   gulp.start('extras', 'scripts', 'styles', 'images', 'templates');
 });
@@ -158,8 +157,4 @@ gulp.task('default', ['clean'], function(){
   gulp.start('extras', 'scripts', 'styles', 'images', 'templates', 'watch', 'open');
 });
 
-gulp.task('prod', ['clean'], function(){
-  isProduction = true;
-  gulp.start('build');
-});
 
