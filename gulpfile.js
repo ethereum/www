@@ -121,7 +121,7 @@ gulp.task('bundle', function () {
   return gulp.src(config.basePaths.dest + config.GLOBSTAR)
     .pipe(plugins.zip(archiveName))
     .pipe(plugins.size({title: 'Bundle', showFiles: true}))
-    .pipe(gulp.dest(config.basePaths.src + '..'));
+    .pipe(gulp.dest('..'));
 });
 
 
