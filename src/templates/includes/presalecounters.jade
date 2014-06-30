@@ -71,8 +71,6 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
         a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
-      #entropy-progress
-        .bar(style="width:{{entropyPercent}}%")
       .container
         .row
           .col-md-4
@@ -100,7 +98,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       p amount ETH:
                       input(type="text", ng-model="ethToBuy", numeric, ng-change="updateBtcToSend()").amount-box.eth-to-btc
                   section
-                    p.text-center The minimum ammount is 0.01 BTC.
+                    p.text-center The minimum amount is 0.01 BTC.
               .col-md-2
               .col-md-5
                 .xfix-height
@@ -138,6 +136,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             form(name="purchase_form", role="form", novalidate)
               section
                 p.text-center A passphrase is needed to encrypt and recover your payment keys.<br>In addition to generating a downloadable backup, we will also send you an email with recovery information attached.
+                #entropy-progress
+                  .bar(style="width:{{entropyPercent}}%")
               .row
                 .col-md-5
                   section.form-group
@@ -146,12 +146,13 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     label Your wallet back up will be emailed to this email
                     input#purchase-email.form-control(type="email", name="email", ng-paste="handlePaste()", ng-model="email", placeholder="Enter your email", required, ng-disabled="wallet.ethaddr")
                     .label-container.email
-                      span(ng-class="{active: emailValid}") <i class="fa fa-check"></i> valid email
-                    input#purchase-email-repeat.form-control(type="email", name="email_repeat", ng-paste="handlePaste()", ng-model="email_repeat", placeholder="Enter your email", data-match="email", ng-disabled="wallet.ethaddr")
+                      span(ng-class="{active: emailValid}") <i class="fa fa-{{emailValid ? 'check' : 'times'}}"></i> valid email
+                    input#purchase-email-repeat.form-control(type="email", name="email_repeat", ng-paste="handlePaste()", ng-model="email_repeat", required, placeholder="Enter your email", data-match="email", ng-disabled="wallet.ethaddr")
                     .label-container
                       label.error(ng-show="purchase_form.email_repeat.$error.match") Emails do not match
+                      label(ng-show="purchase_form.email_repeat.$error.required") Please confirm email
                   section
-                    p.important Fill the form correctly<br>before moving to the next step
+                    p.important Please fill the form correctly<br>to move to the next step
                 .col-md-2
                 .col-md-5
                   section.form-group
@@ -159,21 +160,21 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     label.mini
                       div Passphrase strength:
                         ul#strength(check-strength="password")
-                    input#password.form-control(type="password", name="password", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
+                    input#password.form-control(type="password", name="password", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
                     .label-container
                       ul#password-checks
-                        li(ng-class="{active: passChecks.longStr}") <i class="fa fa-check"></i> 12+ characters
-                        li(ng-class="{active: passChecks.bothCase}") <i class="fa fa-check"></i> Upper and lowercase letters
-                        li(ng-class="{active: passChecks.numbers}") <i class="fa fa-check"></i> Numbers
-                        //- li(ng-class="{active: passChecks.symbols}") <i class="fa fa-check"></i> Symbols
-                        li(ng-class="{active: passChecks.unique}") <i class="fa fa-check"></i> Unique
+                        li(ng-class="{active: passChecks.longStr}") <i class="fa fa-{{passChecks.longStr ? 'check' : 'times'}}"></i> 12+ characters
+                        li(ng-class="{active: passChecks.bothCase}") <i class="fa fa-{{passChecks.bothCase ? 'check' : 'times'}}"></i> Upper and lowercase letters
+                        li(ng-class="{active: passChecks.numbers}") <i class="fa fa-{{passChecks.numbers ? 'check' : 'times'}}"></i> Numbers
+                        //- li(ng-class="{active: passChecks.symbols}") <i class="fa fa-{{passChecks.symbols ? 'check' : 'times'}}"></i> Symbols
+                        li(ng-class="{active: passChecks.unique}") <i class="fa fa-{{passChecks.unique ? 'check' : 'times'}}"></i> Unique
                     input#password_repeat.form-control(type="password", name="password_repeat", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
                     .label-container
                       label.error(ng-show="purchase_form.password_repeat.$error.match") Passphrases do not match
 
                   section
-                    p.important(ng-if="collectingEntropy") {{ "Move your mouse to generate entropy" }}
-                    p.important(ng-if="!collectingEntropy") Choose a strong passphrase and do not lose it. The password will be required to access your ether
+                    p.important(ng-if="collectingEntropy") {{ "Move your mouse to generate entropy and move to the next step." }}
+                    p.important(ng-if="!collectingEntropy") Choose a strong passphrase and do not lose it. The password will be required to access your ether.
           .step2-content
             h4 You are about to buy
               span.eth-to-buy &nbsp;{{ethToBuy}}&nbsp;
@@ -203,7 +204,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     p Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
                   section
-                    p.copy You can download your wallet using the link below. You will also be emailed a backup of this file when the transaction is complete.
+                    p.copy You can already download your wallet using the link below. You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
                     p.text-center
                       a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
           .step3-content

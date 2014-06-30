@@ -80,7 +80,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
   var authDetailsOK = function(){
     return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK &&
-      ($scope.password === $scope.password_repeat);
+      ($scope.password === $scope.password_repeat) && ($scope.email === $scope.email_repeat);
   };
 
   $scope.$watch("[email,email_repeat,password,password_repeat]", function(){
@@ -258,7 +258,6 @@ ethereum.directive('checkStrength', function() {
           var _symbols = _regex.test(p);
 
           var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];
-          var _flags = [_lowerLetters, _upperLetters, _numbers];
           var _passedMatches = _flags.map(function(el) {
             return el === true;
           });

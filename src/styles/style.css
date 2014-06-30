@@ -983,7 +983,7 @@ a:hover {
 }
 
 #app-steps-content i.fa{
-  vertical-align: middle;
+  /*vertical-align: middle;*/
 }
 
 #strength{
@@ -1058,7 +1058,7 @@ a:hover {
   list-style-type:none;
   display:inline-block;
   margin-right: 5px;
-  color: #888;
+  color: red;
   font-size: 9px;
 }
 
@@ -1067,7 +1067,7 @@ a:hover {
 }
 
 #password-checks li.active{
-  color: #000;
+  color: green;
 }
 
 .btc-transaction-id{
@@ -1238,13 +1238,13 @@ a:hover {
 }
 
 .label-container.email span{
-  color: #fff;
+  color: red;
   padding-right: 10px;
   font-size: 10px;
 }
 
 .label-container.email span.active{
-  color: #000;
+  color: green;
 }
 
 
@@ -1341,4 +1341,12 @@ a:hover {
 .smaller {
   font-size: 12px;
   line-height: 1.5;
+}
+
+input.ng-valid {
+  border-color: green !important;
+}
+
+input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.invalidPassword {
+  border-color: red !important;
 }

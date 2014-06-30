@@ -563,8 +563,10 @@ $(function() {
       return id;
   }
 
-  $('.video-responsive').on('click', function()
+  $('.video-responsive').on('click', function(e)
   {
+    e.preventDefault();
+
     var id = getYoutubeID( $(this).find('a').attr('href') );
 
     var video_url = "//www.youtube.com/embed/" + id + "?autoplay=1";
