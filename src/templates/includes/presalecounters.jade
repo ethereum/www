@@ -151,8 +151,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     .label-container
                       label.error(ng-show="purchase_form.email_repeat.$error.match") Emails do not match
                   section
-                    p.important(ng-if="collectingEntropy") {{ "Move your mouse to generate entropy" }}
-                    p.important(ng-if="!collectingEntropy") Fill the form correctly<br>before moving to the next step
+                    p.important Fill the form correctly<br>before moving to the next step
                 .col-md-2
                 .col-md-5
                   section.form-group
@@ -163,17 +162,18 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     input#password.form-control(type="password", name="password", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
                     .label-container
                       ul#password-checks
-                        li(ng-class="{active: passChecks.longStr}") <i class="fa fa-check"></i> 8+ characters
+                        li(ng-class="{active: passChecks.longStr}") <i class="fa fa-check"></i> 12+ characters
                         li(ng-class="{active: passChecks.bothCase}") <i class="fa fa-check"></i> Upper and lowercase letters
                         li(ng-class="{active: passChecks.numbers}") <i class="fa fa-check"></i> Numbers
-                        li(ng-class="{active: passChecks.symbols}") <i class="fa fa-check"></i> Symbols
+                        //- li(ng-class="{active: passChecks.symbols}") <i class="fa fa-check"></i> Symbols
                         li(ng-class="{active: passChecks.unique}") <i class="fa fa-check"></i> Unique
                     input#password_repeat.form-control(type="password", name="password_repeat", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
                     .label-container
                       label.error(ng-show="purchase_form.password_repeat.$error.match") Passphrases do not match
 
                   section
-                    p.important Do not forget your passphrase!
+                    p.important(ng-if="collectingEntropy") {{ "Move your mouse to generate entropy" }}
+                    p.important(ng-if="!collectingEntropy") Choose a strong passphrase and do not lose it. The password will be required to access your ether
           .step2-content
             h4 You are about to buy
               span.eth-to-buy &nbsp;{{ethToBuy}}&nbsp;
@@ -203,7 +203,9 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     p Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
                   section
-                    p.copy Once we have confirmed the payment, the option to download your wallet will appear. You will also be emailed a backup of this file.
+                    p.copy You can download your wallet using the link below. You will also be emailed a backup of this file when the transaction is complete.
+                    p.text-center
+                      a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
           .step3-content
             a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
             h4 Thank you for your purchase

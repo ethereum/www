@@ -156,6 +156,7 @@ $(function() {
         $backToStart = $("#back-to-start"),
         $entropyProgress = $("#entropy-progress"),
         $downloadLink = $("#downloadLink"),
+        $downloadLinkTemp = $("#downloadLinkTemp"),
         purchaseInputs = {
           $email: $("#purchase-email"),
           $emailRepeat: $("#purchase-email-repeat"),
@@ -174,6 +175,10 @@ $(function() {
         $purchaseForm = $("[name=purchase_form]");
 
     $downloadLink.click(function(e){
+      e.preventDefault();
+    });
+
+    $downloadLinkTemp.click(function(e){
       e.preventDefault();
     });
 
@@ -404,10 +409,12 @@ $(function() {
 
 
 
-    window.onWalletReady = function(){
+    window.onWalletReady = function(downloadLinkHref){
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(1);
       $(".step-breadcrumbs").attr("data-step", "2");
+      $downloadLink.attr("href", downloadLinkHref);
+      $downloadLinkTemp.attr("href", downloadLinkHref)
     };
 
 

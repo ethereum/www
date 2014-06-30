@@ -124,7 +124,12 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcaddr: " + $scope.wallet.btcaddr;
         if (!$scope.$$phase) $scope.$apply();
 
-        (window.onWalletReady || function(){})();
+        doc = JSON.stringify($scope.wallet);
+
+        var downloadLinkEle = angular.element('#downloadLink');
+            downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
+
+        (window.onWalletReady || function(){})('data:application/octet-stream;base64,' + Base64.encode(doc));
       }
     }
   };
@@ -134,10 +139,10 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       $scope.passChecks = {};
     }else if(oldV !== newV){
       $scope.passChecks = {
-        longStr: newV.length > 7,
+        longStr: newV.length > 11,
         bothCase: /[a-z]+/.test(newV) && /[A-Z]+/.test(newV),
         numbers: /[0-9]+/.test(newV),
-        symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV), //"
+        //symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV), //"
         unique: !isPassInDictionary(newV)
       };
 
@@ -181,7 +186,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
           var data = {
             'tx': tx.serializeHex(),
             'email': $scope.email,
-            'emailjson': $scope.backup
+            'emailjson': $scope.wallet
           };
           $scope.didPushTx = true;
 
@@ -200,8 +205,6 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
             (window.onTransactionComplete || function(){})(
               'data:application/octet-stream;base64,' + Base64.encode(doc), Bitcoin.convert.bytesToHex(tx.getHash())
             );
-            var downloadLinkEle = angular.element('#downloadLink');
-            downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
           });
         }
       });
@@ -255,6 +258,7 @@ ethereum.directive('checkStrength', function() {
           var _symbols = _regex.test(p);
 
           var _flags = [_lowerLetters, _upperLetters, _numbers, _symbols];
+          var _flags = [_lowerLetters, _upperLetters, _numbers];
           var _passedMatches = _flags.map(function(el) {
             return el === true;
           });
@@ -267,7 +271,7 @@ ethereum.directive('checkStrength', function() {
           _force += _matches * 10;
 
           // penality (short password)
-          _force = (p.length <= 8) ? Math.min(_force, 10) : _force;
+          _force = (p.length <= 12) ? Math.min(_force, 10) : _force;
 
           // penality (poor variety of characters)
           _force = (_matches == 1) ? Math.min(_force, 10) : _force;
