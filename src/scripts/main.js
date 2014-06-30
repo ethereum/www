@@ -414,7 +414,7 @@ $(function() {
       appStepsSlider.setNextPanel(1);
       $(".step-breadcrumbs").attr("data-step", "2");
       $downloadLink.attr("href", downloadLinkHref);
-      $downloadLinkTemp.attr("href", downloadLinkHref)
+      $downloadLinkTemp.attr("href", downloadLinkHref);
     };
 
 
