@@ -15,7 +15,7 @@ function pbkdf2(s) {
     if (typeof s != "string") s = conv.bytesToString(s);
     return conv.hexToBytes(CryptoJS.PBKDF2(s,s,{
                               hasher: CryptoJS.algo.SHA256,
-                              iterations: 1000
+                              iterations: 2000
                            }).toString());
 }
 
