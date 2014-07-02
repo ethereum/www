@@ -102,7 +102,6 @@ module.exports = {
     'ethersale/sha3.js',
     'ethersale/xethtool.js',
     'ethersale/base64.js',
-    'ethersale/app.js',
     'ethersale/password-dict.js'
   ],
 
