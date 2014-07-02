@@ -1,4 +1,4 @@
-ETHERSALE_URL = "http://sale.ethereum.org";
+ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
 // ETHERSALE_URL = "http://localhost:5000";//TODO remove debug
 
