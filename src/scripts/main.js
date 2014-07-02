@@ -145,12 +145,13 @@ $(function() {
 
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
-    var ETHER_FOR_BTC=2000,
-        FUNDRAISING_ADDRESS="1FxkfJQLJTXpW6QmxGT6oF43ZH959ns8Cq",
-        SATOSHIS_IN_BTC=100000000,
-        START_DATETIME= "2014-06-17 00:00:00",
-        DECREASE_AFTER= 15,
-        ENDS_AFTER= 60,
+    var ETHER_FOR_BTC = 2000,
+        DECREASE_AMOUNT_PER_DAY = 15,
+        FUNDRAISING_ADDRESS = "1FxkfJQLJTXpW6QmxGT6oF43ZH959ns8Cq",
+        SATOSHIS_IN_BTC = 100000000,
+        START_DATETIME = "2014-06-17 00:00:00",
+        DECREASE_AFTER = 15,
+        ENDS_AFTER = 60,
         $qrDepAddr = $("#qr-deposit-address"),
         $purchaseCancel = $("#purchase-cancel"),
         $backToStart = $("#back-to-start"),
@@ -170,7 +171,7 @@ $(function() {
         mainSlider,
         appStepsSlider,
         ethForBtcCalc = 2000,
-        nextEthForBtc = ethForBtcCalc - 15,
+        nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY,
         timerConfirmations,
         $purchaseForm = $("[name=purchase_form]");
 
@@ -273,7 +274,7 @@ $(function() {
       bgColor: "#ddd",
       font: "inherit"
     };
-    var startsAt = moment( START_DATETIME ).utc( START_DATETIME ),
+    var startsAt = moment( START_DATETIME ).utc(),
         decreasesAt = moment( START_DATETIME ).utc().add( 'days', DECREASE_AFTER ),
         endsAt = moment( START_DATETIME ).utc().add( 'days', ENDS_AFTER ),
         $saleDurationDials = $(".sale-duration-container"),
@@ -319,26 +320,27 @@ $(function() {
       {
         updateTimerDials($saleDurationDials, dhms(1000*(endsAt.unix() - moment().utc().unix()) - moment().zone()*60*1000));
 
-        var delta = dhms(moment().utc().diff(decreasesAt));
+        var delta = dhms(moment().utc().diff(startsAt));
+        delta.days = delta.days + 1;
         delta.hours = 24 - delta.hours - 1;
         delta.minutes = 60 - delta.minutes - 1;
         delta.seconds = 60 - delta.seconds;
 
-        if(delta.days > -15)
+        if(delta.days > -DECREASE_AFTER)
         {
-          ethForBtcCalc = ETHER_FOR_BTC - 15 * Math.max(delta.days - 15, 0);
+          ethForBtcCalc = ETHER_FOR_BTC - DECREASE_AMOUNT_PER_DAY * Math.max(delta.days - DECREASE_AFTER, 0);
         }
         else
         {
           ethForBtcCalc = ETHER_FOR_BTC;
         }
 
-        nextEthForBtc = ethForBtcCalc - 15;
+        nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY;
 
         $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
         $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
 
-        updateTimerDials($rateCountdownDials, delta.days <= 15 ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
+        updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
       }
       else
       {
