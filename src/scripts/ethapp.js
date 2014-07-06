@@ -112,13 +112,13 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         $scope.collectingEntropy = false;
         $scope.wallet = 1;
         // $scope.entropy = 'qwe'; // TODO remove debug;
-        console.log('generating wallet'); // Add loading thingy
+        // console.log('generating wallet'); // Add loading thingy
         $scope.pwkey = pbkdf2($scope.password);
-        console.log(1);
+        // console.log(1);
         $scope.wallet = genwallet($scope.entropy, $scope.pwkey, $scope.email);
-        console.log(2);
+        // console.log(2);
         $scope.backup = mkbackup($scope.wallet, $scope.pwkey);
-        console.log(3);
+        // console.log(3);
         $scope.mkQRCode($scope.wallet.btcaddr, $scope.btcToSend);
 
         $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcaddr: " + $scope.wallet.btcaddr;
