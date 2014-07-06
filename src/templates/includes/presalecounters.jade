@@ -160,7 +160,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     label.mini
                       div Passphrase strength:
                         ul#strength(check-strength="password")
-                    input#password.form-control(type="password", name="password", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
+                    input#password.form-control(type="password", name="password", autocomplete="off", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
                     .label-container
                       ul#password-checks
                         li(ng-class="{active: passChecks.longStr}") <i class="fa fa-{{passChecks.longStr ? 'check' : 'times'}}"></i> 12+ characters
@@ -168,7 +168,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                         li(ng-class="{active: passChecks.numbers}") <i class="fa fa-{{passChecks.numbers ? 'check' : 'times'}}"></i> Numbers
                         //- li(ng-class="{active: passChecks.symbols}") <i class="fa fa-{{passChecks.symbols ? 'check' : 'times'}}"></i> Symbols
                         li(ng-class="{active: passChecks.unique}") <i class="fa fa-{{passChecks.unique ? 'check' : 'times'}}"></i> Unique
-                    input#password_repeat.form-control(type="password", name="password_repeat", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
+                    input#password_repeat.form-control(type="password", name="password_repeat", autocomplete="off", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
                     .label-container
                       label.error(ng-show="purchase_form.password_repeat.$error.match") Passphrases do not match
 
