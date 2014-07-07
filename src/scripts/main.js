@@ -338,6 +338,7 @@ $(function() {
         nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY;
 
         $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
+        $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0") );
         $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
 
         updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
@@ -409,11 +410,13 @@ $(function() {
     $emailConfDial.val("0").change();
     $("#email-dial-shim").text("0/6");
 
-
+    window.onFormReady = function(){
+      appStepsSlider.setNextPanel(1);
+    }
 
     window.onWalletReady = function(downloadLinkHref){
       $entropyProgress.hide();
-      appStepsSlider.setNextPanel(1);
+      appStepsSlider.setNextPanel(2);
       $(".step-breadcrumbs").attr("data-step", "2");
       $downloadLink.attr("href", downloadLinkHref);
       $downloadLinkTemp.attr("href", downloadLinkHref);
@@ -429,7 +432,7 @@ $(function() {
 
     window.onTransactionComplete = function(downloadLinkHref, transactionHash){
       $entropyProgress.hide();
-      appStepsSlider.setNextPanel(2);
+      appStepsSlider.setNextPanel(3);
       $(".step-breadcrumbs").attr("data-step", "3");
 
       $purchaseCancel.hide();
@@ -471,6 +474,7 @@ $(function() {
       dynamicTabs: false,
       dynamicArrows: false,
       hideSideArrows: false,
+      continuous: false,
       slideEaseDuration: 600
     }).data("liquidSlider");
 

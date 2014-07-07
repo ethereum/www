@@ -873,13 +873,21 @@ a:hover {
   font-weight: bold;
 }
 
-#counters-secondary .btn-buy-ether, #presale-counters .fancy-black-btn{
+.btn-buy-ether, .fancy-black-btn{
   background-color: #333;
   padding: 5px;
   width: 150px;
-  display: block;
+  display: inline-block;
   margin: 0 auto;
   color: #fff;
+  text-align: center;
+}
+.btn-buy-ether:hover, .fancy-black-btn:hover{
+  color: #ccc;
+}
+.btn-buy-ether.disabled {
+  background-color: #666;
+  color: #ccc;
 }
 #ethersale-app{
   position: relative;
@@ -905,7 +913,7 @@ a:hover {
 }
 
 #entropy-progress{
-  position: absolute;
+  /*position: absolute;*/
   width: 100%;
 }
 
@@ -936,7 +944,7 @@ a:hover {
   background-color: #ccc;
   border: 1px solid #aaa;
   font-size: 22px;
-  width: 125px;
+  width: 100%;
   text-align: center;
 }
 #app-steps-content .exchange-delimiter{
