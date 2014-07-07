@@ -22,8 +22,6 @@ gulp.task('clean', function() {
 
 gulp.task('templates', ['scripts', 'styles'], function() {
   return gulp.src(config.appFiles.templates, {cwd: config.typePaths.templates.src})
-  // .pipe(plugins.watch())
-  // .pipe(plugins.plumber())
   .pipe(plugins.jade({ pretty: (isProduction ? false : true) }))
 
   .pipe(plugins.inject(
@@ -49,13 +47,9 @@ gulp.task('styles', function() {
   return es.merge(
 
     gulp.src(config.typeMap.less, {cwd: config.typePaths.styles.src})
-    // .pipe(plugins.watch())
-    // .pipe(plugins.plumber())
     .pipe(plugins.less()),
  
     gulp.src(config.typeMap.css, {cwd: config.typePaths.styles.src}))
-    // .pipe(plugins.watch())
-    // .pipe(plugins.plumber())
 
   .pipe(isProduction ? plugins.csso() : gutil.noop())
   .pipe(plugins.order(config.styleOrder))
@@ -70,13 +64,9 @@ gulp.task('scripts', function() {
     es.merge(
 
       gulp.src(config.typeMap.coffee, {cwd: config.typePaths.scripts.src})
-      // .pipe(plugins.watch())
-      // .pipe(plugins.plumber())
       .pipe(plugins.coffee()),
 
       gulp.src(config.typeMap.js, {cwd: config.typePaths.scripts.src}))
-      // .pipe(plugins.watch())
-      // .pipe(plugins.plumber())
 
       .pipe(plugins.jshint())
       .pipe(plugins.jshint.reporter('default'))
@@ -86,8 +76,6 @@ gulp.task('scripts', function() {
     gulp.src(config.typeMap.jslibs, {cwd:config.typePaths.scripts.src}))
     .pipe(plugins.order(config.scriptOrder))
     .pipe(isProduction ? plugins.concat('app.min.js') : gutil.noop())
-    // .pipe(plugins.watch())
-    // .pipe(plugins.plumber())
 
   .pipe(plugins.size({title: 'scripts', showFiles: false, gzip: true}))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
@@ -96,8 +84,6 @@ gulp.task('scripts', function() {
 
 gulp.task('images', function() {
   return gulp.src(config.appFiles.images, {cwd: config.typePaths.images.src})
-  // .pipe(plugins.watch())
-  // .pipe(plugins.plumber())
   .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
@@ -106,8 +92,6 @@ gulp.task('images', function() {
 
 gulp.task('extras', function() {
   return gulp.src(config.appFiles.extras, {cwd: config.typePaths.extras.src})
-  // .pipe(plugins.watch())
-  // .pipe(plugins.plumber())
   .pipe(plugins.size({title: 'extras', showFiles: false}))
   .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
   .pipe(gulp.dest(config.typePaths.extras.dest));
