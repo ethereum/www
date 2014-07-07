@@ -169,7 +169,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .clearfix
                 .col-md-5
                   section
-                    p Send exactly {{btcToSend}} bitcoins to the address below:
+                    p Send exactly {{btcToSend}} bitcoin to the address below:
                   section
                     a(href="bitcoin:{{wallet.btcaddr}}?amount={{btcToSend}}&label=Ether presale {{btcToSend}} BTC")
                       div#qr-deposit-address
@@ -192,10 +192,28 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   //-     a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
           .step4-content
             a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
-            h4 Thank you for your purchase
+            h4 Thank you!
             div
               .row
                 .col-md-5
+                  section
+                    p.important.text-left Step 6: Download your wallet
+                  section
+                    p.copy.no-print This file represents your private key to your wallet. It is in the form of a .json file that has been encrypted with your passphrase. When the ethereum blockchain goes live you can import this file into your wallet and the balance will be adjusted automatically with the purchased ether amount.
+                  section
+                    a#downloadLink.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+                  section
+                    p.copy Recommendations
+                    ol#recommendations
+                      li.smaller Write down your passphrase and store it in a secure location
+                      li.smaller Backup your wallet .json file on multiple secure mediums
+                      li.smaller Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions
+                  section
+                    a#back-to-start.no-print(ng-click="reset()") Done
+                .col-md-2
+                .col-md-5
+                  section
+                    p.important Transaction Information
                   section
                     p.important bitcoin transaction ID:
                     p.btc-transaction-id {{transactionHash}}
@@ -203,25 +221,13 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     input#email-confirmations-dial(type="text")
                     #email-dial-shim.confirmations-dial-shim X/X
                   section
-                    p Only transactions with a minimum of six confirmations to the genesis block will be considered valid
+                    p.danger Your bitcoin payment must receive six confirmations<br>in order to be considered valid
+                  section
+                    p.copy Your email address:
                     p.important {{email}}
                   section
                     p.copy Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
-                .col-md-2
-                .col-md-5
-                  section
-                    p.copy.no-print This file represents your private key to your wallet, encrypted by your passphrase in a .json file. When the ethereum block-chain is live you can import this file in your wallet and the balance will be adjusted automatically with the purchased amount.
-                  section
-                    a#downloadLink.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
-                  section
-                    p.copy Recommendations
-                    ol#recommendations
-                      li Make sure you do not forget your passphrase!
-                      li Create backups on multiple mediums
-                      li Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions
-                  section
-                    a#back-to-start.no-print(ng-click="reset()") Done
           .step5-content
             .clearfix
 

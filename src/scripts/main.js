@@ -358,15 +358,15 @@ $(function() {
       }
     });
 
-    var $step3 = $(".step3-content");
+    var $step4 = $(".step4-content");
 
     $("#print-purchase-page").click(function(e){
       e.preventDefault();
-      $step3.css("width", "100%");
-      var $noPrint = $step3.find(".no-print").hide();
-      $step3.printArea();
+      $step4.css("width", "100%");
+      var $noPrint = $step4.find(".no-print").hide();
+      $step4.printArea();
       $noPrint.show();
-      $step3.css("width", "20%");
+      $step4.css("width", "20%");
     });
 
     updateAllDials();
