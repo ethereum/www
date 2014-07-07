@@ -834,7 +834,8 @@ a:hover {
 }
 
 #total-sold-container .total{
-  font-size: 45px;
+  font-size: 40px;
+  font-family: "RobotoLight";
 }
 
 #total-sold-container .total-currency-label{
@@ -1349,4 +1350,11 @@ input.ng-valid {
 
 input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.invalidPassword {
   border-color: red !important;
+}
+
+#start-ether-purchase {
+  margin-top: 15px !important;
+  font-family: "RobotoThin";
+  font-size: 20px;
+  letter-spacing: 1px;
 }

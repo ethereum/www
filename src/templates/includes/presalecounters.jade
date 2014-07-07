@@ -11,7 +11,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
     div#counters-primary.row
       div.sale-duration-container.col-md-4.countdown-dials
         div.inner.hide-after-end
-          h4 Sale duration:
+          h4 ether sale ends in:
           div.dial-container
             input(type="text", value="0").dial.days
             span.dial-label Days
@@ -31,20 +31,16 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
         div.inner
           h4 Total ether purchased:
           span.total
-          span.total-currency-label BTC
-          h4.subheadline.hide-after-end Current exchange rate:
+          span.total-currency-label &nbsp;ETH
+          h4.subheadline.hide-after-end Current price:
           #exchange-rate-container.hide-after-end
-            span.amount 1
-            span.amount-currency-label BTC
-            span.amount &nbsp;=&nbsp;
+            span.amount 1 bitcoin buys&nbsp;
             span.amount.eth-to-btc 2000
-            span.amount-currency-label ETH
+            span.amount &nbsp;ether
           //- a(href="#") Terms and conditions
       div.rate-countdown-container.col-md-4.countdown-dials
         div.inner.hide-after-end
-          h4 Until new rate: 1BTC =&nbsp;
-            span.next-eth-to-btc 2000
-            ETH
+          h4 ether price will change in
           div.dial-container
             input(type="text", value="0").dial.days
             span.dial-label Days
@@ -63,11 +59,13 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             input(type="text", value="0").dial.seconds
 
             span.dial-label Seconds
+
+          div
+            span.amount next price: 1 bitcoin buys&nbsp;
+            span.next-eth-to-btc 2000
+            span.amount &nbsp;ether
     #counters-secondary.row
-      .col-md-4
-        a(href="#left", data-liquidslider-ref="#presale-counters-slider").btn-buy-ether.btn-show-charts.hide-after-end Charts
-      .col-md-4
-      .col-md-4
+      .col-md-12
         a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
