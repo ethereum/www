@@ -1366,3 +1366,11 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
   font-size: 20px;
   letter-spacing: 1px;
 }
+
+.no-bottom-margin {
+  margin-bottom: 0px !important;
+}
+
+.add-top-margin {
+  margin-top: 10px !important;
+}
