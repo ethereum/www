@@ -40,8 +40,8 @@ gulp.task('templates', ['scripts', 'styles'], function() {
   )
 
   .pipe(plugins.size({title: 'templates', showFiles: true, gzip: true}))
-  .pipe(gulp.dest(config.typePaths.templates.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
+  .pipe(gulp.dest(config.typePaths.templates.dest));
 
 });
 
@@ -61,8 +61,8 @@ gulp.task('styles', function() {
   .pipe(plugins.order(config.styleOrder))
   .pipe(plugins.concat('app.min.css'))
   .pipe(plugins.size({title: 'styles', showFiles: true, gzip: true}))
-  .pipe(gulp.dest(config.typePaths.styles.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
+  .pipe(gulp.dest(config.typePaths.styles.dest));
 });
 
 gulp.task('scripts', function() {
@@ -90,8 +90,8 @@ gulp.task('scripts', function() {
     // .pipe(plugins.plumber())
 
   .pipe(plugins.size({title: 'scripts', showFiles: false, gzip: true}))
-  .pipe(gulp.dest(config.typePaths.scripts.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
+  .pipe(gulp.dest(config.typePaths.scripts.dest));
 });
 
 gulp.task('images', function() {
@@ -100,8 +100,8 @@ gulp.task('images', function() {
   // .pipe(plugins.plumber())
   .pipe(isProduction ? plugins.imagemin({ optimizationLevel: 3, progressive: true, interlaced: true }) : gutil.noop())
   .pipe(plugins.size({title: 'imagemin', showFiles: false}))
-  .pipe(gulp.dest(config.typePaths.images.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
+  .pipe(gulp.dest(config.typePaths.images.dest));
 });
 
 gulp.task('extras', function() {
@@ -109,8 +109,8 @@ gulp.task('extras', function() {
   // .pipe(plugins.watch())
   // .pipe(plugins.plumber())
   .pipe(plugins.size({title: 'extras', showFiles: false}))
-  .pipe(gulp.dest(config.typePaths.extras.dest))
-  .pipe(isProduction ? gutil.noop() : plugins.connect.reload());
+  .pipe(isProduction ? gutil.noop() : plugins.connect.reload())
+  .pipe(gulp.dest(config.typePaths.extras.dest));
 });
 
 gulp.task('bundle', function () {
