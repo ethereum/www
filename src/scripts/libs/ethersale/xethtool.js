@@ -89,11 +89,11 @@ function recover_bkp_wallet(bkp,wallet) {
     return getseed(bkp.withpw,wallet.bkp,bkp.ethaddr);
 }
 
-function finalize(wallet,unspent,pwkey) {
+function finalize(wallet,unspent,pwkey,amount) {
     // Check password
     var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
-    if (balance < 1000000)
+    if (balance < amount*100000000)
         return false;
     console.log('using unspent outputs:', unspent);
     var outputs = [

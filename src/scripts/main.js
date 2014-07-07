@@ -475,6 +475,7 @@ $(function() {
       dynamicArrows: false,
       hideSideArrows: false,
       continuous: false,
+      firstPanelToLoad: 1,
       slideEaseDuration: 600
     }).data("liquidSlider");
 

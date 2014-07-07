@@ -93,12 +93,12 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       .row
                         .col-xs-5
                           p amount in bitcoin
-                          input(type="text", ng-model="btcToSend", numeric, required, ng-change="updateEthToBuy()").amount-box
+                          input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-change="updateEthToBuy()").amount-box
                         .col-xs-2.delimiter
                           span.exchange-delimiter =
                         .col-xs-5
                           p amount in ether
-                          input(type="text", ng-model="ethToBuy", numeric, required, ng-change="updateBtcToSend()").amount-box.eth-to-btc
+                          input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-change="updateBtcToSend()").amount-box.eth-to-btc
                   section
                     p.text-left
                       span Price: 1 bitcoin buys&nbsp;
@@ -160,23 +160,24 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
           .step3-content
             h4 You are about to buy
               span.eth-to-buy &nbsp;{{ethToBuy}}&nbsp;
-              span.currency-code ETH&nbsp;
-              | for {{btcToSend}}&nbsp;
-              span.currency-code BTC
+              span ether for {{btcToSend}} bitcoin
               p.smaller.danger DO NOT CLICK CANCEL once you have sent bitcoin.
             div
               .row
+                .col-sm-5
+                  p.important Step 5
+                .clearfix
                 .col-md-5
                   section
-                    p send bitcoins to this address:
+                    p Send exactly {{btcToSend}} bitcoins to the address below:
                   section
                     a(href="bitcoin:{{wallet.btcaddr}}?amount={{btcToSend}}&label=Ether presale {{btcToSend}} BTC")
                       div#qr-deposit-address
                   section.text-center
                     p Payment address:
                     span.payment-address.nowrap(href="bitcoin:{{wallet.btcaddr}}") {{wallet.btcaddr}}
-                  section
-                    p.copy Send bitcoin to the above address to buy Ether. Confirmation depends on the Bitcoin network and can take many minutes.
+                  //- section
+                  //-   p.copy Send bitcoin to the above address to buy Ether. Confirmation depends on the Bitcoin network and can take many minutes.
                 .col-md-2
                 .col-md-5
                   p purchase status: {{status}}
@@ -185,10 +186,10 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section.text-center
                     p Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
-                  section
-                    p.copy You can already download your wallet using the link below. You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
-                    p.text-center
-                      a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+                  //- section
+                  //-   p.copy You can already download your wallet using the link below. You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
+                  //-   p.text-center
+                  //-     a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
           .step4-content
             a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
             h4 Thank you for your purchase

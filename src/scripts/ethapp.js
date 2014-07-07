@@ -79,11 +79,11 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   });
 
   var authDetailsOK = function(){
-    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK &&
+    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && parseFloat($scope.btcToSend) >= 0.01 &&
       ($scope.password === $scope.password_repeat) && ($scope.email === $scope.email_repeat);
   };
 
-  $scope.$watch("[email,email_repeat,password,password_repeat]", function(){
+  $scope.$watch("[email,email_repeat,password,password_repeat,btcToSend,ethToBuy]", function(){
     if(authDetailsOK() && !$scope.wallet) $scope.canCollectEntropy = true;
   },true);
 
@@ -186,7 +186,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
           $scope.status = e || 'Error connecting, please try later.';
           return $scope.status;
         }
-        var tx = finalize($scope.wallet, unspent, $scope.pwkey);
+        var tx = finalize($scope.wallet, unspent, $scope.pwkey, $scope.btcToSend);
         TX = tx;
         if (!tx) {
           $scope.status = 'Waiting for deposit...';
