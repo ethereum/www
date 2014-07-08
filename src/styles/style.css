@@ -1409,7 +1409,3 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
     padding-right: 12px;
   }
 }
-
-.maincontent {
-  overflow-y: hidden;
-}
