@@ -1390,3 +1390,26 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
     margin-top: 5px !important;
   }
 }
+
+@media (max-width: 769px){
+  nav.navbar {
+    min-height: 120px;
+  }
+}
+
+@media (min-width:769px){
+  .navbar-collapse.collapse{
+    overflow:hidden !important;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 900px){
+  .nav>li>a {
+    padding-left: 12px;
+    padding-right: 12px;
+  }
+}
+
+.maincontent {
+  overflow-y: hidden;
+}
