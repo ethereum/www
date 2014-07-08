@@ -9,7 +9,18 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
     .col-md-4
   div#sale-counters-container.container
     div#counters-primary.row
-      div.sale-duration-container.col-md-4.countdown-dials
+      div#total-sold-container.col-md-4.col-md-push-4
+        div.inner
+          h4.no-bottom-margin Total ether purchased:
+          span.total
+          span.total-currency-label &nbsp;ETH
+          h4.subheadline.hide-after-end.add-top-margin Current price:
+          #exchange-rate-container.hide-after-end
+            span.amount 1 bitcoin buys&nbsp;
+            span.amount.eth-to-btc 2000
+            span.amount &nbsp;ether
+          a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
+      div.sale-duration-container.col-md-4.col-md-pull-4.col-sm-6.countdown-dials
         div.inner.hide-after-end
           h4 ether sale ends in:
           div.dial-container
@@ -27,18 +38,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
           div.dial-container
             input(type="text", value="0").dial.seconds
             span.dial-label Seconds
-      div#total-sold-container.col-md-4
-        div.inner
-          h4.no-bottom-margin Total ether purchased:
-          span.total
-          span.total-currency-label &nbsp;ETH
-          h4.subheadline.hide-after-end.add-top-margin Current price:
-          #exchange-rate-container.hide-after-end
-            span.amount 1 bitcoin buys&nbsp;
-            span.amount.eth-to-btc 2000
-            span.amount &nbsp;ether
-          //- a(href="#") Terms and conditions
-      div.rate-countdown-container.col-md-4.countdown-dials
+      div.rate-countdown-container.col-md-4.col-sm-6.countdown-dials
         div.inner.hide-after-end
           h4 ether price will change in
           div.dial-container
@@ -52,33 +52,27 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
           span.delimiter :
           div.dial-container
             input(type="text", value="0").dial.minutes
-
             span.dial-label Minutes
           span.delimiter :
           div.dial-container
             input(type="text", value="0").dial.seconds
-
             span.dial-label Seconds
-
           div
             span.amount next price: 1 bitcoin buys&nbsp;
             span.next-eth-to-btc 2000
             span.amount &nbsp;ether
-    #counters-secondary.row
-      .col-md-12
-        a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
       .container
         .row
-          .col-md-4
-          .col-md-4
+          .col-sm-3.hidden-xs
+          .col-xs-12.col-sm-6
             h3 purchase ether
             .step-breadcrumbs(data-step="1")
               span.step1 info &gt;
               span.step2 purchase &gt;
               span.step3 download
-          .col-md-4
+          .col-xs-12.col-sm-3
             a#purchase-cancel(ng-click="reset()") &lt; cancel
         #app-steps-content.liquid-slider
           .step1-content
@@ -89,14 +83,14 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-sm-10
                   p.important.text-left Enter amount to purchase in either bitcoin or ether.
                   section.row
-                    .col-sm-6
+                    .col-sm-8.col-md-6
                       .row
-                        .col-xs-5
+                        .col-sm-5.col-xs-12
                           p amount in bitcoin
                           input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-change="updateEthToBuy()").amount-box
-                        .col-xs-2.delimiter
+                        .col-sm-2.col-xs-12.delimiter
                           span.exchange-delimiter =
-                        .col-xs-5
+                        .col-sm-5.col-xs-12
                           p amount in ether
                           input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-change="updateBtcToSend()").amount-box.eth-to-btc
                   section
@@ -146,7 +140,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-sm-2
                 .col-sm-10
                   section.text-left
-                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false)}" ng-click="nextStep()") Continue
+                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
           .step2-content
             section.row
               .col-sm-2
@@ -164,10 +158,10 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
               p.smaller.danger DO NOT CLICK CANCEL once you have sent bitcoin.
             div
               .row
-                .col-sm-5
+                .col-sm-6.col-md-5
                   p.important Step 5
                 .clearfix
-                .col-md-5
+                .col-sm-6.col-md-5
                   section
                     p Send exactly {{btcToSend}} bitcoin to the address below:
                   section
@@ -178,8 +172,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     span.payment-address.nowrap(href="bitcoin:{{wallet.btcaddr}}") {{wallet.btcaddr}}
                   //- section
                   //-   p.copy Send bitcoin to the above address to buy Ether. Confirmation depends on the Bitcoin network and can take many minutes.
-                .col-md-2
-                .col-md-5
+                .col-md-2.hidden-sm
+                .col-sm-6.col-md-5
                   p purchase status: {{status}}
                   .loaderHolder#confirmations-container
                     .loader Loading...
@@ -195,7 +189,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             h4 Thank you!
             div
               .row
-                .col-md-5
+                .col-sm-5
                   section
                     p.important.text-left Step 6: Download your wallet
                   section
@@ -210,8 +204,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       li.smaller Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions
                   section
                     a#back-to-start.no-print(ng-click="reset()") Done
-                .col-md-2
-                .col-md-5
+                .col-sm-2
+                .col-sm-5
                   section
                     p.important Transaction Information
                   section

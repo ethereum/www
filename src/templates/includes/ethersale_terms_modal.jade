@@ -8,12 +8,12 @@
         a.print.pull-right
           i.fa.fa-print
           | Print
-      .col-md-2
+      .col-sm-2.hidden-xs
         .logo
           img(src="images/ethereum-logo-2.png", width="70px")
           .ethereum-logo
             h4 ethereum
-      .col-md-10
+      .col-sm-10.col-xs-12
         a.close-modal &#215;
         #terms-text-container
           h1 Terms and Conditions of the Ethereum Ether Sale
@@ -69,5 +69,6 @@
           p Eam ei dicit intellegam, novum repudiare comprehensam ex ius. Ius dictas aliquip scribentur eu, agam vero erroribus vis eu, te nec augue convenire voluptatum. In omnes possim evertitur his. Solum probatus ne mea, id scripta quaeque his. Te nec deserunt consetetur voluptatum.
         .got-it
           p I have read and fully understand the Terms and Conditions of the Ethereum Ether Sale
-          input#confirm-terms(type="checkbox", name="confirm-terms", disabled="true")
-          label(for="confirm-terms").disabled Agree <small class="infoText">(scroll to the end of the terms to enable button)</small>
+          label(for="confirm-terms").disabled
+            input#confirm-terms(type="checkbox", name="confirm-terms", disabled="true")
+            span &nbsp; Agree <small class="infoText">(scroll to the end of the terms to enable button)</small>

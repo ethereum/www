@@ -1363,7 +1363,7 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 #start-ether-purchase {
   margin-top: 15px !important;
   font-family: "RobotoThin";
-  font-size: 20px;
+  font-size: 20px !important;
   letter-spacing: 1px;
 }
 
@@ -1373,4 +1373,20 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 
 .add-top-margin {
   margin-top: 10px !important;
+}
+
+@media (max-width: 990px){
+  .modal-lg {
+    width: inherit !important;
+  }
+  .inner {
+    margin-top: 15px;
+    margin-bottom: 35px;
+  }
+}
+
+@media (max-width: 767px){
+  #app-steps-content .exchange-delimiter {
+    margin-top: 5px !important;
+  }
 }

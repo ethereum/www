@@ -412,7 +412,7 @@ $(function() {
 
     window.onFormReady = function(){
       appStepsSlider.setNextPanel(1);
-    }
+    };
 
     window.onWalletReady = function(downloadLinkHref){
       $entropyProgress.hide();
@@ -476,6 +476,7 @@ $(function() {
       hideSideArrows: false,
       continuous: false,
       firstPanelToLoad: 1,
+      swipe: false,
       slideEaseDuration: 600
     }).data("liquidSlider");
 
@@ -485,6 +486,7 @@ $(function() {
       dynamicArrows: false,
       hideSideArrows: true,
       slideEaseDuration: 600,
+      swipe: false,
       firstPanelToLoad: 2
     }).data("liquidSlider");
 

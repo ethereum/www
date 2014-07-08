@@ -2,7 +2,7 @@ ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
 // ETHERSALE_URL = "http://localhost:5000";//TODO remove debug
 
-var ethereum = angular.module('ethereum', []);
+var ethereum = angular.module('ethereum', ['ngTouch']);
 
 ethereum.config([
   '$compileProvider',
@@ -93,9 +93,9 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       window.onFormReady();
       $scope.collectingEntropy = true;
     }
-  }
+  };
 
-  window.onmousemove = function(e) {
+  window.onmousemove = window.ontouchmove = function(e) {
     // only work when the first steps are done
     if (!authDetailsOK()){
       $scope.entropy = "";
@@ -104,6 +104,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
     // only work if a btcAddress doesn't already exist
     if (!$scope.wallet && $scope.collectingEntropy) {
+      e.preventDefault();
       var roundSeed = '' + e.x + e.y + new Date().getTime() + Math.random();
 
       Bitcoin.Crypto.SHA256(roundSeed, {

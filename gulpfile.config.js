@@ -94,6 +94,7 @@ module.exports = {
     'main.js',
 
     'ethersale/angular.min.js',
+    'ethersale/angular-touch.min.js',
     'ethersale/jquery.qrcode.min.js',
     'ethersale/bitcoinjs-min.js',
     'ethersale/aes.js',
