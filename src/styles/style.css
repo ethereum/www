@@ -834,7 +834,8 @@ a:hover {
 }
 
 #total-sold-container .total{
-  font-size: 45px;
+  font-size: 40px;
+  font-family: "RobotoLight";
 }
 
 #total-sold-container .total-currency-label{
@@ -872,13 +873,21 @@ a:hover {
   font-weight: bold;
 }
 
-#counters-secondary .btn-buy-ether, #presale-counters .fancy-black-btn{
+.btn-buy-ether, .fancy-black-btn{
   background-color: #333;
   padding: 5px;
   width: 150px;
-  display: block;
+  display: inline-block;
   margin: 0 auto;
   color: #fff;
+  text-align: center;
+}
+.btn-buy-ether:hover, .fancy-black-btn:hover{
+  color: #ccc;
+}
+.btn-buy-ether.disabled {
+  background-color: #666;
+  color: #ccc;
 }
 #ethersale-app{
   position: relative;
@@ -904,7 +913,7 @@ a:hover {
 }
 
 #entropy-progress{
-  position: absolute;
+  /*position: absolute;*/
   width: 100%;
 }
 
@@ -935,7 +944,7 @@ a:hover {
   background-color: #ccc;
   border: 1px solid #aaa;
   font-size: 22px;
-  width: 125px;
+  width: 100%;
   text-align: center;
 }
 #app-steps-content .exchange-delimiter{
@@ -1349,4 +1358,35 @@ input.ng-valid {
 
 input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.invalidPassword {
   border-color: red !important;
+}
+
+#start-ether-purchase {
+  margin-top: 15px !important;
+  font-family: "RobotoThin";
+  font-size: 20px !important;
+  letter-spacing: 1px;
+}
+
+.no-bottom-margin {
+  margin-bottom: 0px !important;
+}
+
+.add-top-margin {
+  margin-top: 10px !important;
+}
+
+@media (max-width: 990px){
+  .modal-lg {
+    width: inherit !important;
+  }
+  .inner {
+    margin-top: 15px;
+    margin-bottom: 35px;
+  }
+}
+
+@media (max-width: 767px){
+  #app-steps-content .exchange-delimiter {
+    margin-top: 5px !important;
+  }
 }

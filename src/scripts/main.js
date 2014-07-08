@@ -338,6 +338,7 @@ $(function() {
         nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY;
 
         $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
+        $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0") );
         $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
 
         updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
@@ -357,15 +358,15 @@ $(function() {
       }
     });
 
-    var $step3 = $(".step3-content");
+    var $step4 = $(".step4-content");
 
     $("#print-purchase-page").click(function(e){
       e.preventDefault();
-      $step3.css("width", "100%");
-      var $noPrint = $step3.find(".no-print").hide();
-      $step3.printArea();
+      $step4.css("width", "100%");
+      var $noPrint = $step4.find(".no-print").hide();
+      $step4.printArea();
       $noPrint.show();
-      $step3.css("width", "20%");
+      $step4.css("width", "20%");
     });
 
     updateAllDials();
@@ -382,7 +383,7 @@ $(function() {
       success: function( response )
       {
         var btc = Math.round(parseInt(response,10)/SATOSHIS_IN_BTC);
-        $("#total-sold-container .total").text(numeral(btc).format("0,0"));
+        $("#total-sold-container .total").text(numeral(btc*2000).format("0,0"));
       },
       error: function( error )
       {
@@ -409,11 +410,13 @@ $(function() {
     $emailConfDial.val("0").change();
     $("#email-dial-shim").text("0/6");
 
-
+    window.onFormReady = function(){
+      appStepsSlider.setNextPanel(1);
+    };
 
     window.onWalletReady = function(downloadLinkHref){
       $entropyProgress.hide();
-      appStepsSlider.setNextPanel(1);
+      appStepsSlider.setNextPanel(2);
       $(".step-breadcrumbs").attr("data-step", "2");
       $downloadLink.attr("href", downloadLinkHref);
       $downloadLinkTemp.attr("href", downloadLinkHref);
@@ -429,12 +432,10 @@ $(function() {
 
     window.onTransactionComplete = function(downloadLinkHref, transactionHash){
       $entropyProgress.hide();
-      appStepsSlider.setNextPanel(2);
+      appStepsSlider.setNextPanel(3);
       $(".step-breadcrumbs").attr("data-step", "3");
 
       $purchaseCancel.hide();
-
-      console.log(ETHERSALE_URL);
 
       clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);
@@ -471,6 +472,9 @@ $(function() {
       dynamicTabs: false,
       dynamicArrows: false,
       hideSideArrows: false,
+      continuous: false,
+      firstPanelToLoad: 1,
+      swipe: false,
       slideEaseDuration: 600
     }).data("liquidSlider");
 
@@ -480,6 +484,7 @@ $(function() {
       dynamicArrows: false,
       hideSideArrows: true,
       slideEaseDuration: 600,
+      swipe: false,
       firstPanelToLoad: 2
     }).data("liquidSlider");
 

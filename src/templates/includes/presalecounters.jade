@@ -9,42 +9,38 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
     .col-md-4
   div#sale-counters-container.container
     div#counters-primary.row
-      div.sale-duration-container.col-md-4.countdown-dials
-        div.inner.hide-after-end
-          h4 Sale duration:
-          div.dial-container
-            input(type="text", value="0").dial.days
-            span.dial-label Days
-          span.delimiter :
-          div.dial-container
-            input(type="text", value="0").dial.hours
-            span.dial-label Hours
-          span.delimiter :
-          div.dial-container
-            input(type="text", value="0").dial.minutes
-            span.dial-label Minutes
-          span.delimiter :
-          div.dial-container
-            input(type="text", value="0").dial.seconds
-            span.dial-label Seconds
-      div#total-sold-container.col-md-4
+      div#total-sold-container.col-md-4.col-md-push-4
         div.inner
-          h4 Total ether purchased:
+          h4.no-bottom-margin Total ether purchased:
           span.total
-          span.total-currency-label BTC
-          h4.subheadline.hide-after-end Current exchange rate:
+          span.total-currency-label &nbsp;ETH
+          h4.subheadline.hide-after-end.add-top-margin Current price:
           #exchange-rate-container.hide-after-end
-            span.amount 1
-            span.amount-currency-label BTC
-            span.amount &nbsp;=&nbsp;
+            span.amount 1 bitcoin buys&nbsp;
             span.amount.eth-to-btc 2000
-            span.amount-currency-label ETH
-          //- a(href="#") Terms and conditions
-      div.rate-countdown-container.col-md-4.countdown-dials
+            span.amount &nbsp;ether
+          a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
+      div.sale-duration-container.col-md-4.col-md-pull-4.col-sm-6.countdown-dials
         div.inner.hide-after-end
-          h4 Until new rate: 1BTC =&nbsp;
-            span.next-eth-to-btc 2000
-            ETH
+          h4 ether sale ends in:
+          div.dial-container
+            input(type="text", value="0").dial.days
+            span.dial-label Days
+          span.delimiter :
+          div.dial-container
+            input(type="text", value="0").dial.hours
+            span.dial-label Hours
+          span.delimiter :
+          div.dial-container
+            input(type="text", value="0").dial.minutes
+            span.dial-label Minutes
+          span.delimiter :
+          div.dial-container
+            input(type="text", value="0").dial.seconds
+            span.dial-label Seconds
+      div.rate-countdown-container.col-md-4.col-sm-6.countdown-dials
+        div.inner.hide-after-end
+          h4 ether price will change in
           div.dial-container
             input(type="text", value="0").dial.days
             span.dial-label Days
@@ -56,163 +52,164 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
           span.delimiter :
           div.dial-container
             input(type="text", value="0").dial.minutes
-
             span.dial-label Minutes
           span.delimiter :
           div.dial-container
             input(type="text", value="0").dial.seconds
-
             span.dial-label Seconds
-    #counters-secondary.row
-      .col-md-4
-        a(href="#left", data-liquidslider-ref="#presale-counters-slider").btn-buy-ether.btn-show-charts.hide-after-end Charts
-      .col-md-4
-      .col-md-4
-        a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
+          div
+            span.amount next price: 1 bitcoin buys&nbsp;
+            span.next-eth-to-btc 2000
+            span.amount &nbsp;ether
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
       .container
         .row
-          .col-md-4
-          .col-md-4
+          .col-sm-3.hidden-xs
+          .col-xs-12.col-sm-6
             h3 purchase ether
             .step-breadcrumbs(data-step="1")
               span.step1 info &gt;
               span.step2 purchase &gt;
               span.step3 download
-          .col-md-4
+          .col-xs-12.col-sm-3
             a#purchase-cancel(ng-click="reset()") &lt; cancel
         #app-steps-content.liquid-slider
           .step1-content
-            .row
-              .col-md-5
-                .xfix-height
-                  p.important Enter amount to purchase.
-                  section.row
-                    .col-xs-5
-                      p amount BTC:
-                      input(type="text", ng-model="btcToSend", numeric, ng-change="updateEthToBuy()").amount-box
-                    .col-xs-2.delimiter
-                      span.exchange-delimiter =
-                    .col-xs-5
-                      p amount ETH:
-                      input(type="text", ng-model="ethToBuy", numeric, ng-change="updateBtcToSend()").amount-box.eth-to-btc
-                  section
-                    p.text-center The minimum amount is 0.01 BTC.
-              .col-md-2
-              .col-md-5
-                .xfix-height
-                  section
-                    p.exchange-rate
-                      strong Current rate:&nbsp;
-                      span 1
-                      span.currency-code BTC
-                      span &nbsp;=&nbsp;
-                      span.eth-to-btc 2,000
-                      span.currency-code ETH
-                  section.rate-countdown-container.countdown-dials
-                    div.dial-container
-                      input(type="text", value="0").dial.days
-                      span.dial-label Days
-                    span.delimiter :
-                    div.dial-container
-                      input(type="text", value="0").dial.hours
-                      span.dial-label Hours
-                    span.delimiter :
-                    div.dial-container
-                      input(type="text", value="0").dial.minutes
-                      span.dial-label Minutes
-                    span.delimiter :
-                    div.dial-container
-                      input(type="text", value="0").dial.seconds
-                      span.dial-label Seconds
-                    p.exchange-rate
-                      strong Until new rate:&nbsp;
-                      span 1
-                      span.currency-code BTC
-                      span &nbsp;=&nbsp;
-                      span.next-eth-to-btc 1,950
-                      span.currency-code ETH
             form(name="purchase_form", role="form", novalidate)
-              section
-                p.text-center A passphrase is needed to encrypt and recover your payment keys.<br>In addition to generating a downloadable backup, we will also send you an email with recovery information attached.
+              section.row
+                .col-sm-2
+                  p.important.text-left STEP 1
+                .col-sm-10
+                  p.important.text-left Enter amount to purchase in either bitcoin or ether.
+                  section.row
+                    .col-sm-8.col-md-6
+                      .row
+                        .col-sm-5.col-xs-12
+                          p amount in bitcoin
+                          input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-change="updateEthToBuy()").amount-box
+                        .col-sm-2.col-xs-12.delimiter
+                          span.exchange-delimiter =
+                        .col-sm-5.col-xs-12
+                          p amount in ether
+                          input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-change="updateBtcToSend()").amount-box.eth-to-btc
+                  section
+                    p.text-left
+                      span Price: 1 bitcoin buys&nbsp;
+                      span.eth-to-btc
+                      span &nbsp;ether. Mininmum purchase amount is 0.01 bitcoin or&nbsp;
+                      span.min-eth-to-btc
+                      span &nbsp;ether.
+              section.row
+                .col-sm-2
+                  p.important.text-left STEP 2
+                .col-sm-10
+                  p.important.text-left Enter a valid email address. Your wallet backup will be emailed to this address.
+                  .row
+                    .col-sm-6
+                      input#purchase-email.form-control(type="email", name="email", ng-model="email", placeholder="Enter your email", required, ng-disabled="wallet.ethaddr")
+                      .label-container.email
+                        span(ng-class="{active: emailValid}") <i class="fa fa-{{emailValid ? 'check' : 'times'}}"></i> Valid email
+                    .col-sm-6
+                      input#purchase-email-repeat.form-control(type="email", name="email_repeat", ng-model="email_repeat", required, placeholder="Re-enter your email", data-match="email", ng-disabled="wallet.ethaddr")
+                      .label-container.email
+                        span(ng-class="{active: (!purchase_form.email_repeat.$error.required && !purchase_form.email_repeat.$error.match)}") <i class="fa fa-{{(!purchase_form.email_repeat.$error.required && !purchase_form.email_repeat.$error.match) ? 'check' : 'times'}}"></i> Confirm email
+              section.row
+                .col-sm-2
+                  p.important.text-left STEP 3
+                .col-sm-10
+                  p.important.text-left Enter a passphrase. This is required to encrypt and access your wallet.
+                  label.mini
+                    div Passphrase strength:
+                      ul#strength(check-strength="password")
+                  .row
+                    .col-sm-6
+                      input#password.form-control(type="password", name="password", autocomplete="off", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
+                      .label-container
+                        ul#password-checks
+                          li(ng-class="{active: passChecks.longStr}") <i class="fa fa-{{passChecks.longStr ? 'check' : 'times'}}"></i> 10+ characters
+                          li(ng-class="{active: passChecks.bothCase}") <i class="fa fa-{{passChecks.bothCase ? 'check' : 'times'}}"></i> Upper and lowercase letters
+                          li(ng-class="{active: passChecks.numbers}") <i class="fa fa-{{passChecks.numbers ? 'check' : 'times'}}"></i> Numbers
+                          li(ng-class="{active: passChecks.symbols}") <i class="fa fa-{{passChecks.symbols ? 'check' : 'times'}}"></i> Symbols
+                          //- li(ng-class="{active: passChecks.unique}") <i class="fa fa-{{passChecks.unique ? 'check' : 'times'}}"></i> Unique
+                    .col-sm-6
+                      input#password_repeat.form-control(type="password", name="password_repeat", autocomplete="off", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Re-enter your passphrase")
+                      .label-container.email
+                        span(ng-class="{active: (!purchase_form.password_repeat.$error.required && !purchase_form.password_repeat.$error.match)}") <i class="fa fa-{{(!purchase_form.password_repeat.$error.required && !purchase_form.password_repeat.$error.match) ? 'check' : 'times'}}"></i> Confirm password
+              section.row
+                .col-sm-2
+                .col-sm-10
+                  section.text-left
+                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
+          .step2-content
+            section.row
+              .col-sm-2
+                p.important.text-left STEP 4
+              .col-sm-10
+                p.important.text-left Move your mouse around the screen to generate a random wallet,<br> and once you are done you will be moved to the next screen.
+            section.row
+              .col-sm-12
                 #entropy-progress
                   .bar(style="width:{{entropyPercent}}%")
-              .row
-                .col-md-5
-                  section.form-group
-                    label.mini
-                      div &nbsp;
-                    label Your wallet back up will be emailed to this email
-                    input#purchase-email.form-control(type="email", name="email", ng-paste="handlePaste()", ng-model="email", placeholder="Enter your email", required, ng-disabled="wallet.ethaddr")
-                    .label-container.email
-                      span(ng-class="{active: emailValid}") <i class="fa fa-{{emailValid ? 'check' : 'times'}}"></i> valid email
-                    input#purchase-email-repeat.form-control(type="email", name="email_repeat", ng-paste="handlePaste()", ng-model="email_repeat", required, placeholder="Enter your email", data-match="email", ng-disabled="wallet.ethaddr")
-                    .label-container
-                      label.error(ng-show="purchase_form.email_repeat.$error.match") Emails do not match
-                      label(ng-show="purchase_form.email_repeat.$error.required") Please confirm email
-                  section
-                    p.important Please fill the form correctly<br>to move to the next step
-                .col-md-2
-                .col-md-5
-                  section.form-group
-                    label This will serve as your wallet passphrase
-                    label.mini
-                      div Passphrase strength:
-                        ul#strength(check-strength="password")
-                    input#password.form-control(type="password", name="password", autocomplete="off", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
-                    .label-container
-                      ul#password-checks
-                        li(ng-class="{active: passChecks.longStr}") <i class="fa fa-{{passChecks.longStr ? 'check' : 'times'}}"></i> 12+ characters
-                        li(ng-class="{active: passChecks.bothCase}") <i class="fa fa-{{passChecks.bothCase ? 'check' : 'times'}}"></i> Upper and lowercase letters
-                        li(ng-class="{active: passChecks.numbers}") <i class="fa fa-{{passChecks.numbers ? 'check' : 'times'}}"></i> Numbers
-                        //- li(ng-class="{active: passChecks.symbols}") <i class="fa fa-{{passChecks.symbols ? 'check' : 'times'}}"></i> Symbols
-                        li(ng-class="{active: passChecks.unique}") <i class="fa fa-{{passChecks.unique ? 'check' : 'times'}}"></i> Unique
-                    input#password_repeat.form-control(type="password", name="password_repeat", autocomplete="off", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase")
-                    .label-container
-                      label.error(ng-show="purchase_form.password_repeat.$error.match") Passphrases do not match
-
-                  section
-                    p.important(ng-if="collectingEntropy") {{ "Move your mouse to generate entropy and move to the next step." }}
-                    p.important(ng-if="!collectingEntropy") Choose a strong passphrase and do not lose it. The password will be required to access your ether.
-          .step2-content
+          .step3-content
             h4 You are about to buy
               span.eth-to-buy &nbsp;{{ethToBuy}}&nbsp;
-              span.currency-code ETH&nbsp;
-              | for {{btcToSend}}&nbsp;
-              span.currency-code BTC
+              span ether for {{btcToSend}} bitcoin
               p.smaller.danger DO NOT CLICK CANCEL once you have sent bitcoin.
             div
               .row
-                .col-md-5
+                .col-sm-6.col-md-5
+                  p.important STEP 5
+                .clearfix
+                .col-sm-6.col-md-5
                   section
-                    p send bitcoins to this address:
+                    p Send exactly {{btcToSend}} bitcoin to the address below:
                   section
                     a(href="bitcoin:{{wallet.btcaddr}}?amount={{btcToSend}}&label=Ether presale {{btcToSend}} BTC")
                       div#qr-deposit-address
                   section.text-center
                     p Payment address:
                     span.payment-address.nowrap(href="bitcoin:{{wallet.btcaddr}}") {{wallet.btcaddr}}
-                  section
-                    p.copy Send bitcoin to the above address to buy Ether. Confirmation depends on the Bitcoin network and can take many minutes.
-                .col-md-2
-                .col-md-5
+                  //- section
+                  //-   p.copy Send bitcoin to the above address to buy Ether. Confirmation depends on the Bitcoin network and can take many minutes.
+                .col-md-2.hidden-sm
+                .col-sm-6.col-md-5
                   p purchase status: {{status}}
                   .loaderHolder#confirmations-container
                     .loader Loading...
                   section.text-center
                     p Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
+                .clearfix
+                .col-md-12
                   section
-                    p.copy You can already download your wallet using the link below. You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
+                    p.text-center You can already download your wallet using the link below.<br/>You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
                     p.text-center
-                      a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
-          .step3-content
+                      a#downloadLinkTemp.btn-buy-ether(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+          .step4-content
             a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
-            h4 Thank you for your purchase
+            h4 Thank you!
             div
               .row
-                .col-md-5
+                .col-sm-6.col-md-5
+                  section
+                    p.important.text-left Step 6: Download your wallet
+                  section
+                    p.copy.no-print This file represents your private key to your wallet. It is in the form of a .json file that has been encrypted with your passphrase. When the ethereum blockchain goes live you can import this file into your wallet and the balance will be adjusted automatically with the purchased ether amount.
+                  section
+                    a#downloadLink.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") (Re-) Download your wallet
+                  section
+                    p.copy Recommendations
+                    ol#recommendations
+                      li.smaller Write down your passphrase and store it in a secure location
+                      li.smaller Backup your wallet .json file on multiple secure mediums
+                      li.smaller Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions
+                  section
+                    a#back-to-start.no-print(ng-click="reset()") Done
+                .col-md-2.hidden-sm
+                .col-sm-6.col-md-5
+                  section
+                    p.important Transaction Information
                   section
                     p.important bitcoin transaction ID:
                     p.btc-transaction-id {{transactionHash}}
@@ -220,23 +217,13 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     input#email-confirmations-dial(type="text")
                     #email-dial-shim.confirmations-dial-shim X/X
                   section
-                    p Only transactions with a minimum of six confirmations to the genesis block will be considered valid
+                    p.danger Your bitcoin payment must receive six confirmations<br>in order to be considered valid
+                  section
+                    p.copy Your email address:
                     p.important {{email}}
                   section
                     p.copy Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
-                .col-md-2
-                .col-md-5
-                  section
-                    p.copy.no-print This file represents your private key to your wallet, encrypted by your passphrase in a .json file. When the ethereum block-chain is live you can import this file in your wallet and the balance will be adjusted automatically with the purchased amount.
-                  section
-                    a#downloadLink.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
-                  section
-                    p.copy Recommendations
-                    ol#recommendations
-                      li Make sure you do not forget your passphrase!
-                      li Create backups on multiple mediums
-                      li Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions
-                  section
-                    a#back-to-start.no-print(ng-click="reset()") Done
+          .step5-content
+            .clearfix
 

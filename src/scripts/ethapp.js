@@ -2,7 +2,7 @@ ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
 // ETHERSALE_URL = "http://localhost:5000";//TODO remove debug
 
-var ethereum = angular.module('ethereum', []);
+var ethereum = angular.module('ethereum', ['ngTouch']);
 
 ethereum.config([
   '$compileProvider',
@@ -31,7 +31,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   $scope.didPushTx = false;
   $scope.debug = '(Debug output)';
 
-  $scope.btcToSend = 1.5;
+  $scope.btcToSend = null;
   $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
   var timerUnspent;
 
@@ -79,15 +79,23 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   });
 
   var authDetailsOK = function(){
-    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK &&
+    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && parseFloat($scope.btcToSend) >= 0.01 &&
       ($scope.password === $scope.password_repeat) && ($scope.email === $scope.email_repeat);
   };
 
-  $scope.$watch("[email,email_repeat,password,password_repeat]", function(){
-    if(authDetailsOK() && !$scope.wallet) $scope.collectingEntropy = true;
+  $scope.$watch("[email,email_repeat,password,password_repeat,btcToSend,ethToBuy]", function(){
+    if(authDetailsOK() && !$scope.wallet) $scope.canCollectEntropy = true;
   },true);
 
-  window.onmousemove = function(e) {
+  $scope.nextStep = function(){
+    if(authDetailsOK() && !$scope.wallet && $scope.canCollectEntropy)
+    {
+      window.onFormReady();
+      $scope.collectingEntropy = true;
+    }
+  };
+
+  window.onmousemove = window.ontouchmove = function(e) {
     // only work when the first steps are done
     if (!authDetailsOK()){
       $scope.entropy = "";
@@ -95,9 +103,8 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     }
 
     // only work if a btcAddress doesn't already exist
-    if (!$scope.wallet) {
-      $scope.collectingEntropy = true;
-
+    if (!$scope.wallet && $scope.collectingEntropy) {
+      e.preventDefault();
       var roundSeed = '' + e.x + e.y + new Date().getTime() + Math.random();
 
       Bitcoin.Crypto.SHA256(roundSeed, {
@@ -110,6 +117,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
       if ($scope.entropy.length > $scope.requiredEntropyLength && !$scope.wallet) {
         $scope.collectingEntropy = false;
+        $scope.canCollectEntropy = false;
         $scope.wallet = 1;
         // $scope.entropy = 'qwe'; // TODO remove debug;
         // console.log('generating wallet'); // Add loading thingy
@@ -139,10 +147,10 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       $scope.passChecks = {};
     }else if(oldV !== newV){
       $scope.passChecks = {
-        longStr: newV.length > 11,
+        longStr: newV.length > 9,
         bothCase: /[a-z]+/.test(newV) && /[A-Z]+/.test(newV),
         numbers: /[0-9]+/.test(newV),
-        //symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV), //"
+        symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV), //"
         unique: !isPassInDictionary(newV)
       };
 
@@ -156,11 +164,12 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.password = "";
     $scope.password_repeat =  "";
     $scope.collectingEntropy = false;
+    $scope.canCollectEntropy = false;
     $scope.entropy = "";
     $scope.passwordOK = false;
     $scope.wallet = null;
     timerUnspent = startUnspentInterval();
-    $scope.btcToSend = 1.5;
+    $scope.btcToSend = null;
     $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
   };
 
@@ -178,7 +187,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
           $scope.status = e || 'Error connecting, please try later.';
           return $scope.status;
         }
-        var tx = finalize($scope.wallet, unspent, $scope.pwkey);
+        var tx = finalize($scope.wallet, unspent, $scope.pwkey, $scope.btcToSend);
         TX = tx;
         if (!tx) {
           $scope.status = 'Waiting for deposit...';
