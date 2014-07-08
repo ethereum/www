@@ -466,6 +466,18 @@ footer {
   right: -15px;
 }
 
+.center-block {
+  float: none !important;
+}
+
+#what .leftSliderArrow {
+  left: -25px;
+}
+
+#what .rightSliderArrow {
+  right: -25px;
+}
+
 .presslink {
   text-decoration: none;
 }
