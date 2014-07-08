@@ -159,7 +159,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             div
               .row
                 .col-sm-6.col-md-5
-                  p.important Step 5
+                  p.important STEP 5
                 .clearfix
                 .col-sm-6.col-md-5
                   section
@@ -180,16 +180,18 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section.text-center
                     p Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
-                  //- section
-                  //-   p.copy You can already download your wallet using the link below. You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
-                  //-   p.text-center
-                  //-     a#downloadLinkTemp.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+                .clearfix
+                .col-md-12
+                  section
+                    p.text-center You can already download your wallet using the link below.<br/>You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
+                    p.text-center
+                      a#downloadLinkTemp.btn-buy-ether(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
           .step4-content
             a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
             h4 Thank you!
             div
               .row
-                .col-sm-5
+                .col-sm-6.col-md-5
                   section
                     p.important.text-left Step 6: Download your wallet
                   section
@@ -204,8 +206,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       li.smaller Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions
                   section
                     a#back-to-start.no-print(ng-click="reset()") Done
-                .col-sm-2
-                .col-sm-5
+                .col-md-2.hidden-sm
+                .col-sm-6.col-md-5
                   section
                     p.important Transaction Information
                   section

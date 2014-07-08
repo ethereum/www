@@ -437,8 +437,6 @@ $(function() {
 
       $purchaseCancel.hide();
 
-      console.log(ETHERSALE_URL);
-
       clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);
 
