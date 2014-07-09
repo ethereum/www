@@ -87,12 +87,12 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       .row
                         .col-sm-5.col-xs-12
                           p amount in bitcoin
-                          input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-change="updateEthToBuy()").amount-box
+                          input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-min="0.01", ng-change="updateEthToBuy()").amount-box
                         .col-sm-2.col-xs-12.delimiter
                           span.exchange-delimiter =
                         .col-sm-5.col-xs-12
                           p amount in ether
-                          input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-change="updateBtcToSend()").amount-box.eth-to-btc
+                          input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-min="minEthToBuy" ng-change="updateBtcToSend()").amount-box.eth-to-btc
                   section
                     p.text-left
                       span Price: 1 bitcoin buys&nbsp;
@@ -140,7 +140,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-sm-2
                 .col-sm-10
                   section.text-left
-                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
+                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false && purchase_form.$error.ngMin == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
           .step2-content
             section.row
               .col-sm-2

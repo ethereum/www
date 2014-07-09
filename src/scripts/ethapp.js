@@ -31,36 +31,21 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   $scope.didPushTx = false;
   $scope.debug = '(Debug output)';
 
-  $scope.btcToSend = null;
+  $scope.btcToSend = 1;
   $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
+  $scope.minEthToBuy = $scope.ethToBuy / 100;
+  $scope.btcToSend = 0
+  $scope.ethToBuy = 0;
   var timerUnspent;
 
   $scope.updateEthToBuy = function()
   {
-    if($scope.btcToSend < 0.01)
-    {
-      $scope.btcToSend = 0.01;
-    }
-
     $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend,10) || 0);
   };
 
   $scope.updateBtcToSend = function()
   {
     $scope.btcToSend = window.btcForEth(parseFloat($scope.ethToBuy,10) || 0);
-
-    if($scope.btcToSend < 0.01)
-    {
-      $scope.btcToSend = 0.01;
-      $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend,10) || 0);
-    }
-  };
-
-  $scope.handlePaste = function(){
-    angular.element(':focus').val('');
-    setTimeout(function(){
-      angular.element(':focus').val('');
-    }, 100);
   };
 
   $scope.$watch("email", function(val){
@@ -79,7 +64,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   });
 
   var authDetailsOK = function(){
-    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && parseFloat($scope.btcToSend) >= 0.01 &&
+    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && $scope.amountOK &&
       ($scope.password === $scope.password_repeat) && ($scope.email === $scope.email_repeat);
   };
 
@@ -167,10 +152,14 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.canCollectEntropy = false;
     $scope.entropy = "";
     $scope.passwordOK = false;
+    $scope.amountOK = false;
     $scope.wallet = null;
     timerUnspent = startUnspentInterval();
-    $scope.btcToSend = null;
+    $scope.btcToSend = 1;
     $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
+    $scope.minEthToBuy = $scope.ethToBuy / 100;
+    $scope.btcToSend = 0;
+    $scope.ethToBuy = 0;
   };
 
   timerUnspent = startUnspentInterval();
@@ -357,6 +346,26 @@ ethereum.directive('numeric', function() {
         return val;  // or return Number(transformedInput)
       }
       ngModelCtrl.$parsers.push(fromUser);
+    }
+  };
+});
+
+function isEmpty(value) {
+  return angular.isUndefined(value) || value === '' || value === null || value !== value;
+}
+
+ethereum.directive('ngMin', function() {
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function(scope, elem, attr, ctrl) {
+      scope.$watch(function(){
+        var min = scope.$eval(attr.ngMin) || 0;
+        return ! (!isEmpty(ctrl.$viewValue) && ctrl.$viewValue < min);
+      }, function(currentValue) {
+          ctrl.$setValidity('ngMin', currentValue);
+          scope.amountOK = currentValue;
+      });
     }
   };
 });
