@@ -31,11 +31,9 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   $scope.didPushTx = false;
   $scope.debug = '(Debug output)';
 
-  $scope.btcToSend = 1;
-  $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
-  $scope.minEthToBuy = $scope.ethToBuy / 100;
-  $scope.btcToSend = 0
+  $scope.btcToSend = 0;
   $scope.ethToBuy = 0;
+  $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
   var timerUnspent;
 
   $scope.updateEthToBuy = function()
@@ -155,11 +153,9 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.amountOK = false;
     $scope.wallet = null;
     timerUnspent = startUnspentInterval();
-    $scope.btcToSend = 1;
-    $scope.ethToBuy = window.ethForBtc(parseFloat($scope.btcToSend));
-    $scope.minEthToBuy = $scope.ethToBuy / 100;
     $scope.btcToSend = 0;
-    $scope.ethToBuy = 0;
+    $scope.ethToBuy = 0
+    $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
   };
 
   timerUnspent = startUnspentInterval();
