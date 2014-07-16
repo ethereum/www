@@ -1105,9 +1105,22 @@ a:hover {
   background-color: #eee;
   margin: 20px 30px 0 0;
   border-radius: 5px;
-  padding: 15px;
+  padding: 20px;
   box-shadow: inset 0 0 10px #999;
   overflow: auto;
+  text-align: justify;
+}
+#terms-text-container h1 {
+  margin: 0px;
+  margin-top: 10px;
+}
+#terms-text-container h5 {
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+#terms-text-container p {
+  margin-top: 25px;
+  line-height: 25px;
 }
 #docs-container{
   background-color: #eee;

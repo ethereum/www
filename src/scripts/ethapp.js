@@ -1,5 +1,6 @@
 ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
+MAX_ETH_TO_BUY = 1000000;
 
 var ethereum = angular.module('ethereum', ['ngTouch']);
 
@@ -33,6 +34,8 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   $scope.btcToSend = 0;
   $scope.ethToBuy = 0;
   $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
+  $scope.maxEthToBuy = MAX_ETH_TO_BUY;
+  $scope.maxBtcToEth = window.btcForEth(MAX_ETH_TO_BUY);
   var timerUnspent;
 
   $scope.updateEthToBuy = function()
@@ -155,6 +158,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.btcToSend = 0;
     $scope.ethToBuy = 0;
     $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
+    $scope.maxBtcToEth = window.btcForEth(MAX_ETH_TO_BUY);
   };
 
   timerUnspent = startUnspentInterval();
@@ -365,6 +369,22 @@ ethereum.directive('ngMin', function() {
   };
 });
 
+ethereum.directive('ngMax', function() {
+  return {
+    restrict: 'A',
+    require: 'ngModel',
+    link: function(scope, elem, attr, ctrl) {
+      scope.$watch(function(){
+        var max = scope.$eval(attr.ngMax) || 0;
+        return ! (!isEmpty(ctrl.$viewValue) && ctrl.$viewValue > max);
+      }, function(currentValue) {
+          ctrl.$setValidity('ngMax', currentValue);
+          scope.amountOK = currentValue;
+      });
+    }
+  };
+});
+
 ethereum.factory('DownloadDataURI', ['$http', function($http) {
 
   return function(options) {
@@ -446,7 +466,7 @@ ethereum.factory('Purchase', ['$http', function($http) {
         data: {'tx' : data.tx},
         crossDomain: true,
         header: {
-          'Access-Control-Allow-Origin':'*'
+          'Access-Control-Allow-Origin' : ETHERSALE_URL.replace('https://', '')
         },
         success: function( response )
         {

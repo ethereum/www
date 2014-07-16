@@ -88,18 +88,22 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                       .row
                         .col-sm-5.col-xs-12
                           p amount in bitcoin
-                          input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-min="0.01", ng-change="updateEthToBuy()").amount-box
+                          input(type="text", name="btcToSend", ng-model="btcToSend", numeric, required, ng-min="0.01", ng-max="maxBtcToEth", ng-change="updateEthToBuy()").amount-box
                         .col-sm-2.col-xs-12.delimiter
                           span.exchange-delimiter =
                         .col-sm-5.col-xs-12
                           p amount in ether
-                          input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-min="minEthToBuy" ng-change="updateBtcToSend()").amount-box.eth-to-btc
+                          input(type="text", name="ethToBuy", ng-model="ethToBuy", numeric, required, ng-min="minEthToBuy", ng-max="maxEthToBuy" ng-change="updateBtcToSend()").amount-box.eth-to-btc
                   section
                     p.text-left
                       span Price: 1 bitcoin buys&nbsp;
                       span.eth-to-btc
-                      span &nbsp;ether. Mininmum purchase amount is 0.01 bitcoin or&nbsp;
+                      span &nbsp;ether.<br/>Minimum purchase amount is 0.01 bitcoin or&nbsp;
                       span.min-eth-to-btc
+                      span &nbsp;ether, maximum purchase amount is&nbsp;
+                      span.max-btc-to-buy
+                      span &nbsp;bitcoin or&nbsp;
+                      span.max-eth-to-buy
                       span &nbsp;ether.
               section.row
                 .col-sm-2
@@ -120,9 +124,9 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   p.important.text-left STEP 3
                 .col-sm-10
                   p.important.text-left Enter a passphrase. This is required to encrypt and access your wallet.
-                  label.mini
-                    div Passphrase strength:
-                      ul#strength(check-strength="password")
+                  //- label.mini
+                  //-   div Passphrase strength:
+                  //-     ul#strength(check-strength="password")
                   .row
                     .col-sm-6
                       input#password.form-control(type="password", name="password", autocomplete="off", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
@@ -141,7 +145,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-sm-2
                 .col-sm-10
                   section.text-left
-                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false && purchase_form.$error.ngMin == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
+                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false && purchase_form.$error.ngMin == false && purchase_form.$error.ngMax == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
           .step2-content
             section.row
               .col-sm-2

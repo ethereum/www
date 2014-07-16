@@ -340,8 +340,10 @@ $(function() {
         nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY;
 
         $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
-        $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0") );
+        $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0.00") );
         $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
+        $(".max-eth-to-buy").text( numeral( MAX_ETH_TO_BUY ).format("0,0") );
+        $(".max-btc-to-buy").text( numeral( MAX_ETH_TO_BUY/ethForBtcCalc ).format("0,0.00") );
 
         updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
       }
