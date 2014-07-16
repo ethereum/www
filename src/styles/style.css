@@ -1109,6 +1109,14 @@ a:hover {
   box-shadow: inset 0 0 10px #999;
   overflow: auto;
 }
+#docs-container{
+  background-color: #eee;
+  margin: 20px 30px 10px 0;
+  border-radius: 5px;
+  padding: 4px;
+  box-shadow: inset 0 0 10px #999;
+  overflow: hidden;
+}
 #terms-modal .got-it{
   padding: 10px;
   text-align: center;
@@ -1120,7 +1128,7 @@ a:hover {
   padding-left: 5px;
 }
 
-#terms-modal .close-modal{
+#terms-modal .close-modal, #docs-modal .close-modal{
   position: absolute;
   right: 12px;
   top: 20px;
@@ -1135,33 +1143,33 @@ a:hover {
   transition: border-color ease-in-out 0.3s;
 }
 
-#terms-modal a{
+#terms-modal a, #docs-modal a{
   cursor: pointer;
   text-decoration: none;
 }
-#terms-modal h1, #terms-modal h2, #terms-modal h3{
+#terms-modal h1, #terms-modal h2, #terms-modal h3, #docs-modal h1, #docs-modal h2, #docs-modal h3{
   text-transform: none;
 }
 
-#terms-modal h1{
+#terms-modal h1, #docs-modal h1{
   font-size: 26px;
 }
 
-#terms-modal h2{
+#terms-modal h2, #docs-modal h2{
   font-size: 18px;
   font-weight: bold;
 }
 
-#terms-modal .close-modal:hover{
+#terms-modal .close-modal:hover, #docs-modal .close-modal:hover{
   border-color: #333;
 }
 
-#terms-modal .logo{
+#terms-modal .logo, #docs-modal .logo{
   text-align: center;
   margin: 20px 0 0 17px;
 }
 
-#terms-modal .logo h3{
+#terms-modal .logo h3, #docs-modal .logo h3{
   font-size: 18px;
 }
 
@@ -1242,7 +1250,12 @@ a:hover {
   width: 120px;
 }
 
-#terms-modal .controls i{
+#docs-modal .controls {
+  font-size: 12px;
+  color: #777;
+}
+
+#terms-modal .controls i, #docs-modal .controls i{
   margin-right: 2px;
 }
 
@@ -1420,4 +1433,13 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
     padding-left: 12px;
     padding-right: 12px;
   }
+}
+
+.explanations {
+  margin-top: 30px;
+  border-top: 1px solid #ccc;
+}
+
+.explanations a {
+  text-decoration: underline !important;
 }

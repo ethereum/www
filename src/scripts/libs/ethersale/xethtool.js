@@ -1,6 +1,6 @@
 var conv = Bitcoin.convert;
 
-var    exodus = '1FxkfJQLJTXpW6QmxGT6oF43ZH959ns8Cq';
+var    exodus = '3HE73tDm7q6wHMhCxfThDQFpBX9oq14ZaG';
 
 function mkrandom() {
     var r = [];

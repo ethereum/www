@@ -91,6 +91,7 @@ module.exports = {
     'underscore-min.js',
     'moment.min.js',
     'jquery.PrintArea.js',
+    'pdfobject.min.js',
     'main.js',
 
     'ethersale/angular.min.js',

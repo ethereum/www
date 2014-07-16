@@ -1,6 +1,5 @@
 ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
-// ETHERSALE_URL = "http://localhost:5000";//TODO remove debug
 
 var ethereum = angular.module('ethereum', ['ngTouch']);
 
@@ -154,7 +153,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     $scope.wallet = null;
     timerUnspent = startUnspentInterval();
     $scope.btcToSend = 0;
-    $scope.ethToBuy = 0
+    $scope.ethToBuy = 0;
     $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
   };
 

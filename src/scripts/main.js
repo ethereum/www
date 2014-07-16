@@ -147,7 +147,7 @@ $(function() {
     /* UPDATE these constants with real values */
     var ETHER_FOR_BTC = 2000,
         DECREASE_AMOUNT_PER_DAY = 15,
-        FUNDRAISING_ADDRESS = "1FxkfJQLJTXpW6QmxGT6oF43ZH959ns8Cq",
+        FUNDRAISING_ADDRESS = "3HE73tDm7q6wHMhCxfThDQFpBX9oq14ZaG",
         SATOSHIS_IN_BTC = 100000000,
         START_DATETIME = "2014-06-17 00:00:00",
         DECREASE_AFTER = 15,
@@ -167,6 +167,8 @@ $(function() {
         $startBtn = $("#start-ether-purchase"),
         $terms = $("#terms-modal"),
         $termsText = $("#terms-text-container"),
+        $docs = $("#docs-modal"),
+        $docsContainer = $("#docs-container"),
         btcToSend = 1,
         mainSlider,
         appStepsSlider,
@@ -558,6 +560,42 @@ $(function() {
               .attr("class", "line")
               .attr("d", line);
       });
+    });
+
+    var resizeDocs = function(){
+      $docsContainer.height($(window).height() - 155);
+    };
+
+    var closeDocs = function(){
+      $docs.modal("hide");
+      $(window).off("resize", resizeDocs);
+    };
+
+    $('.showDocs').click(function(e){
+      e.preventDefault();
+      $docs.modal();
+      resizeDocs();
+
+      var myPDF = new PDFObject(
+      {
+        url: $(this).attr('href'),
+        pdfOpenParams: {
+          navpanes: 0,
+          view: "FitH",
+          pagemode: "bookmarks"
+        }
+      }).embed("docs-container");
+
+      $docs.find('a.download').attr('href', $(this).attr('href'));
+      $docs.find('a.download').attr('download', $(this).attr('href'));
+
+      $(window).on("resize", resizeDocs);
+      return false;
+    });
+
+    $docs.find(".close-modal").click(function(e){
+      closeDocs();
+      return false;
     });
   };
 
