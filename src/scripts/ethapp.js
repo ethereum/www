@@ -27,13 +27,27 @@ var $downloadLink = $("#downloadLink");
 ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', function(Purchase, DownloadDataURI, $scope) {
   $scope.requiredEntropyLength = 300;
   window.wscope = $scope;
-  $scope.entropy = '';
   $scope.didPushTx = false;
   $scope.debug = '(Debug output)';
 
   $scope.btcToSend = 0;
   $scope.ethToBuy = 0;
-  $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
+  $scope.minAmountOK = false;
+  $scope.maxAmountOK = false;
+
+  $scope.email = "";
+  $scope.emailValid = false;
+  $scope.email_repeat = "";
+  $scope.password = "";
+  $scope.passwordOK = false;
+  $scope.password_repeat =  "";
+
+  $scope.wallet = null;
+  $scope.canCollectEntropy = false;
+  $scope.collectingEntropy = false;
+  $scope.entropy = "";
+
+  $scope.minEthToBuy = window.ethForBtc(1) / 100;
   $scope.maxEthToBuy = MAX_ETH_TO_BUY;
   $scope.maxBtcToEth = window.btcForEth(MAX_ETH_TO_BUY);
   var timerUnspent;
@@ -64,12 +78,11 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   });
 
   var authDetailsOK = function(){
-    return $scope.email_repeat && $scope.passwordOK && $scope.passwordOK && $scope.amountOK &&
-      ($scope.password === $scope.password_repeat) && ($scope.email === $scope.email_repeat);
+    return $scope.minAmountOK && $scope.maxAmountOK && $scope.emailValid && $scope.email_repeat && ($scope.email === $scope.email_repeat) && $scope.passwordOK && ($scope.password === $scope.password_repeat);
   };
 
-  $scope.$watch("[email,email_repeat,password,password_repeat,btcToSend,ethToBuy]", function(){
-    if(authDetailsOK() && !$scope.wallet) $scope.canCollectEntropy = true;
+  $scope.$watch("[btcToSend,ethToBuy,minAmountOK,maxAmountOK,email,emailValid,email_repeat,password,passwordOK,password_repeat]", function(){
+    $scope.canCollectEntropy = (authDetailsOK() && !$scope.wallet);
   },true);
 
   $scope.nextStep = function(){
@@ -82,7 +95,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
   window.onmousemove = window.ontouchmove = function(e) {
     // only work when the first steps are done
-    if (!authDetailsOK()){
+    if ( ! $scope.canCollectEntropy){
       $scope.entropy = "";
       return;
     }
@@ -144,21 +157,28 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   });
 
   $scope.reset = function(){
-    $scope.email = "";
-    $scope.email_repeat = "";
-    $scope.password = "";
-    $scope.password_repeat =  "";
-    $scope.collectingEntropy = false;
-    $scope.canCollectEntropy = false;
-    $scope.entropy = "";
-    $scope.passwordOK = false;
-    $scope.amountOK = false;
-    $scope.wallet = null;
-    timerUnspent = startUnspentInterval();
     $scope.btcToSend = 0;
     $scope.ethToBuy = 0;
-    $scope.minEthToBuy = window.ethForBtc(parseFloat(1)) / 100;
+    $scope.minAmountOK = false;
+    $scope.maxAmountOK = false;
+
+    $scope.email = "";
+    $scope.emailValid = false;
+    $scope.email_repeat = "";
+    $scope.password = "";
+    $scope.passwordOK = false;
+    $scope.password_repeat =  "";
+
+    $scope.wallet = null;
+    $scope.canCollectEntropy = false;
+    $scope.collectingEntropy = false;
+    $scope.entropy = "";
+
+    $scope.minEthToBuy = window.ethForBtc(1) / 100;
+    $scope.maxEthToBuy = MAX_ETH_TO_BUY;
     $scope.maxBtcToEth = window.btcForEth(MAX_ETH_TO_BUY);
+
+    timerUnspent = startUnspentInterval();
   };
 
   timerUnspent = startUnspentInterval();
@@ -334,6 +354,7 @@ ethereum.directive('numeric', function() {
     require: 'ngModel',
     link: function (scope, element, attr, ngModelCtrl) {
       function fromUser(text) {
+        text = text || '';
         var val = text.replace(/[^0-9.]/g, '');
 
         while(val.split(".").length > 2) val = val.replace(".", "");
@@ -360,10 +381,10 @@ ethereum.directive('ngMin', function() {
     link: function(scope, elem, attr, ctrl) {
       scope.$watch(function(){
         var min = scope.$eval(attr.ngMin) || 0;
-        return ! (!isEmpty(ctrl.$viewValue) && ctrl.$viewValue < min);
+        return (!isEmpty(ctrl.$viewValue) && parseFloat(ctrl.$viewValue) >= parseFloat(min));
       }, function(currentValue) {
           ctrl.$setValidity('ngMin', currentValue);
-          scope.amountOK = currentValue;
+          scope.minAmountOK = currentValue;
       });
     }
   };
@@ -374,12 +395,13 @@ ethereum.directive('ngMax', function() {
     restrict: 'A',
     require: 'ngModel',
     link: function(scope, elem, attr, ctrl) {
-      scope.$watch(function(){
+      scope.$watch(function()
+      {
         var max = scope.$eval(attr.ngMax) || 0;
-        return ! (!isEmpty(ctrl.$viewValue) && ctrl.$viewValue > max);
+        return (!isEmpty(ctrl.$viewValue) && parseFloat(ctrl.$viewValue) <= parseFloat(max));
       }, function(currentValue) {
           ctrl.$setValidity('ngMax', currentValue);
-          scope.amountOK = currentValue;
+          scope.maxAmountOK = currentValue;
       });
     }
   };
@@ -465,9 +487,6 @@ ethereum.factory('Purchase', ['$http', function($http) {
         url: BLOCKCHAIN_URL + "/pushtx?cors=true",
         data: {'tx' : data.tx},
         crossDomain: true,
-        header: {
-          'Access-Control-Allow-Origin' : ETHERSALE_URL.replace('https://', '')
-        },
         success: function( response )
         {
           $http.post(ETHERSALE_URL + '/sendmail', data)

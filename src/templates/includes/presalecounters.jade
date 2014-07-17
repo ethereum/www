@@ -145,7 +145,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-sm-2
                 .col-sm-10
                   section.text-left
-                    a.btn-buy-ether(ng-class="{disabled: !(purchase_form.$error.required == false && purchase_form.$error.match == false && purchase_form.$error.ngMin == false && purchase_form.$error.ngMax == false)}", ng-click="nextStep()", href="#ethersale-app") Continue
+                    a.btn-buy-ether(ng-class="{disabled: !canCollectEntropy}", ng-click="nextStep()", href="#ethersale-app") Continue
           .step2-content
             section.row
               .col-sm-2
