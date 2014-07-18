@@ -146,12 +146,13 @@ $(function() {
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
     var ETHER_FOR_BTC = 2000,
-        DECREASE_AMOUNT_PER_DAY = 15,
+        DECREASE_AMOUNT_PER_DAY = 30,
+        MIN_ETH_FOR_BTC = 1337.07714935,
         FUNDRAISING_ADDRESS = "3HE73tDm7q6wHMhCxfThDQFpBX9oq14ZaG",
         SATOSHIS_IN_BTC = 100000000,
-        START_DATETIME = "2014-06-17 00:00:00",
-        DECREASE_AFTER = 15,
-        ENDS_AFTER = 60,
+        START_DATETIME = "2014-06-12 00:00:00",
+        DECREASE_AFTER = 14,
+        ENDS_AFTER = 42,
         $qrDepAddr = $("#qr-deposit-address"),
         $purchaseCancel = $("#purchase-cancel"),
         $backToStart = $("#back-to-start"),
@@ -298,7 +299,7 @@ $(function() {
 
     var deltaForTimeTillNextRate = dhms( 1000 * (decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000 ).days;
 
-    setupTimerDials($rateCountdownDials, deltaForTimeTillNextRate);
+    setupTimerDials($rateCountdownDials, (deltaForTimeTillNextRate < -22 ? dhms( endsAt.diff(startsAt)).days : deltaForTimeTillNextRate));
 
 
     $(".countdown-dials input").css({
@@ -337,7 +338,9 @@ $(function() {
           ethForBtcCalc = ETHER_FOR_BTC;
         }
 
-        nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY;
+        ethForBtcCalc = Math.max(ethForBtcCalc, MIN_ETH_FOR_BTC);
+
+        nextEthForBtc = Math.max(ethForBtcCalc - DECREASE_AMOUNT_PER_DAY, MIN_ETH_FOR_BTC);
 
         $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
         $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0.00") );
@@ -345,7 +348,14 @@ $(function() {
         $(".max-eth-to-buy").text( numeral( MAX_ETH_TO_BUY ).format("0,0") );
         $(".max-btc-to-buy").text( numeral( MAX_ETH_TO_BUY/ethForBtcCalc ).format("0,0.00") );
 
-        updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
+        if(ethForBtcCalc === MIN_ETH_FOR_BTC)
+        {
+          updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.unix() - moment().utc().unix()) - moment().zone()*60*1000));
+        }
+        else
+        {
+          updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
+        }
       }
       else
       {
