@@ -351,6 +351,7 @@ $(function() {
         if(ethForBtcCalc === MIN_ETH_FOR_BTC)
         {
           updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.unix() - moment().utc().unix()) - moment().zone()*60*1000));
+          $('.nextPriceInfo').hide();
         }
         else
         {
