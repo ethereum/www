@@ -171,6 +171,7 @@ $(function() {
         $docs = $("#docs-modal"),
         $docsContainer = $("#docs-container"),
         btcToSend = 1,
+        didNotifyRememberPassword = false,
         mainSlider,
         appStepsSlider,
         ethForBtcCalc = 2000,
@@ -211,6 +212,7 @@ $(function() {
       purchaseInputs.$passwordRepeat.val("");
       appStepsSlider.setNextPanel(0);
       mainSlider.setNextPanel(1);
+      didNotifyRememberPassword = false;
       $purchaseCancel.show();
       $purchaseForm.find("input").each(function(){
         $(this).attr("disabled", false);
@@ -266,6 +268,13 @@ $(function() {
       if($(this).is(":checked")){
         mainSlider.setNextPanel(2);
         closeTerms();
+      }
+    });
+
+    purchaseInputs.$password.focus(function(){
+      if(!didNotifyRememberPassword){
+        $('#remember-password-modal').modal();
+        didNotifyRememberPassword = true;
       }
     });
 

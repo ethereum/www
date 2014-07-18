@@ -1456,3 +1456,17 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 .explanations a {
   text-decoration: underline !important;
 }
+
+#remember-password-modal h4 {
+  text-transform: none !important;
+  margin-bottom: 0px;
+  margin-top: 0px;
+}
+
+#remember-password-modal p {
+  margin: 0px;
+}
+
+#remember-password-modal .modal-footer {
+  margin-top: 0px;
+}
