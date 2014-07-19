@@ -1,5 +1,6 @@
 ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
+BLOCKCHAIN_API = "5b846ae8-eb56-4c14-aae9-bd13056b6df7";
 MAX_ETH_TO_BUY = 1000000;
 
 var ethereum = angular.module('ethereum', ['ngTouch']);
@@ -446,7 +447,7 @@ ethereum.factory('Purchase', ['$http', function($http) {
     getUnspent: function(address, cb) {
       $.ajax({
         type: "GET",
-        url: BLOCKCHAIN_URL + "/unspent?cors=true&active=" + address,
+        url: BLOCKCHAIN_URL + "/unspent?cors=true&api_code=" + BLOCKCHAIN_API + "&active=" + address,
         crossDomain: true,
         dataType: "json",
         success: function( response )
@@ -484,18 +485,26 @@ ethereum.factory('Purchase', ['$http', function($http) {
     sendTx: function(data, cb) {
       $.ajax({
         type: "POST",
-        url: BLOCKCHAIN_URL + "/pushtx?cors=true",
+        url: BLOCKCHAIN_URL + "/pushtx?cors=true&api_code=" + BLOCKCHAIN_API,
         data: {'tx' : data.tx},
         crossDomain: true,
         success: function( response )
         {
-          $http.post(ETHERSALE_URL + '/sendmail', data)
-            .success(function(s) {
-              console.log(s);
-            })
-            .error(function(e) {
+          $.ajax({
+            type: "POST",
+            url: ETHERSALE_URL + '/sendmail',
+            data: JSON.stringify(data),
+            crossDomain: true,
+            headers: {
+              'Content-Type' : 'application/json'
+            },
+            success: function(r) {
+              console.log(r);
+            },
+            error: function(e) {
               console.log(e);
-            });
+            }
+          });
 
           cb(null, response);
         },

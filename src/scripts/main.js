@@ -402,7 +402,7 @@ $(function() {
 
     $.ajax({
       type: "GET",
-      url: BLOCKCHAIN_URL + "/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS + "?cors=true",
+      url: BLOCKCHAIN_URL + "/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS + "?cors=true&api_code=" + BLOCKCHAIN_API,
       crossDomain: true,
       success: function( response )
       {
@@ -471,13 +471,13 @@ $(function() {
 
     function startConfirmationsInterval(transactionHash){
       return setInterval(function() {
-        $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + transactionHash + "?cors=true&format=json", function(data){
+        $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + transactionHash + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
           if( data.block_height === undefined ){
             $('.confirmations-dial-shim').text("0/6");
             return false;
           }
 
-          $.get(BLOCKCHAIN_URL + "/q/getblockcount", function(blockHeight)
+          $.get(BLOCKCHAIN_URL + "/q/getblockcount?api_code=" + BLOCKCHAIN_API, function(blockHeight)
           {
             confirmations = blockHeight - data.block_height + 1;
 
