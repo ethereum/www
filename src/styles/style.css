@@ -1412,6 +1412,10 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 .add-top-margin {
   margin-top: 10px !important;
 }
+.add-bottom-margin {
+  margin-top: 10px;
+  margin-bottom: 50px !important;
+}
 
 @media (max-width: 990px){
   .modal-lg {

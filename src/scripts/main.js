@@ -176,8 +176,11 @@ $(function() {
         appStepsSlider,
         ethForBtcCalc = 2000,
         nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY,
+        updateDialsInterval,
         timerConfirmations,
         $purchaseForm = $("[name=purchase_form]");
+
+    $(".show-after-end").hide();
 
     $downloadLink.click(function(e){
       e.preventDefault();
@@ -370,6 +373,10 @@ $(function() {
       else
       {
         $(".hide-after-end").hide();
+        $(".show-after-end").show();
+        $(".fade-after-end").css('opacity', .5);
+
+        clearInterval(updateDialsInterval);
       }
     };
 
@@ -395,7 +402,7 @@ $(function() {
 
     updateAllDials();
 
-    window.setInterval(function(){
+    updateDialsInterval = window.setInterval(function(){
       updateAllDials();
     },1000);
 

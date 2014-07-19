@@ -9,6 +9,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
     .col-md-4
   div#sale-counters-container.container
     div#counters-primary.row
+      h3.add-bottom-margin.show-after-end The ethereum ether sale has now concluded.
       div#total-sold-container.col-md-4.col-md-push-4
         div.inner
           h4.no-bottom-margin Total ether purchased:
@@ -21,7 +22,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             span.amount &nbsp;ether
           a#start-ether-purchase.btn-buy-ether.hide-after-end Buy Ether
       div.sale-duration-container.col-md-4.col-md-pull-4.col-sm-6.countdown-dials
-        div.inner.hide-after-end
+        div.inner.fade-after-end
           h4 ether sale ends in:
           div.dial-container
             input(type="text", value="0").dial.days
@@ -39,7 +40,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             input(type="text", value="0").dial.seconds
             span.dial-label Seconds
       div.rate-countdown-container.col-md-4.col-sm-6.countdown-dials
-        div.inner.hide-after-end
+        div.inner.fade-after-end
           h4 time remaining at current price:
           div.dial-container
             input(type="text", value="0").dial.days
@@ -57,7 +58,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
           div.dial-container
             input(type="text", value="0").dial.seconds
             span.dial-label Seconds
-          div.nextPriceInfo
+          div.nextPriceInfo.hide-after-end
             span.amount next price: 1 bitcoin buys&nbsp;
             span.next-eth-to-btc 2000
             span.amount &nbsp;ether
