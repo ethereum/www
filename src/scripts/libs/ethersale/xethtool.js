@@ -93,7 +93,7 @@ function finalize(wallet,unspent,pwkey,amount) {
     // Check password
     var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
-    if (balance < 100000000)
+    if (balance < 1000000)
         return false;
     console.log('using unspent outputs:', unspent);
     var outputs = [
