@@ -148,9 +148,9 @@ $(function() {
     var ETHER_FOR_BTC = 2000,
         DECREASE_AMOUNT_PER_DAY = 30,
         MIN_ETH_FOR_BTC = 1337.07714935,
-        FUNDRAISING_ADDRESS = "3HE73tDm7q6wHMhCxfThDQFpBX9oq14ZaG",
+        FUNDRAISING_ADDRESS = "36PrZ1KHYMpqSyAQXSG8VwbUiq2EogxLo2",
         SATOSHIS_IN_BTC = 100000000,
-        START_DATETIME = "2014-06-12 00:00:00",
+        START_DATETIME = "2014-07-21 22:00:00",
         DECREASE_AFTER = 14,
         ENDS_AFTER = 42,
         $qrDepAddr = $("#qr-deposit-address"),
@@ -374,7 +374,7 @@ $(function() {
       {
         $(".hide-after-end").hide();
         $(".show-after-end").show();
-        $(".fade-after-end").css('opacity', .5);
+        $(".fade-after-end").css('opacity', 0.5);
 
         clearInterval(updateDialsInterval);
       }
