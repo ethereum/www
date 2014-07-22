@@ -506,7 +506,7 @@ $(function() {
     // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address, amount){
       $qrDepAddr.empty();
-      $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address + '?amount=' + amount + '&label=Ether%20presale ' + amount + ' BTC'});
+      $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address + '?amount=' + amount});
     };
 
     window.onTransactionComplete = function(downloadLinkHref, transactionHash){
