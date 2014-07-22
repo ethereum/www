@@ -150,7 +150,7 @@ $(function() {
         MIN_ETH_FOR_BTC = 1337.07714935,
         FUNDRAISING_ADDRESS = "36PrZ1KHYMpqSyAQXSG8VwbUiq2EogxLo2",
         SATOSHIS_IN_BTC = 100000000,
-        START_DATETIME = "2014-07-22 10:00:00",
+        START_DATETIME = "2014-07-22 22:00:00",
         DECREASE_AFTER = 14,
         ENDS_AFTER = 42,
         $qrDepAddr = $("#qr-deposit-address"),
