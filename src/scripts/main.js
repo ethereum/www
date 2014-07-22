@@ -283,7 +283,7 @@ $(function() {
       $purchTermsText.animate({scrollTop: 0}, 1000);
       $purchTerms.find("[name=confirm-terms]").attr("disabled", '');
       $purchTerms.find("[for=confirm-terms]").removeClass("disabled").addClass("disabled");
-    }
+    };
 
     var closePurchTerms = function(){
       $purchTerms.modal("hide");
