@@ -461,8 +461,8 @@ $(function() {
       crossDomain: true,
       success: function( response )
       {
-        var btc = Math.round(parseInt(response,10)/SATOSHIS_IN_BTC);
-        $("#total-sold-container .total").text(numeral(btc*2000).format("0,0"));
+        var btc = Math.round(parseInt(response,10));
+        $("#total-sold-container .total").text(numeral(btc*2000/SATOSHIS_IN_BTC).format("0,0"));
       },
       error: function( error )
       {
