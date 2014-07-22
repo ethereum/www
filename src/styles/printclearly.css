@@ -1,6 +1,11 @@
 @font-face {
-font-family: 'PrintClearly';
-  src: url('../fonts/PRINC___.TTF') format('truetype');
-  font-weight: normal;
-  font-style: normal;
+    font-family: 'PrintClearly';
+    src: url('../fonts/PrintClearly-webfont.eot');
+    src: url('../fonts/PrintClearly-webfont.eot?#iefix') format('embedded-opentype'),
+         url('../fonts/PrintClearly-webfont.woff') format('woff'),
+         url('../fonts/PrintClearly-webfont.ttf') format('truetype'),
+         url('../fonts/PrintClearly-webfont.svg#print_clearlyregular') format('svg');
+    font-weight: normal;
+    font-style: normal;
+
 }

@@ -180,6 +180,7 @@ $(function() {
         nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY,
         updateDialsInterval,
         timerConfirmations,
+        timeoutTerms,
         $purchaseForm = $("[name=purchase_form]");
 
     $(".show-after-end").hide();
@@ -251,7 +252,7 @@ $(function() {
       return false;
     });
 
-    $terms.find(".close-modal").click(function(e){
+    $("#terms-close").click(function(e){
       closeTerms();
       return false;
     });
@@ -272,11 +273,12 @@ $(function() {
     $terms.find("[name=confirm-terms]").change(function(){
       if($(this).is(":checked")){
         closeTerms();
-        setTimeout(showPurchTerms, 500);
+        timeoutTerms = setTimeout(showPurchTerms, 500);
       }
     });
 
     var showPurchTerms = function(){
+      clearTimeout(timeoutTerms);
       $purchTerms.modal();
       resizePurchTerms();
       $(window).on("resize", resizePurchTerms);
@@ -288,14 +290,14 @@ $(function() {
     var closePurchTerms = function(){
       $purchTerms.modal("hide");
       $(window).off("resize", resizePurchTerms);
-      $purchTerms.find("[name=confirm-terms]").prop("checked", false);
+      $purchTerms.find("[name=confirm-purch]").prop("checked", false);
     };
 
     var resizePurchTerms = function(){
       $purchTermsText.height($(window).height() - 185);
     };
 
-    $purchTerms.find(".close-modal").click(function(e){
+    $("#purch-close").click(function(e){
       closePurchTerms();
       return false;
     });
@@ -308,12 +310,12 @@ $(function() {
 
     $purchTermsText.scroll(function(){
       if($purchTermsText.scrollTop() + $purchTermsText.innerHeight() + 30 > $purchTermsText.prop("scrollHeight")){
-        $purchTerms.find("[name=confirm-terms]").attr("disabled", false);
-        $purchTerms.find("[for=confirm-terms]").removeClass("disabled");
+        $purchTerms.find("[name=confirm-purch]").attr("disabled", false);
+        $purchTerms.find("[for=confirm-purch]").removeClass("disabled");
       }
     });
 
-    $purchTerms.find("[name=confirm-terms]").change(function(){
+    $purchTerms.find("[name=confirm-purch]").change(function(){
       if($(this).is(":checked")){
         mainSlider.setNextPanel(2);
         closePurchTerms();

@@ -14,7 +14,7 @@
           .ethereum-logo
             h4 ethereum
       .col-sm-10.col-xs-12
-        a.close-modal &#215;
+        a#purch-close.close-modal &#215;
         #purchase-text-container
           h1.text-left Ether Product Purchase Agreement
           h5 ethereum.org
@@ -66,6 +66,6 @@
           p Date July 21, 2014
         .got-it
           p I have read and fully understand the Ether Product Purchase Agreement
-          label(for="confirm-terms").disabled
-            input#confirm-terms(type="checkbox", name="confirm-terms", disabled="true")
+          label(for="confirm-purch").disabled
+            input#confirm-purch(type="checkbox", name="confirm-purch", disabled="true")
             span &nbsp; Agree <small class="infoText">(scroll to the end of the terms to enable button)</small>
