@@ -150,7 +150,7 @@ $(function() {
         MIN_ETH_FOR_BTC = 1337.07714935,
         FUNDRAISING_ADDRESS = "36PrZ1KHYMpqSyAQXSG8VwbUiq2EogxLo2",
         SATOSHIS_IN_BTC = 100000000,
-        START_DATETIME = "2014-07-21 22:00:00",
+        START_DATETIME = "2014-07-22 10:00:00",
         DECREASE_AFTER = 14,
         ENDS_AFTER = 42,
         $qrDepAddr = $("#qr-deposit-address"),
@@ -168,6 +168,8 @@ $(function() {
         $startBtn = $("#start-ether-purchase"),
         $terms = $("#terms-modal"),
         $termsText = $("#terms-text-container"),
+        $purchTerms = $("#purchase-modal"),
+        $purchTermsText = $("#purchase-text-container"),
         $docs = $("#docs-modal"),
         $docsContainer = $("#docs-container"),
         btcToSend = 1,
@@ -269,8 +271,52 @@ $(function() {
 
     $terms.find("[name=confirm-terms]").change(function(){
       if($(this).is(":checked")){
-        mainSlider.setNextPanel(2);
         closeTerms();
+        setTimeout(showPurchTerms, 500);
+      }
+    });
+
+    var showPurchTerms = function(){
+      $purchTerms.modal();
+      resizePurchTerms();
+      $(window).on("resize", resizePurchTerms);
+      $purchTermsText.animate({scrollTop: 0}, 1000);
+      $purchTerms.find("[name=confirm-terms]").attr("disabled", '');
+      $purchTerms.find("[for=confirm-terms]").removeClass("disabled").addClass("disabled");
+    }
+
+    var closePurchTerms = function(){
+      $purchTerms.modal("hide");
+      $(window).off("resize", resizePurchTerms);
+      $purchTerms.find("[name=confirm-terms]").prop("checked", false);
+    };
+
+    var resizePurchTerms = function(){
+      $purchTermsText.height($(window).height() - 185);
+    };
+
+    $purchTerms.find(".close-modal").click(function(e){
+      closePurchTerms();
+      return false;
+    });
+
+    $purchTerms.find(".print").click(function(){
+      $purchTermsText.css("overflow", "visible").printArea();
+      $purchTermsText.css("overflow", "auto");
+      return false;
+    });
+
+    $purchTermsText.scroll(function(){
+      if($purchTermsText.scrollTop() + $purchTermsText.innerHeight() + 30 > $purchTermsText.prop("scrollHeight")){
+        $purchTerms.find("[name=confirm-terms]").attr("disabled", false);
+        $purchTerms.find("[for=confirm-terms]").removeClass("disabled");
+      }
+    });
+
+    $purchTerms.find("[name=confirm-terms]").change(function(){
+      if($(this).is(":checked")){
+        mainSlider.setNextPanel(2);
+        closePurchTerms();
       }
     });
 

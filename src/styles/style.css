@@ -1101,7 +1101,7 @@ a:hover {
   }
 }
 
-#terms-text-container{
+#terms-text-container, #purchase-text-container{
   background-color: #eee;
   margin: 20px 30px 0 0;
   border-radius: 5px;
@@ -1110,15 +1110,15 @@ a:hover {
   overflow: auto;
   text-align: justify;
 }
-#terms-text-container h1 {
+#terms-text-container h1, #purchase-text-container h1 {
   margin: 0px;
   margin-top: 10px;
 }
-#terms-text-container h5 {
+#terms-text-container h5, #purchase-text-container h5 {
   margin-top: 10px;
   margin-bottom: 50px;
 }
-#terms-text-container p {
+#terms-text-container p, #purchase-text-container p {
   margin-top: 25px;
   line-height: 25px;
 }
@@ -1130,7 +1130,7 @@ a:hover {
   box-shadow: inset 0 0 10px #999;
   overflow: hidden;
 }
-#terms-modal .got-it{
+#terms-modal .got-it, #purchase-modal .got-it{
   padding: 10px;
   text-align: center;
 }
@@ -1141,7 +1141,7 @@ a:hover {
   padding-left: 5px;
 }
 
-#terms-modal .close-modal, #docs-modal .close-modal{
+#terms-modal .close-modal, #docs-modal .close-modal, #purchase-modal .close-modal{
   position: absolute;
   right: 12px;
   top: 20px;
@@ -1156,33 +1156,33 @@ a:hover {
   transition: border-color ease-in-out 0.3s;
 }
 
-#terms-modal a, #docs-modal a{
+#terms-modal a, #docs-modal a, #purchase-modal a{
   cursor: pointer;
   text-decoration: none;
 }
-#terms-modal h1, #terms-modal h2, #terms-modal h3, #docs-modal h1, #docs-modal h2, #docs-modal h3{
+#terms-modal h1, #terms-modal h2, #terms-modal h3, #docs-modal h1, #docs-modal h2, #docs-modal h3, #purchase-modal h1, #purchase-modal h2 , #purchase-modal h3{
   text-transform: none;
 }
 
-#terms-modal h1, #docs-modal h1{
+#terms-modal h1, #docs-modal h1, #purchase-modal h1{
   font-size: 26px;
 }
 
-#terms-modal h2, #docs-modal h2{
+#terms-modal h2, #docs-modal h2, #purchase-modal h2{
   font-size: 18px;
   font-weight: bold;
 }
 
-#terms-modal .close-modal:hover, #docs-modal .close-modal:hover{
+#terms-modal .close-modal:hover, #docs-modal .close-modal:hover, #purchase-modal .close-modal:hover{
   border-color: #333;
 }
 
-#terms-modal .logo, #docs-modal .logo{
+#terms-modal .logo, #docs-modal .logo, #purchase-modal .logo{
   text-align: center;
   margin: 20px 0 0 17px;
 }
 
-#terms-modal .logo h3, #docs-modal .logo h3{
+#terms-modal .logo h3, #docs-modal .logo h3, #purchase-modal .logo h3{
   font-size: 18px;
 }
 
@@ -1253,7 +1253,7 @@ a:hover {
   opacity    : 0.99;
 }
 
-#terms-modal .controls{
+#terms-modal .controls, #purchase-modal .controls{
   font-size: 12px;
   overflow: hidden;
   color: #777;
@@ -1268,11 +1268,11 @@ a:hover {
   color: #777;
 }
 
-#terms-modal .controls i, #docs-modal .controls i{
+#terms-modal .controls i, #docs-modal .controls i, #purchase-modal .controls i{
   margin-right: 2px;
 }
 
-#terms-modal .disabled{
+#terms-modal .disabled, #purchase-modal .disabled{
   color: #aaa;
 }
 
