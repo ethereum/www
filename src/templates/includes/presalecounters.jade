@@ -171,8 +171,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section
                     p Send exactly {{btcToSend}} bitcoin to the address below:
                   section
-                    a(href="bitcoin:{{wallet.btcaddr}}?amount={{btcToSend}}&label=Ether presale {{btcToSend}} BTC")
-                      div#qr-deposit-address
+                    div#qr-deposit-address
                   section.text-center
                     p Payment address:
                     span.payment-address.nowrap(href="bitcoin:{{wallet.btcaddr}}") {{wallet.btcaddr}}
