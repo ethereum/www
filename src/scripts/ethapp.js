@@ -26,7 +26,7 @@ var isPassInDictionary = function(pass){
 var $downloadLink = $("#downloadLink");
 
 ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', function(Purchase, DownloadDataURI, $scope) {
-  $scope.requiredEntropyLength = 300;
+  $scope.requiredEntropyLength = 500;
   window.wscope = $scope;
   $scope.didPushTx = false;
   $scope.debug = '(Debug output)';
