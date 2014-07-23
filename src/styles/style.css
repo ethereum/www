@@ -1478,4 +1478,12 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 .dropdown-menu{
   min-width:111px;
   min-height:90px;
-  }
+}
+
+.step3-content {
+  min-height: 580px;
+}
+
+.show-after-end {
+  display: none;
+}

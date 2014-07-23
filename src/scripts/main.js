@@ -494,11 +494,15 @@ $(function() {
     };
 
     window.onWalletReady = function(downloadLinkHref){
+      $purchaseCancel.hide();
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(2);
       $(".step-breadcrumbs").attr("data-step", "2");
       $downloadLink.attr("href", downloadLinkHref);
       $downloadLinkTemp.attr("href", downloadLinkHref);
+      setTimeout(function(){
+        $(window).trigger('resize');
+      }, 500);
     };
 
 
@@ -513,8 +517,6 @@ $(function() {
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(3);
       $(".step-breadcrumbs").attr("data-step", "3");
-
-      $purchaseCancel.hide();
 
       clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);
