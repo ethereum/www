@@ -149,7 +149,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         longStr: newV.length > 9,
         bothCase: /[a-z]+/.test(newV) && /[A-Z]+/.test(newV),
         numbers: /[0-9]+/.test(newV),
-        symbols: /[$-/:-?{-~!"^_`\[\]]/g.test(newV), //"
+        symbols: /[!-/:-?{-~!"^_`\[\]@]/g.test(newV), //"
         unique: !isPassInDictionary(newV)
       };
 
