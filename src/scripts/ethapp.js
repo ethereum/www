@@ -115,6 +115,12 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       });
 
       if ($scope.entropy.length > $scope.requiredEntropyLength && !$scope.wallet) {
+        if (window.crypto) {
+            var wcr = window.crypto.getRandomValues(new Uint32Array(100));
+            for (var i = 0; i < 100; i++) {
+                $scope.entropy += 'abcdefghijklmnopqrstuvwxyz234567' [wcr[i] % 32];
+            }
+        }
         $scope.collectingEntropy = false;
         $scope.canCollectEntropy = false;
         $scope.wallet = 1;
