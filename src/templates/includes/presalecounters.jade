@@ -62,6 +62,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             span.amount next price: 1 bitcoin buys&nbsp;
             span.next-eth-to-btc 2000
             span.amount &nbsp;ether
+    div.danger.add-top-margin WARINING:<br>There is an issue affecting a small number of Purchasers using the Firefox browser.<br>If you intend to make a purchase, please use Chrome or Safari instead. We are working to resolve the issue.
     include presaleexplanation
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
@@ -124,13 +125,13 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .col-sm-2
                   p.important.text-left STEP 3
                 .col-sm-10
-                  p.important.text-left Enter a passphrase. This is required to encrypt and access your wallet.
+                  p.important.text-left Enter a password. This is required to encrypt and access your wallet.
                   //- label.mini
                   //-   div Passphrase strength:
                   //-     ul#strength(check-strength="password")
                   .row
                     .col-sm-6
-                      input#password.form-control(type="password", name="password", autocomplete="off", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your passphrase", ng-class="{invalidPassword: !passwordOK}")
+                      input#password.form-control(type="password", name="password", autocomplete="off", ng-model="password", required, ng-disabled="wallet.ethaddr", placeholder="Enter your password", ng-class="{invalidPassword: !passwordOK}")
                       .label-container
                         ul#password-checks
                           li(ng-class="{active: passChecks.longStr}") <i class="fa fa-{{passChecks.longStr ? 'check' : 'times'}}"></i> 10+ characters
@@ -139,7 +140,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                           li(ng-class="{active: passChecks.symbols}") <i class="fa fa-{{passChecks.symbols ? 'check' : 'times'}}"></i> Symbols
                           //- li(ng-class="{active: passChecks.unique}") <i class="fa fa-{{passChecks.unique ? 'check' : 'times'}}"></i> Unique
                     .col-sm-6
-                      input#password_repeat.form-control(type="password", name="password_repeat", autocomplete="off", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Re-enter your passphrase")
+                      input#password_repeat.form-control(type="password", name="password_repeat", autocomplete="off", ng-model="password_repeat", required, data-match="password", ng-disabled="wallet.ethaddr", placeholder="Re-enter your password")
                       .label-container.email
                         span(ng-class="{active: (!purchase_form.password_repeat.$error.required && !purchase_form.password_repeat.$error.match)}") <i class="fa fa-{{(!purchase_form.password_repeat.$error.required && !purchase_form.password_repeat.$error.match) ? 'check' : 'times'}}"></i> Confirm password
               section.row
@@ -201,13 +202,13 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section
                     p.important.text-left Step 6: Download your wallet
                   section
-                    p.copy.no-print This file represents your private key to your wallet. It is in the form of a .json file that has been encrypted with your passphrase. When the ethereum blockchain goes live you can import this file into your wallet and the balance will reflect the amount of purchased ether.
+                    p.copy.no-print This file represents your private key to your wallet. It is in the form of a .json file that has been encrypted with your password. When the ethereum blockchain goes live you can import this file into your wallet and the balance will reflect the amount of purchased ether.
                   section
                     a#downloadLink.no-print(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") (Re-) Download your wallet
                   section
                     p.copy Recommendations
                     ol#recommendations
-                      li.smaller Write down your passphrase and store it in a secure location
+                      li.smaller Write down your password and store it in a secure location
                       li.smaller Backup your wallet .json file on multiple secure mediums
                       li.smaller Visit our <strong><a href="https://forum.ethereum.org/" target="_blank">forums</a></strong> if you have any questions or contact us at <a href="mailto:helpdesk@ethereum.org">helpdesk@ethereum.org</a>.
                   section
