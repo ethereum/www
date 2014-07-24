@@ -101,7 +101,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
       var downloadLinkEle = angular.element('#downloadLink');
           downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
 
-      (window.onWalletReady || function(){})('data:application/octet-stream;base64,' + Base64.encode(doc));
+      (window.onWalletReady || function(){})('data:application/octet-stream;base64,' + Base64.encode(doc), $scope.wallet);
     } else {
       $scope.password_validation_error = "Wrong password";
     }
