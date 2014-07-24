@@ -181,7 +181,6 @@ $(function() {
         updateDialsInterval,
         timerConfirmations,
         timeoutTerms,
-        $wallet,
         $purchaseForm = $("[name=purchase_form]");
 
     $(".show-after-end").hide();
@@ -503,7 +502,7 @@ $(function() {
       setTimeout(function(){
         $(window).trigger('resize');
       }, 500);
-    };
+    }
 
     window.onFormReady = function(){
       appStepsSlider.setNextPanel(1);
@@ -512,32 +511,19 @@ $(function() {
       }, 500);
     };
 
-    window.onWalletReady = function(downloadLinkHref, wallet){
+    window.onWalletReady = function(downloadLinkHref){
       $purchaseCancel.hide();
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(3);
       $(".step-breadcrumbs").attr("data-step", "2");
       $downloadLink.attr("href", downloadLinkHref);
       $downloadLinkTemp.attr("href", downloadLinkHref);
-
-      $downloadLink.click(saveWallet);
-      $downloadLinkTemp.click(saveWallet);
-
-      $wallet = wallet;
-
       setTimeout(function(){
         $(window).trigger('resize');
       }, 500);
     };
 
-    function saveWallet(e)
-    {
-      if(typeof InstallTrigger !== 'undefined'){
-        e.preventDefault();
-        var blob = new Blob([JSON.stringify($wallet)], {type: "text/json"});
-        saveAs(blob, 'ethereum-wallet-' + $wallet.ethaddr + '.json');
-      }
-    };
+
 
     // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address, amount){

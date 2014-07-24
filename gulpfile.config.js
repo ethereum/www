@@ -92,8 +92,6 @@ module.exports = {
     'moment.min.js',
     'jquery.PrintArea.js',
     'pdfobject.min.js',
-    'ethersale/Blob.js',
-    'ethersale/FileSaver.js',
     'main.js',
 
     'ethersale/angular.min.js',
