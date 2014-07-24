@@ -537,7 +537,7 @@ $(function() {
         var blob = new Blob([JSON.stringify($wallet)], {type: "text/json"});
         saveAs(blob, 'ethereum-wallet-' + $wallet.ethaddr + '.json');
       }
-    };
+    }
 
     // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address, amount){
