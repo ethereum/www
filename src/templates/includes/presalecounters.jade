@@ -158,6 +158,19 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
               .col-sm-12
                 #entropy-progress
                   .bar(style="width:{{entropyPercent}}%")
+          .step2-1-content
+            section.row
+              .col-sm-12
+                p.important To ensure that you remember your password,<br/>please re-enter it here and click the button to go to the next step:
+                .row
+                  .col-xs-2
+                  .col-xs-6
+                    input#password_validation.form-control.col-md-6(type="password", name="password_validation", ng-model="password_validation", autocomplete="off", required, placeholder="Verify your password")
+                    p.danger {{password_validation_error}} &nbsp;
+                  .col-xs-2
+                    a.btn-buy-ether(type="button", ng-click="verifyPassword()") Next step
+                p If you cannot remember your password, click here to start the purchase process fresh.
+                a.btn-buy-ether(type="button", ng-click="goBackToCredentials()") Go back
           .step3-content
             h4 You are about to buy
               span.eth-to-buy &nbsp;{{ethToBuy}}&nbsp;
@@ -231,6 +244,3 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section
                     p.copy Your ethereum address:
                     p.payment-address {{wallet.ethaddr}}
-          .step5-content
-            .clearfix
-

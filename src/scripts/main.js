@@ -231,6 +231,7 @@ $(function() {
 
     $purchaseCancel.click(reset);
     $backToStart.click(reset);
+    $('#restartTheProcess').click(reset);
 
     var resizeTerms = function(){
       $termsText.height($(window).height() - 185);
@@ -489,14 +490,31 @@ $(function() {
     $emailConfDial.val("0").change();
     $("#email-dial-shim").text("0/6");
 
+    window.showPasswordValidation = function(){
+      appStepsSlider.setNextPanel(2);
+      setTimeout(function(){
+        $(window).trigger('resize');
+      }, 500);
+    };
+
+    window.goBackToCredentials = function(){
+      appStepsSlider.setNextPanel(0);
+      setTimeout(function(){
+        $(window).trigger('resize');
+      }, 500);
+    }
+
     window.onFormReady = function(){
       appStepsSlider.setNextPanel(1);
+      setTimeout(function(){
+        $(window).trigger('resize');
+      }, 500);
     };
 
     window.onWalletReady = function(downloadLinkHref){
       $purchaseCancel.hide();
       $entropyProgress.hide();
-      appStepsSlider.setNextPanel(2);
+      appStepsSlider.setNextPanel(3);
       $(".step-breadcrumbs").attr("data-step", "2");
       $downloadLink.attr("href", downloadLinkHref);
       $downloadLinkTemp.attr("href", downloadLinkHref);
@@ -515,13 +533,16 @@ $(function() {
 
     window.onTransactionComplete = function(downloadLinkHref, transactionHash){
       $entropyProgress.hide();
-      appStepsSlider.setNextPanel(3);
+      appStepsSlider.setNextPanel(4);
       $(".step-breadcrumbs").attr("data-step", "3");
 
       clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);
 
       $downloadLink.attr("href", downloadLinkHref);
+      setTimeout(function(){
+        $(window).trigger('resize');
+      }, 500);
     };
 
 

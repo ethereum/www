@@ -94,6 +94,26 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     }
   };
 
+  $scope.verifyPassword = function(){
+    if($scope.password === $scope.password_validation){
+      doc = JSON.stringify($scope.wallet);
+
+      var downloadLinkEle = angular.element('#downloadLink');
+          downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
+
+      (window.onWalletReady || function(){})('data:application/octet-stream;base64,' + Base64.encode(doc));
+    } else {
+      $scope.password_validation_error = "Wrong password";
+    }
+  };
+
+  $scope.goBackToCredentials = function(){
+    $scope.entropy = "";
+    $scope.wallet = null;
+    $scope.canCollectEntropy = true;
+    window.goBackToCredentials();
+  };
+
   window.onmousemove = window.ontouchmove = function(e) {
     // only work when the first steps are done
     if ( ! $scope.canCollectEntropy){
@@ -137,12 +157,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcaddr: " + $scope.wallet.btcaddr;
         if (!$scope.$$phase) $scope.$apply();
 
-        doc = JSON.stringify($scope.wallet);
-
-        var downloadLinkEle = angular.element('#downloadLink');
-            downloadLinkEle.attr('href', 'data:application/octet-stream;base64,' + Base64.encode(doc));
-
-        (window.onWalletReady || function(){})('data:application/octet-stream;base64,' + Base64.encode(doc));
+        (window.showPasswordValidation || function(){})();
       }
     }
   };
