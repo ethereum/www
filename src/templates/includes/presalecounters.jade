@@ -62,7 +62,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             span.amount next price: 1 bitcoin buys&nbsp;
             span.next-eth-to-btc 2000
             span.amount &nbsp;ether
-    //- div.danger.add-top-margin WARNING:<br>There is an issue affecting a small number of Purchasers using the Firefox browser.<br>If you intend to make a purchase, please use Chrome or Safari instead. We are working to resolve the issue.
+    div.danger.add-top-margin WARNING:<br>To purchase ether your browser must have full javascript capabilities.<br/>Please disable any plugins (like "noscript") that restrict any javascript functionality.<br>
+      span.smaller (Also, please note that the website makes requests to subdomains and other domains.)
     include presaleexplanation
   #ethersale-app
     div(ng-controller="PurchaseCtrl")
