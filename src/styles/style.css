@@ -333,8 +333,25 @@ footer {
 
 .dl-icons {
   background-color:#fff;
+  width: 52px;
+  height: 52px;
   padding:12px;
+  text-align: center;
   border-radius:50%;
+}
+
+.dl-imgs {
+  display: inline-block;
+  background-color:#fff;
+  width: 52px;
+  height: 52px;
+  text-align: center;
+  border-radius:50%;
+}
+
+.dl-imgs img {
+  width: 52px;
+  height: 52px;
 }
 
 .news-icon {
