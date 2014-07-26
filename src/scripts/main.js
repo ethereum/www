@@ -563,21 +563,22 @@ $(function() {
 
     function startConfirmationsInterval(transactionHash){
       return setInterval(function() {
-        $.getJSON(BLOCKRIO_URL + "tx/raw/" + transactionHash, function(response){
-          if( response.data === null || response.data.tx.confirmations === undefined){
+        $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + transactionHash + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
+          if( data.block_height === undefined ){
             $('.confirmations-dial-shim').text("0/6");
             return false;
           }
-          else
+
+          $.get(BLOCKCHAIN_URL + "/q/getblockcount?api_code=" + BLOCKCHAIN_API, function(blockHeight)
           {
-            confirmations = parseInt(response.data.tx.confirmations);
+            confirmations = blockHeight - data.block_height + 1;
 
             if(confirmations == 6)
             {
               clearInterval(timerConfirmations);
             }
             $('.confirmations-dial-shim').text(confirmations + "/6");
-          }
+          });
         });
       }, 20000);
     }
