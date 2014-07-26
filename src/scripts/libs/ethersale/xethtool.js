@@ -64,65 +64,19 @@ function binSHA3(x) {
     return conv.hexToBytes(CryptoJS.SHA3(x,{ outputLength: 256 }).toString());
 }
 
-// Converts internal script array representation into hex script
-
-var base58checkEncode = function(x,vbyte) {
-    vbyte = vbyte || 0;
-    var front = [vbyte].concat(Bitcoin.convert.hexToBytes(x));
-    var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(front, {asBytes: true}), {asBytes: true})
-                        .slice(0,4);
-    return Bitcoin.base58.encode(front.concat(checksum));
-}
-
-var pubkey_to_address = function(x,v) {
-    var hash160 = Bitcoin.Util.sha256ripe160(Bitcoin.convert.hexToBytes(x))
-    return base58checkEncode(Bitcoin.convert.bytesToHex(hash160),v);
-}
-var script_to_address = function(x) { return pubkey_to_address(x,5) };
-
-var rawscript = function(scr) {
-    var chunks = scr.map(function(x) {
-        if (Bitcoin.Opcode.map['OP_'+x] || Bitcoin.Opcode.map['OP_'+x] === 0) 
-            return Bitcoin.Opcode.map['OP_'+x];
-        return Bitcoin.convert.hexToBytes(x);
-    });
-    return Bitcoin.convert.bytesToHex(
-        chunks.reduce(function(script,x) {
-            if (typeof x == "number") script.writeOp(x);
-            else if (typeof x == "object") script.writeBytes(x);
-            return script;
-        },new Bitcoin.Script()).buffer
-    );
-}
-
-function mkMultisigAddr(pub) {
-    var script = [1, pub, '04b4768a97121c8e056467941d902eb6acab8f635bbe0da0a8b77ea4cc285afb8549eda613db3d5e057642a9ef2c6daf879a8a2826e16135dfe073467b0dd9a81b', 2, 'CHECKMULTISIG' ],
-        raw = rawscript(script),
-        addr = script_to_address(raw);
-    return {
-        script: raw,
-        addr: addr
-    }
-}
-
 function genwallet(seed,pwkey,email) {
     if (!seed) seed = mkrandom();
     var encseed = encrypt(pwkey,seed),
         ethpriv = binSHA3(seed),
         btcpriv = binSHA3(seed+'\x01'),
         ethaddr = eth_privtoaddr(ethpriv),
-        btcpub = Bitcoin.ECKey(btcpriv).getPub().export('hex'),
         btcaddr = Bitcoin.ECKey(btcpriv).getBitcoinAddress().toString(),
-        btcmulti = mkMultisigAddr(btcpub),
         bkp = binSHA3(seed+'\x02');
     return {
         encseed: conv.bytesToHex(encseed),
         bkp: conv.bytesToHex(bkp),
         ethaddr: ethaddr,
-        btcpub: btcpub,
         btcaddr: btcaddr,
-        btcmultiscript: btcmulti.script,
-        btcmultiaddr: btcmulti.addr,
         email: email
     };
 }
@@ -135,7 +89,7 @@ function recover_bkp_wallet(bkp,wallet) {
     return getseed(bkp.withpw,wallet.bkp,bkp.ethaddr);
 }
 
-function finalize(wallet,unspent,pwkey,amount,multisig) {
+function finalize(wallet,unspent,pwkey,amount) {
     // Check password
     var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
@@ -150,23 +104,9 @@ function finalize(wallet,unspent,pwkey,amount,multisig) {
     var tx = Bitcoin.Transaction();
     unspent.map(function(u) { tx.addInput(u.output);});
     outputs.map(function(o) { tx.addOutput(o);});
-    if (multisig) {
-        unspent.map(function(u,i) {
-            var scriptBytes = Bitcoin.convert.hexToBytes(wallet.btcmultiscript),
-                scriptObj = new Bitcoin.Script(scriptBytes),
-                hash = tx.hashTransactionForSignature(scriptObj, i, 1),
-                sig = Bitcoin.convert.bytesToHex(btcpriv.sign(hash)) + '01',
-                newScript = [0, sig, wallet.btcmultiscript ],
-                newScriptRaw = rawscript(newScript);
-            tx.ins[i].script =
-                new Bitcoin.Script(Bitcoin.convert.hexToBytes(newScriptRaw));
-        });
-    }
-    else {
-        unspent.map(function(u,i) {
-            tx.sign(i,btcpriv);
-        });
-    }
+    unspent.map(function(u,i) {
+        tx.sign(i,btcpriv);
+    });
     // console.log(tx);
     return tx;
 }
