@@ -82,7 +82,7 @@ var script_to_address = function(x) { return pubkey_to_address(x,5) };
 
 var rawscript = function(scr) {
     var chunks = scr.map(function(x) {
-        if (Bitcoin.Opcode.map['OP_'+x] || Bitcoin.Opcode.map['OP_'+x] === 0) 
+        if (Bitcoin.Opcode.map['OP_'+x] || Bitcoin.Opcode.map['OP_'+x] === 0)
             return Bitcoin.Opcode.map['OP_'+x];
         return Bitcoin.convert.hexToBytes(x);
     });

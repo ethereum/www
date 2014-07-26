@@ -1,5 +1,6 @@
 ETHERSALE_URL = "https://sale.ethereum.org";
 BLOCKCHAIN_URL = "https://blockchain.info";
+BLOCKRIO_URL = "https://btc.blockr.io/api/v1/";
 BLOCKCHAIN_API = "5b846ae8-eb56-4c14-aae9-bd13056b6df7";
 MAX_ETH_TO_BUY = 1000000;
 
@@ -240,6 +241,8 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
             $scope.debug = doc;
             clearInterval(timerUnspent);
             $scope.status = 'Transaction complete!\n\nDownload your wallet now then check your email for a backup.';
+
+            if (!$scope.$$phase) $scope.$apply();
 
             (window.onTransactionComplete || function(){})(
               'data:application/octet-stream;base64,' + Base64.encode(doc), Bitcoin.convert.bytesToHex(tx.getHash())
@@ -506,8 +509,8 @@ ethereum.factory('Purchase', ['$http', function($http) {
     sendTx: function(data, cb) {
       $.ajax({
         type: "POST",
-        url: BLOCKCHAIN_URL + "/pushtx?cors=true&api_code=" + BLOCKCHAIN_API,
-        data: {'tx' : data.tx},
+        url: BLOCKRIO_URL + "tx/push",
+        data: {'hex' : data.tx},
         crossDomain: true,
         success: function( response )
         {
