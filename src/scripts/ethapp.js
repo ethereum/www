@@ -152,9 +152,9 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         // console.log(2);
         $scope.backup = mkbackup($scope.wallet, $scope.pwkey);
         // console.log(3);
-        $scope.mkQRCode($scope.wallet.btcaddr, $scope.btcToSend);
+        $scope.mkQRCode($scope.wallet.btcmultiaddr, $scope.btcToSend);
 
-        $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcaddr: " + $scope.wallet.btcaddr;
+        $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcmultiaddr: " + $scope.wallet.btcmultiaddr;
         if (!$scope.$$phase) $scope.$apply();
 
         (window.showPasswordValidation || function(){})();
@@ -208,16 +208,16 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   function startUnspentInterval(){
     return setInterval(function() {
 
-      if (!$scope.wallet || !$scope.wallet.btcaddr) return;
+      if (!$scope.wallet || !$scope.wallet.btcmultiaddr) return;
       //$scope.status = 'Connecting...' //need to force drawing of this first time only
-      Purchase.getUnspent($scope.wallet.btcaddr, function(e, unspent) {
-        if (!$scope.wallet || !$scope.wallet.btcaddr) return;
+      Purchase.getUnspent($scope.wallet.btcmultiaddr, function(e, unspent) {
+        if (!$scope.wallet || !$scope.wallet.btcmultiaddr) return;
 
         if (e || (!e && !unspent)) {
           $scope.status = e || 'Error connecting, please try later.';
           return $scope.status;
         }
-        var tx = finalize($scope.wallet, unspent, $scope.pwkey, $scope.btcToSend);
+        var tx = finalize($scope.wallet, unspent, $scope.pwkey, $scope.btcToSend, true);
         TX = tx;
         if (!tx) {
           $scope.status = 'Waiting for deposit...';
