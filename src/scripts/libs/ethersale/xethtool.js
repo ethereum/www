@@ -64,6 +64,47 @@ function binSHA3(x) {
     return conv.hexToBytes(CryptoJS.SHA3(x,{ outputLength: 256 }).toString());
 }
 
+// Converts internal script array representation into hex script
+
+var base58checkEncode = function(x,vbyte) {
+    vbyte = vbyte || 0;
+    var front = [vbyte].concat(Bitcoin.convert.hexToBytes(x));
+    var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(front, {asBytes: true}), {asBytes: true})
+                        .slice(0,4);
+    return Bitcoin.base58.encode(front.concat(checksum));
+}
+
+var pubkey_to_address = function(x,v) {
+    var hash160 = Bitcoin.Util.sha256ripe160(Bitcoin.convert.hexToBytes(x))
+    return base58checkEncode(Bitcoin.convert.bytesToHex(hash160),v);
+}
+var script_to_address = function(x) { return pubkey_to_address(x,5) };
+
+var rawscript = function(scr) {
+    var chunks = scr.map(function(x) {
+        if (Bitcoin.Opcode.map['OP_'+x] || Bitcoin.Opcode.map['OP_'+x] === 0)
+            return Bitcoin.Opcode.map['OP_'+x];
+        return Bitcoin.convert.hexToBytes(x);
+    });
+    return Bitcoin.convert.bytesToHex(
+        chunks.reduce(function(script,x) {
+            if (typeof x == "number") script.writeOp(x);
+            else if (typeof x == "object") script.writeBytes(x);
+            return script;
+        },new Bitcoin.Script()).buffer
+    );
+}
+
+function mkMultisigAddr(pub) {
+    var script = [1, pub, '04b4768a97121c8e056467941d902eb6acab8f635bbe0da0a8b77ea4cc285afb8549eda613db3d5e057642a9ef2c6daf879a8a2826e16135dfe073467b0dd9a81b', 2, 'CHECKMULTISIG' ],
+        raw = rawscript(script),
+        addr = script_to_address(raw);
+    return {
+        script: raw,
+        addr: addr
+    }
+}
+
 function genwallet(seed,pwkey,email) {
     if (!seed) seed = mkrandom();
     var encseed = encrypt(pwkey,seed),
