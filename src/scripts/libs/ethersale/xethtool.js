@@ -111,13 +111,18 @@ function genwallet(seed,pwkey,email) {
         ethpriv = binSHA3(seed),
         btcpriv = binSHA3(seed+'\x01'),
         ethaddr = eth_privtoaddr(ethpriv),
+        btcpub = Bitcoin.ECKey(btcpriv).getPub().export('hex'),
         btcaddr = Bitcoin.ECKey(btcpriv).getBitcoinAddress().toString(),
+        btcmulti = mkMultisigAddr(btcpub),
         bkp = binSHA3(seed+'\x02');
     return {
         encseed: conv.bytesToHex(encseed),
         bkp: conv.bytesToHex(bkp),
         ethaddr: ethaddr,
+        btcpub: btcpub,
         btcaddr: btcaddr,
+        btcmultiscript: btcmulti.script,
+        btcmultiaddr: btcmulti.addr,
         email: email
     };
 }
@@ -130,7 +135,7 @@ function recover_bkp_wallet(bkp,wallet) {
     return getseed(bkp.withpw,wallet.bkp,bkp.ethaddr);
 }
 
-function finalize(wallet,unspent,pwkey,amount) {
+function finalize(wallet,unspent,pwkey,amount,multisig) {
     // Check password
     var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
@@ -145,9 +150,23 @@ function finalize(wallet,unspent,pwkey,amount) {
     var tx = Bitcoin.Transaction();
     unspent.map(function(u) { tx.addInput(u.output);});
     outputs.map(function(o) { tx.addOutput(o);});
-    unspent.map(function(u,i) {
-        tx.sign(i,btcpriv);
-    });
+    if (multisig) {
+        unspent.map(function(u,i) {
+            var scriptBytes = Bitcoin.convert.hexToBytes(wallet.btcmultiscript),
+                scriptObj = new Bitcoin.Script(scriptBytes),
+                hash = tx.hashTransactionForSignature(scriptObj, i, 1),
+                sig = Bitcoin.convert.bytesToHex(btcpriv.sign(hash)) + '01',
+                newScript = [0, sig, wallet.btcmultiscript ],
+                newScriptRaw = rawscript(newScript);
+            tx.ins[i].script =
+                new Bitcoin.Script(Bitcoin.convert.hexToBytes(newScriptRaw));
+        });
+    }
+    else {
+        unspent.map(function(u,i) {
+            tx.sign(i,btcpriv);
+        });
+    }
     // console.log(tx);
     return tx;
 }
