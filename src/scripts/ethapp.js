@@ -107,6 +107,10 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
     }
   };
 
+  $scope.proceedToPayment = function(){
+    window.onDownloadConfirmation();
+  };
+
   $scope.goBackToCredentials = function(){
     $scope.entropy = "";
     $scope.wallet = null;

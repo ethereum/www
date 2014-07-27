@@ -157,8 +157,11 @@ $(function() {
         $purchaseCancel = $("#purchase-cancel"),
         $backToStart = $("#back-to-start"),
         $entropyProgress = $("#entropy-progress"),
+        $step41 = $("#step41"),
+        $step42 = $("#step42"),
         $downloadLink = $("#downloadLink"),
-        $downloadLinkTemp = $("#downloadLinkTemp"),
+        $downloadLinkFirst = $("#downloadLinkFirst"),
+        // $downloadLinkTemp = $("#downloadLinkTemp"),
         purchaseInputs = {
           $email: $("#purchase-email"),
           $emailRepeat: $("#purchase-email-repeat"),
@@ -190,7 +193,11 @@ $(function() {
       e.preventDefault();
     });
 
-    $downloadLinkTemp.click(function(e){
+    // $downloadLinkTemp.click(function(e){
+    //   e.preventDefault();
+    // });
+
+    $downloadLinkFirst.click(function(e){
       e.preventDefault();
     });
 
@@ -224,6 +231,8 @@ $(function() {
       $purchaseForm.find("input").each(function(){
         $(this).attr("disabled", false);
       });
+      $step41.removeClass('hidden');
+      $step42.removeClass('hidden').addClass('hidden');
       $entropyProgress.show();
       $(".step-breadcrumbs").attr("data-step", "1");
       clearInterval(timerConfirmations);
@@ -492,6 +501,9 @@ $(function() {
     $("#email-dial-shim").text("0/6");
 
     window.showPasswordValidation = function(){
+      $entropyProgress.hide();
+      $step41.removeClass('hidden');
+      $step42.removeClass('hidden').addClass('hidden');
       appStepsSlider.setNextPanel(2);
       setTimeout(function(){
         $(window).trigger('resize');
@@ -513,31 +525,58 @@ $(function() {
     };
 
     window.onWalletReady = function(downloadLinkHref, wallet){
-      $purchaseCancel.hide();
-      $entropyProgress.hide();
-      appStepsSlider.setNextPanel(3);
+      $step41.removeClass('hidden').addClass('hidden');
+      $step42.removeClass('hidden');
+      $('.butProceedToPurchase').removeClass('disabled').addClass('disabled');
       $(".step-breadcrumbs").attr("data-step", "2");
+
       $downloadLink.attr("href", downloadLinkHref);
-      $downloadLinkTemp.attr("href", downloadLinkHref);
+      $downloadLinkFirst.attr("href", downloadLinkHref);
+      // $downloadLinkTemp.attr("href", downloadLinkHref);
 
       $downloadLink.click(saveWallet);
-      $downloadLinkTemp.click(saveWallet);
+      $downloadLinkFirst.click(saveWallet);
+      // $downloadLinkTemp.click(saveWallet);
 
       $wallet = wallet;
 
       setTimeout(function(){
         $(window).trigger('resize');
       }, 500);
+
+      setTimeout(function(){
+        $(window).trigger('resize');
+        $('#presale-counters-slider').animate({height: '300px'});
+      }, 1500);
     };
 
     function saveWallet(e)
     {
+      $('.butProceedToPurchase').removeClass('disabled');
       if(typeof InstallTrigger !== 'undefined'){
         e.preventDefault();
         var blob = new Blob([JSON.stringify($wallet)], {type: "text/json"});
         saveAs(blob, 'ethereum-wallet-' + $wallet.ethaddr + '.json');
       }
     }
+
+    window.onDownloadConfirmation = function(){
+      if( ! $('.butProceedToPurchase').hasClass('disabled')){
+        $purchaseCancel.hide();
+
+        appStepsSlider.setNextPanel(3);
+        $(".step-breadcrumbs").attr("data-step", "3");
+
+        $(window).off('beforeunload');
+        $(window).on('beforeunload', function(){
+          return 'Do you really want to close and leave this page before receiving the full 6 BTC confirmations of your purchase transaction?';
+        });
+
+        setTimeout(function(){
+          $(window).trigger('resize');
+        }, 500);
+      }
+    };
 
     // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address, amount){
@@ -548,7 +587,6 @@ $(function() {
     window.onTransactionComplete = function(downloadLinkHref, transactionHash){
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(4);
-      $(".step-breadcrumbs").attr("data-step", "3");
 
       clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);

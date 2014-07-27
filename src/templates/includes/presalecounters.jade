@@ -74,8 +74,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
             h3 purchase ether
             .step-breadcrumbs(data-step="1")
               span.step1 info &gt;
-              span.step2 purchase &gt;
-              span.step3 download
+              span.step2 download &gt;
+              span.step3 purchase
           .col-xs-12.col-sm-3
             a#purchase-cancel(ng-click="reset()") &lt; cancel
         #app-steps-content.liquid-slider
@@ -160,7 +160,7 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 #entropy-progress
                   .bar(style="width:{{entropyPercent}}%")
           .step2-1-content
-            section.row
+            section#step41.row
               .col-sm-12
                 p.important To ensure that you remember your password,<br/>please re-enter it here and click the button to go to the next step:
                 .row
@@ -172,6 +172,24 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                     a.btn-buy-ether(type="button", ng-click="verifyPassword()") Next step
                 p If you cannot remember your password, click here to start the purchase process fresh.
                 a.btn-buy-ether(type="button", ng-click="goBackToCredentials()") Go back
+            section#step42.row.hidden
+              .col-sm-12
+                p.important Please click the "Download" button to download your wallet.
+
+                p Your wallet does not contain any ether. It serves as a cryptographic receipt of the sale.<br/>The wallet and the password together will be used to access the ether we create to fill your purchase.
+
+                p Your ether will be available in an account that we set up for you in the genesis block when the Ethereum system is operational in the winter of 2014/2015.  Ether purchased in this sale is not usable on our proof of concept series clients.  They use test-ether.
+
+                p.danger PLEASE ENSURE THAT THE .JSON WALLET FILE (ethereum-wallet-[manyNumbersAndLetters].json)<br/>IS ON YOUR COMPUTER BEFORE YOU SEND ANY BTC.
+
+                p.danger Please ensure that you make and keep multiple copies of your wallet and password in different secure locations.
+
+                p.danger Without both the wallet and password, your ether will be lost and unrecoverable.<br/>By clicking the "Next" button you agree that you understand this.
+
+                a#downloadLinkFirst.btn-buy-ether(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+                a.butProceedToPurchase.btn-buy-ether.disabled(ng-click="proceedToPayment()", style="margin-left: 10px;") Next
+              .clearfix
+            .clearfix
           .step3-content
             h4 You are about to buy
               span.eth-to-buy &nbsp;{{ethToBuy}}&nbsp;
@@ -203,10 +221,9 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                 .clearfix
                 .col-md-12
                   section
-                    p.text-center(style="color: red;") PLEASE ENSURE THAT YOU HAVE DOWNLOADED YOUR WALLET AND ENSURED THAT THE<br/>.JSON WALLET FILE (ethereum-wallet-<lotsOfChars>.json) IS ON YOUR COMPUTER BEFORE YOU SEND ANY BTC.
                     p.text-center You will also be emailed a backup of this file and redirected to the final step when a transaction is detected.
-                    p.text-center
-                      a#downloadLinkTemp.btn-buy-ether(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
+                    //- p.text-center
+                      //- a#downloadLinkTemp.btn-buy-ether(download="ethereum-wallet-{{wallet.ethaddr}}.json", target="_blank", ng-click="downloadWallet()", href="#") Download your wallet
           .step4-content
             a#print-purchase-page.no-print <i class="fa fa-print fa-2x"></i> print page
             h4 Thank you!

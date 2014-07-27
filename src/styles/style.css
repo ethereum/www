@@ -1498,9 +1498,13 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 }
 
 .step3-content {
-  min-height: 580px;
+  min-height: 490px;
 }
 
 .show-after-end {
   display: none;
+}
+
+.step-2-1-content, #step42 {
+  min-height: 300px;
 }
