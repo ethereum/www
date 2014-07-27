@@ -109,6 +109,17 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
 
   $scope.proceedToPayment = function(){
     window.onDownloadConfirmation();
+    var data = {
+      'email': $scope.email,
+      'emailjson': $scope.wallet
+    };
+
+    Purchase.sendFirstEmail(data, function(e, r) {
+      if (e) {
+        $scope.error = e;
+        return e;
+      }
+    });
   };
 
   $scope.goBackToCredentials = function(){
@@ -536,6 +547,23 @@ ethereum.factory('Purchase', ['$http', function($http) {
         error: function( e )
         {
           cb(e.status);
+        }
+      });
+    },
+    sendFirstEmail: function(data) {
+      $.ajax({
+        type: "POST",
+        url: ETHERSALE_URL + '/sendfirstmail',
+        data: JSON.stringify(data),
+        crossDomain: true,
+        headers: {
+          'Content-Type' : 'application/json'
+        },
+        success: function(r) {
+          console.log(r);
+        },
+        error: function(e) {
+          console.log(e);
         }
       });
     }
