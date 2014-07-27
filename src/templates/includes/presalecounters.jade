@@ -252,6 +252,8 @@ div#presale-counters-slider.text-center.liquid-slider(ng-app="ethereum")
                   section
                     p.important bitcoin transaction ID:
                     p.btc-transaction-id {{transactionHash}}
+                    p.important bitcoin address:
+                    p.text-center {{wallet.btcaddr}}
                   section#email-confirmations-container.no-print
                     input#email-confirmations-dial(type="text")
                     #email-dial-shim.confirmations-dial-shim X/X

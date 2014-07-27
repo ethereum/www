@@ -256,6 +256,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
             $scope.debug = doc;
             clearInterval(timerUnspent);
             $scope.status = 'Transaction complete!\n\nDownload your wallet now then check your email for a backup.';
+            $scope.$apply();
 
             (window.onTransactionComplete || function(){})(
               'data:application/octet-stream;base64,' + Base64.encode(doc), Bitcoin.convert.bytesToHex(tx.getHash())
