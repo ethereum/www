@@ -527,7 +527,7 @@ ethereum.factory('Purchase', ['$http', function($http) {
         crossDomain: true,
         success: function( response )
         {
-          data.step = 1;
+          data.step = 2;
           $.ajax({
             type: "POST",
             url: ETHERSALE_URL + '/sendmail',
@@ -553,7 +553,7 @@ ethereum.factory('Purchase', ['$http', function($http) {
       });
     },
     sendFirstEmail: function(data) {
-      data.step = 2;
+      data.step = 1;
       $.ajax({
         type: "POST",
         url: ETHERSALE_URL + '/sendmail',
