@@ -741,18 +741,12 @@ $(function() {
       $docs.modal();
       resizeDocs();
 
-      var myPDF = new PDFObject(
-      {
-        url: $(this).attr('href'),
-        pdfOpenParams: {
-          navpanes: 0,
-          view: "FitH",
-          pagemode: "bookmarks"
-        }
-      }).embed("docs-container");
+      $docsContainer.empty();
 
-      $docs.find('a.download').attr('href', $(this).attr('href'));
-      $docs.find('a.download').attr('download', $(this).attr('href'));
+      $docsContainer.append('<iframe src="https://docs.google.com/viewer?url=' + encodeURIComponent(SELF_URL + $(this).attr('href')) + '&embedded=true" border="0" width="100%" height="100%"></iframe>');
+
+      $docs.find('a.download').attr('href', $(this).attr('href').replace('-preview', ''));
+      $docs.find('a.download').attr('download', $(this).attr('href').replace('-preview', ''));
 
       $(window).on("resize", resizeDocs);
       return false;
