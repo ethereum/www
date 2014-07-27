@@ -621,6 +621,19 @@ $(function() {
       }, 20000);
     }
 
+    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+      $('#start-ether-error').removeClass('hidden');
+
+      if( /webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
+        $('#start-ether-purchase').addClass('disabled');
+
+        $startBtn.off('click');
+        $startBtn.click(function(e){
+          e.preventDefault();
+        });
+      }
+    }
+
     appStepsSlider = $("#app-steps-content").liquidSlider({
       autoSlide: false,
       dynamicTabs: false,
