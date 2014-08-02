@@ -634,6 +634,66 @@ $(function() {
       }
     }
 
+    var base58checkEncode = function(x,vbyte) {
+      vbyte = vbyte || 0;
+
+      var front = [vbyte].concat(Bitcoin.convert.hexToBytes(x));
+      var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(front, {asBytes: true}), {asBytes: true})
+                          .slice(0,4);
+      return Bitcoin.base58.encode(front.concat(checksum));
+    }
+
+    var getBalanceByDate = function(value, date)
+    {
+      var delta = dhms(moment(date).utc().diff(startsAt));
+      var price = 2000;
+
+      if(delta.days >= 14){
+        price = 2000 - (delta.days - 14) * 30;
+      }
+
+      price = Math.max(price, 1337.07714935)
+
+      return value * price;
+    };
+
+    $('.check-balance-button').click(function(e){
+      e.preventDefault();
+      var addr = $('#ethaddressforbalance').val();
+      var btcaddr = base58checkEncode(addr, 0);
+
+      $.ajax({
+        type: "GET",
+        url: BLOCKCHAIN_URL + "/unspent?active=" + btcaddr + "&cors=true&api_code=" + BLOCKCHAIN_API,
+        crossDomain: true,
+        success: function( json )
+        {
+          if(json.unspent_outputs[0].tx_index !== undefined)
+          {
+            $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + json.unspent_outputs[0].tx_index + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
+              var btc = 0;
+
+              if(data.out[0].addr === FUNDRAISING_ADDRESS)
+              {
+                btc = (data.out[0].value + 30000)/SATOSHIS_IN_BTC;
+                eth = getBalanceByDate(btc, data.time);
+                $('#ethaddressforbalance').val('');
+                alert("Your ether balance is " + eth + " ETH");
+              }
+              else
+              {
+                alert("There was a problem fetching your ether balance. Please ensure you have entered the correct ether address");
+              }
+            });
+          }
+        },
+        error: function( e )
+        {
+          alert("There was a problem fetching your ether balance. Please ensure you have entered the correct ether address");
+        }
+      });
+    })
+
     appStepsSlider = $("#app-steps-content").liquidSlider({
       autoSlide: false,
       dynamicTabs: false,

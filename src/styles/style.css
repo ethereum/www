@@ -1515,3 +1515,7 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
   width: 100%;
   height: 100%;
 }
+
+.explanations a.check-balance-button {
+  text-decoration: none !important;
+}
