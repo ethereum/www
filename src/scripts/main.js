@@ -473,7 +473,8 @@ $(function() {
       success: function( response )
       {
         var btc = Math.round(parseInt(response,10));
-        $("#total-sold-container .total").text(numeral(btc*2000/SATOSHIS_IN_BTC).format("0,0"));
+        btc = btc/SATOSHIS_IN_BTC*2000;
+        $("#total-sold-container .total").text(numeral(btc).format("0,0"));
       },
       error: function( error )
       {
@@ -645,15 +646,20 @@ $(function() {
 
     var getBalanceByDate = function(value, date)
     {
-      var delta = dhms(moment(date).utc().diff(startsAt));
-      var price = 2000;
+      var delta = dhms(moment(moment.unix(date - 3*60*60).utc()).utc().diff(startsAt));
+      var price = ETHER_FOR_BTC;console.log(delta);console.log(value);
 
-      if(delta.days >= 14){
-        price = 2000 - (delta.days - 14) * 30;
+      if(delta.days < 0)
+        return 0;
+
+      if(delta.days >= DECREASE_AFTER){
+        price = ETHER_FOR_BTC - (delta.days - DECREASE_AFTER + 1) * DECREASE_AMOUNT_PER_DAY;
       }
 
-      price = Math.max(price, 1337.07714935)
+      price = Math.max(price, MIN_ETH_FOR_BTC)
 
+      var total = value * price;
+      console.log(total);
       return value * price;
     };
 
@@ -678,7 +684,7 @@ $(function() {
                 btc = (data.out[0].value + 30000)/SATOSHIS_IN_BTC;
                 eth = getBalanceByDate(btc, data.time);
                 $('#ethaddressforbalance').val('');
-                alert("Your ether balance is " + eth + " ETH");
+                alert("Your ether balance is " + numeral(eth).format("0,0") + " ETH");
               }
               else
               {
