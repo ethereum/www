@@ -646,7 +646,7 @@ $(function() {
 
     var getBalanceByDate = function(value, date)
     {
-      var delta = dhms(moment(moment.unix(date - 3*60*60).utc()).utc().diff(startsAt));
+      var delta = dhms((date - 1406066400)*1000);
       var price = ETHER_FOR_BTC;console.log(delta);console.log(value);
 
       if(delta.days < 0)
