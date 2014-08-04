@@ -642,7 +642,7 @@ $(function() {
       var checksum = Bitcoin.Crypto.SHA256(Bitcoin.Crypto.SHA256(front, {asBytes: true}), {asBytes: true})
                           .slice(0,4);
       return Bitcoin.base58.encode(front.concat(checksum));
-    }
+    };
 
     var getBalanceByDate = function(value, date)
     {
@@ -656,7 +656,7 @@ $(function() {
         price = ETHER_FOR_BTC - (delta.days - DECREASE_AFTER + 1) * DECREASE_AMOUNT_PER_DAY;
       }
 
-      price = Math.max(price, MIN_ETH_FOR_BTC)
+      price = Math.max(price, MIN_ETH_FOR_BTC);
 
       var total = value * price;
       console.log(total);
@@ -698,7 +698,7 @@ $(function() {
           alert("There was a problem fetching your ether balance. Please ensure you have entered the correct ether address");
         }
       });
-    })
+    });
 
     appStepsSlider = $("#app-steps-content").liquidSlider({
       autoSlide: false,
