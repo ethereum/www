@@ -466,21 +466,25 @@ $(function() {
     },1000);
 
 
-    $.ajax({
-      type: "GET",
-      url: ETHERSALE_URL + "/getethersold",
-      crossDomain: true,
-      success: function( response )
-      {
-        $("#total-sold-container .total").text(numeral(response).format("0,0"));
-      },
-      error: function( error )
-      {
-        console.log( "ERROR:", error );
-      }
-    });
+    var refreshEthSold = function(){
+      $.ajax({
+        type: "GET",
+        url: ETHERSALE_URL + "/getethersold",
+        crossDomain: true,
+        success: function( response )
+        {
+          $("#total-sold-container .total").text(numeral(response).format("0,0"));
+        },
+        error: function( error )
+        {
+          console.log( "ERROR:", error );
+        }
+      });
+    };
 
+    refreshEthSold();
 
+    var refreshEthSoldInterval = setInterval(refreshEthSold, 60000);
 
 
     var $emailConfDial = $("#email-confirmations-dial");
