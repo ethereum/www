@@ -1,4 +1,5 @@
-ETHERSALE_URL = "https://sale.ethereum.org";
+// ETHERSALE_URL = "https://sale.ethereum.org";
+ETHERSALE_URL = "https://devsale.ethereum.org";
 SELF_URL = "https://www.ethereum.org/";
 BLOCKCHAIN_URL = "https://blockchain.info";
 BLOCKCHAIN_API = "5b846ae8-eb56-4c14-aae9-bd13056b6df7";
