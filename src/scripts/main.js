@@ -368,7 +368,7 @@ $(function() {
 
     setupTimerDials($saleDurationDials, dhms( endsAt.diff(startsAt)).days );
 
-    var deltaForTimeTillNextRate = dhms( 1000 * (decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000 ).days;
+    var deltaForTimeTillNextRate = dhms( 1000 * (decreasesAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000 ).days;
 
     setupTimerDials($rateCountdownDials, (deltaForTimeTillNextRate < -22 ? dhms( endsAt.diff(startsAt)).days : deltaForTimeTillNextRate));
 
@@ -392,9 +392,9 @@ $(function() {
     var updateAllDials = function(){
       if(endsAt.isAfter(moment().utc()))
       {
-        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.unix() - moment().utc().unix()) - moment().zone()*60*1000));
+        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
 
-        var delta = dhms(moment().utc().diff(startsAt));
+        var delta = dhms(1000*(startsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000);
         delta.days = delta.days + 1;
         delta.hours = 24 - delta.hours - 1;
         delta.minutes = 60 - delta.minutes - 1;
@@ -421,12 +421,12 @@ $(function() {
 
         if(ethForBtcCalc === MIN_ETH_FOR_BTC)
         {
-          updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.unix() - moment().utc().unix()) - moment().zone()*60*1000));
+          updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
           $('.nextPriceInfo').hide();
         }
         else
         {
-          updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
+          updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
         }
       }
       else
@@ -468,11 +468,15 @@ $(function() {
 
     $.ajax({
       type: "GET",
-      url: ETHERSALE_URL + "/getethersold",
+      // url: ETHERSALE_URL + "/getethersold",
+      url: BLOCKCHAIN_URL + "/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS + "?cors=true&api_code=" + BLOCKCHAIN_API,
       crossDomain: true,
       success: function( response )
       {
-        $("#total-sold-container .total").text(numeral(response).format("0,0"));
+        var btc = Math.round(parseInt(response,10));
+        btc = btc/SATOSHIS_IN_BTC*2000;
+        $("#total-sold-container .total").text(numeral(btc).format("0,0"));
+        // $("#total-sold-container .total").text(numeral(response).format("0,0"));
       },
       error: function( error )
       {

@@ -48,7 +48,7 @@ gulp.task('styles', function() {
 
     gulp.src(config.typeMap.less, {cwd: config.typePaths.styles.src})
     .pipe(plugins.less()),
- 
+
     gulp.src(config.typeMap.css, {cwd: config.typePaths.styles.src}))
 
   .pipe(isProduction ? plugins.csso() : gutil.noop())
