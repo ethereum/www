@@ -400,9 +400,9 @@ $(function() {
         delta.minutes = 60 - delta.minutes - 1;
         delta.seconds = 60 - delta.seconds;
 
-        if(delta.days > -DECREASE_AFTER)
+        if(delta.days >= -DECREASE_AFTER)
         {
-          ethForBtcCalc = ETHER_FOR_BTC - DECREASE_AMOUNT_PER_DAY * Math.max(delta.days - DECREASE_AFTER, 0);
+          ethForBtcCalc = ETHER_FOR_BTC - DECREASE_AMOUNT_PER_DAY * Math.max(DECREASE_AFTER + delta.days + 1, 0);
         }
         else
         {
@@ -469,11 +469,15 @@ $(function() {
     var refreshEthSold = function(){
       $.ajax({
         type: "GET",
-        url: ETHERSALE_URL + "/getethersold",
+        // url: ETHERSALE_URL + "/getethersold",
+        url: BLOCKCHAIN_URL + "/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS + "?cors=true&api_code=" + BLOCKCHAIN_API,
         crossDomain: true,
         success: function( response )
         {
-          $("#total-sold-container .total").text(numeral(response).format("0,0"));
+          var btc = Math.round(parseInt(response,10));
+          btc = btc/SATOSHIS_IN_BTC*2000;
+          $("#total-sold-container .total").text(numeral(btc).format("0,0"));
+          // $("#total-sold-container .total").text(numeral(response).format("0,0"));
         },
         error: function( error )
         {
@@ -676,24 +680,38 @@ $(function() {
         crossDomain: true,
         success: function( json )
         {
-          if(json.unspent_outputs[0].tx_index !== undefined)
-          {
-            $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + json.unspent_outputs[0].tx_index + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
-              var btc = 0;
+          var totalTx = json.unspent_outputs.length;
+          var totalBtc = 0;
+          var totalEth = 0;
+          var finishedLoading = 0;
 
-              if(data.out[0].addr === FUNDRAISING_ADDRESS)
-              {
-                btc = (data.out[0].value + 30000)/SATOSHIS_IN_BTC;
-                eth = getBalanceByDate(btc, data.time);
-                $('#ethaddressforbalance').val('');
-                alert("Your ether balance is " + numeral(eth).format("0,0") + " ETH");
-              }
-              else
-              {
-                alert("There was a problem fetching your ether balance. Please ensure you have entered the correct ether address");
-              }
-            });
-          }
+          for (var i = 0; i < json.unspent_outputs.length; i++) {
+            if(json.unspent_outputs[i].tx_index !== undefined)
+            {
+              $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + json.unspent_outputs[i].tx_index + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
+                if(data.out[0].addr === FUNDRAISING_ADDRESS)
+                {
+                  finishedLoading++;
+
+                  var btc = (data.out[0].value + 30000)/SATOSHIS_IN_BTC;
+                  var eth = getBalanceByDate(btc, data.time);
+
+                  totalBtc += btc;
+                  totalEth += eth;
+
+                  if(finishedLoading === totalTx)
+                  {
+                    $('#ethaddressforbalance').val('');
+                    alert("Your ether balance is " + numeral(totalEth).format("0,0") + " ETH");
+                  }
+                }
+                else
+                {
+                  alert("There was a problem fetching your ether balance. Please ensure you have entered the correct ether address");
+                }
+              });
+            }
+          };
         },
         error: function( e )
         {
