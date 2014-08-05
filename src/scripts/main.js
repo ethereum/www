@@ -468,13 +468,11 @@ $(function() {
 
     $.ajax({
       type: "GET",
-      url: BLOCKCHAIN_URL + "/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS + "?cors=true&api_code=" + BLOCKCHAIN_API,
+      url: ETHERSALE_URL + "/getethersold",
       crossDomain: true,
       success: function( response )
       {
-        var btc = Math.round(parseInt(response,10));
-        btc = btc/SATOSHIS_IN_BTC*2000;
-        $("#total-sold-container .total").text(numeral(btc).format("0,0"));
+        $("#total-sold-container .total").text(numeral(response).format("0,0"));
       },
       error: function( error )
       {
