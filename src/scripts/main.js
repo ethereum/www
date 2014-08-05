@@ -394,15 +394,11 @@ $(function() {
       {
         updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
 
-        var delta = dhms(1000*(startsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000);
-        delta.days = delta.days + 1;
-        delta.hours = 24 - delta.hours - 1;
-        delta.minutes = 60 - delta.minutes - 1;
-        delta.seconds = 60 - delta.seconds;
+        var delta = dhms(1000*(moment().utc().unix() - startsAt.utc().unix()) - moment().zone()*60*1000);
 
-        if(delta.days >= -DECREASE_AFTER)
+        if(delta.days >= DECREASE_AFTER)
         {
-          ethForBtcCalc = ETHER_FOR_BTC - DECREASE_AMOUNT_PER_DAY * Math.max(DECREASE_AFTER + delta.days + 1, 0);
+          ethForBtcCalc = ETHER_FOR_BTC - DECREASE_AMOUNT_PER_DAY * Math.max(delta.days - DECREASE_AFTER + 1, 0);
         }
         else
         {
@@ -412,6 +408,11 @@ $(function() {
         ethForBtcCalc = Math.max(ethForBtcCalc, MIN_ETH_FOR_BTC);
 
         nextEthForBtc = Math.max(ethForBtcCalc - DECREASE_AMOUNT_PER_DAY, MIN_ETH_FOR_BTC);
+
+        delta.days = delta.days + 1;
+        delta.hours = 24 - delta.hours - 1;
+        delta.minutes = 60 - delta.minutes - 1;
+        delta.seconds = 60 - delta.seconds;
 
         $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
         $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0.00") );
@@ -469,15 +470,11 @@ $(function() {
     var refreshEthSold = function(){
       $.ajax({
         type: "GET",
-        // url: ETHERSALE_URL + "/getethersold",
-        url: BLOCKCHAIN_URL + "/q/getreceivedbyaddress/" + FUNDRAISING_ADDRESS + "?cors=true&api_code=" + BLOCKCHAIN_API,
+        url: ETHERSALE_URL + "/getethersold",
         crossDomain: true,
         success: function( response )
         {
-          var btc = Math.round(parseInt(response,10));
-          btc = btc/SATOSHIS_IN_BTC*2000;
-          $("#total-sold-container .total").text(numeral(btc).format("0,0"));
-          // $("#total-sold-container .total").text(numeral(response).format("0,0"));
+          $("#total-sold-container .total").text(numeral(response).format("0,0"));
         },
         error: function( error )
         {
