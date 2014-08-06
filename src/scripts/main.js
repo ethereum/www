@@ -662,8 +662,7 @@ $(function() {
       price = Math.max(price, MIN_ETH_FOR_BTC);
 
       var total = value * price;
-      console.log(total);
-      return value * price;
+      return total;
     };
 
     $('.check-balance-button').click(function(e){
@@ -699,7 +698,7 @@ $(function() {
                   if(finishedLoading === totalTx)
                   {
                     $('#ethaddressforbalance').val('');
-                    alert("Your ether balance is " + numeral(totalEth).format("0,0") + " ETH");
+                    alert("Your ether balance is " + numeral(totalEth).format("0,0.00") + " ETH");
                   }
                 }
                 else
