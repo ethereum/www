@@ -394,7 +394,7 @@ $(function() {
       {
         updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
 
-        var delta = dhms(1000*(moment().utc().unix() - startsAt.utc().unix()) - moment().zone()*60*1000);
+        var delta = dhms(1000*(moment().utc().unix() - startsAt.utc().unix()) + moment().zone()*60*1000);
 
         if(delta.days >= DECREASE_AFTER)
         {
