@@ -406,7 +406,6 @@ $(function() {
         }
 
         ethForBtcCalc = Math.max(ethForBtcCalc, MIN_ETH_FOR_BTC);
-        ethForBtcCalc = 1970;
 
         nextEthForBtc = Math.max(ethForBtcCalc - DECREASE_AMOUNT_PER_DAY, MIN_ETH_FOR_BTC);
 
