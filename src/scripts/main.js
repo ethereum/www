@@ -708,7 +708,7 @@ $(function() {
                 }
               });
             }
-          };
+          }
         },
         error: function( e )
         {
