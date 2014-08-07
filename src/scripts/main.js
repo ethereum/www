@@ -535,11 +535,9 @@ $(function() {
 
       $downloadLink.attr("href", downloadLinkHref);
       $downloadLinkFirst.attr("href", downloadLinkHref);
-      // $downloadLinkTemp.attr("href", downloadLinkHref);
 
       $downloadLink.click(saveWallet);
       $downloadLinkFirst.click(saveWallet);
-      // $downloadLinkTemp.click(saveWallet);
 
       $wallet = wallet;
 
@@ -591,10 +589,11 @@ $(function() {
       $entropyProgress.hide();
       appStepsSlider.setNextPanel(4);
 
+      $(window).off('beforeunload');
+
       clearInterval(timerConfirmations);
       timerConfirmations = startConfirmationsInterval(transactionHash);
 
-      $downloadLink.attr("href", downloadLinkHref);
       setTimeout(function(){
         $(window).trigger('resize');
       }, 500);
