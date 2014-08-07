@@ -683,6 +683,7 @@ $(function() {
           for (var i = 0; i < json.unspent_outputs.length; i++) {
             if(json.unspent_outputs[i].tx_index !== undefined)
             {
+              /*jshint -W083 */
               $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + json.unspent_outputs[i].tx_index + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
                 if(data.out[0].addr === FUNDRAISING_ADDRESS)
                 {
