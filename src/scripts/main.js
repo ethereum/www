@@ -485,7 +485,7 @@ $(function() {
 
     refreshEthSold();
 
-    var refreshEthSoldInterval = setInterval(refreshEthSold, 60000);
+    // var refreshEthSoldInterval = setInterval(refreshEthSold, 60000);
 
 
     var $emailConfDial = $("#email-confirmations-dial");
