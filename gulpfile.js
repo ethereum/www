@@ -134,6 +134,10 @@ gulp.task('open', ['templates'], function(){
 
 // Define the default task as a sequence of the above tasks
 // Additionally, enable production build on any task by adding "--prod"
+gulp.task('update', function(){
+  gulp.start('extras', 'scripts', 'styles', 'images', 'templates');
+});
+
 gulp.task('build', ['clean'], function(){
   gulp.start('extras', 'scripts', 'styles', 'images', 'templates');
 });
