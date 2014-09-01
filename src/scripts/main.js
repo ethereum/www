@@ -278,7 +278,7 @@ $(function() {
         $('.upload-results').removeClass('hidden');
         showWalletErrorMessage('<b>Insufficient funds.</b><br>The intermediate BTC address has to have at least 10000 satosi in order to transfer the funds');
       }
-    }
+    };
 
     $('.wallet-uploader').change(function(evt)
     {
@@ -294,7 +294,7 @@ $(function() {
               {
                 $wallet = $.parseJSON(e.target.result);
               }
-              catch (e)
+              catch (err)
               {
                 resetRedeemFields();
                 showWalletErrorMessage('<b>Wallet file not valid.</b><br>Please upload a valid wallet backup.');
@@ -357,7 +357,7 @@ $(function() {
     {
       $('.wallet-alert').removeClass('hidden');
       $('.error-message').html(message);
-    }
+    };
 
     var enableWalletTransferButton = function()
     {
