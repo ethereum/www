@@ -89,7 +89,7 @@ function recover_bkp_wallet(bkp,wallet) {
     return getseed(bkp.withpw,wallet.bkp,bkp.ethaddr);
 }
 
-function finalize(wallet,unspent,pwkey,amount) {
+function finalize(wallet,unspent,pwkey) {
     // Check password
     var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
     balance = unspent.reduce(function(t,o) { return t + o.value; },0);
@@ -109,4 +109,34 @@ function finalize(wallet,unspent,pwkey,amount) {
     });
     // console.log(tx);
     return tx;
+}
+
+function recoverFunds(wallet,unspent,pwkey,exodus) {
+    // Check password
+    try {
+        var seed = getseed(wallet.encseed,pwkey,wallet.ethaddr);
+    } catch (e) {
+        console.log('Wrong password');
+        return { success: false, error : '<b>The private key could not be retriven.</b><br>Please make sure you have entered the password used when you created the wallet.' };
+    }
+    balance = unspent.reduce(function(t,o) { return t + o.value; }, 0);
+    if (balance < 10000)
+        return false;
+    console.log('refunding unspent outputs:', unspent);
+    var outputs = [
+        exodus + ':' + (balance - 10000)
+    ];
+    var btcpriv = Bitcoin.ECKey(binSHA3(seed+'\x01'));
+    var tx = Bitcoin.Transaction();
+    try {
+        unspent.map(function(u) { tx.addInput(u.output);});
+        outputs.map(function(o) { tx.addOutput(o);});
+        unspent.map(function(u,i) {
+            tx.sign(i,btcpriv);
+        });
+    } catch (e) {
+        return { success: false, error: '<b>The transaction could not be signed.</b><br>Please make sure you have entered a valid BTC address.' }
+    }
+    console.log(tx);
+    return {success: true, tx: tx};
 }

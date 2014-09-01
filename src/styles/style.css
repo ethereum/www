@@ -1519,3 +1519,28 @@ input.ng-invalid, input.ng-invalid-match, input.ng-invalid-required, input.inval
 .explanations a.check-balance-button {
   text-decoration: none !important;
 }
+
+a.open-redeem-modal {
+  text-decoration: none !important;
+}
+
+.redeem_funds {
+  padding-top: 20px;
+}
+
+#redeem-lost-funds-modal b, #redeem-lost-funds-modal strong {
+  font-family: 'RobotoRegular';
+  font-weight: normal;
+}
+
+#redeem-lost-funds-modal i {
+  margin-right: 10px;
+}
+
+#redeem-lost-funds-modal .upload-results {
+  padding-bottom: 20px;
+}
+
+#redeem-lost-funds-modal label {
+  font-weight: normal;
+}

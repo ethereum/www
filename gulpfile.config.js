@@ -73,7 +73,6 @@ module.exports = {
 
   scriptOrder: [
     'jquery-2.1.0.min.js',
-    'jquery.countdown.min.js',
     'jquery.easing.1.3.js',
     'jquery.scrollUp.min.js',
     'jquery.touchSwipe.min.js',
@@ -90,23 +89,16 @@ module.exports = {
     'numeral.js',
     'underscore-min.js',
     'moment.min.js',
-    'jquery.PrintArea.js',
-    'pdfobject.min.js',
-    'ethersale/Blob.js',
-    'ethersale/FileSaver.js',
     'main.js',
 
     'ethersale/angular.min.js',
-    'ethersale/angular-touch.min.js',
-    'ethersale/jquery.qrcode.min.js',
     'ethersale/bitcoinjs-min.js',
     'ethersale/aes.js',
     'ethersale/pbkdf2.js',
     'ethersale/sha256.js',
     'ethersale/sha3.js',
     'ethersale/xethtool.js',
-    'ethersale/base64.js',
-    'ethersale/password-dict.js'
+    'ethersale/base64.js'
   ],
 
   styleOrder: [

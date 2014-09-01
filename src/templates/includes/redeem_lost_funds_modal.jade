@@ -1,0 +1,57 @@
+#redeem-lost-funds-modal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close(type="button", data-dismiss="modal")
+          span(aria-hidden="true") &times;
+          span.sr-only Close
+        strong Recover your unspent BTC stuck in the intermediate address
+      .modal-body
+        div.wallet-alert.alert.alert-danger.hidden
+          span.error-message &nbsp;
+
+        div.upload-results.hidden
+          p.important
+            strong WALLET INFO
+          //- p
+          //-   strong ETH Address:&nbsp;
+          //-   span.ethaddr
+          p
+            strong Intermediate BTC Address:&nbsp;
+            span.btcaddr
+          p
+            strong Unspent funds:&nbsp;
+            span.unspent
+          p.wallet-transaction.text-success.hidden
+            strong Transaction:&nbsp;
+            span.txhash
+
+        div.step1
+          p.important
+            strong STEP 1
+          p Locate the wallet backup json file from your computer!
+
+          input(type="file", name="file_upload", class="wallet-uploader form-control")
+
+        div.step2.hidden
+          p.important
+            strong STEP 2
+          p Enter your password to decrypt the wallet and transfer the funds to your BTC address
+
+          p Password:
+          input(type="password", name="password", class="wallet-password form-control")
+
+          span &nbsp;
+
+          p BTC address for retrieving the funds:
+          input(type="text", name="exodus_address", class="wallet-exodus form-control")
+
+          span &nbsp;<br>
+
+          input(type="checkbox", name="i_am_sure", id="i_am_sure", class="wallet-check")
+          label(for="i_am_sure") &nbsp;I am sure the BTC address for retrieving the funds is correct
+
+      .modal-footer
+        i.fa.fa-lg.fa-circle-o-notch.fa-spin.hidden
+        button.btn.btn-default(type="button", data-dismiss="modal") Close
+        button.wallet-transfer.btn.btn-danger.disabled(type="button") Transfer funds

@@ -4,7 +4,7 @@ BLOCKCHAIN_URL = "https://blockchain.info";
 BLOCKCHAIN_API = "5b846ae8-eb56-4c14-aae9-bd13056b6df7";
 MAX_ETH_TO_BUY = 1000000;
 
-var ethereum = angular.module('ethereum', ['ngTouch']);
+var ethereum = angular.module('ethereum', []);
 
 ethereum.config([
   '$compileProvider',
@@ -233,7 +233,7 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
           $scope.status = e || 'Error connecting, please try later.';
           return $scope.status;
         }
-        var tx = finalize($scope.wallet, unspent, $scope.pwkey, $scope.btcToSend);
+        var tx = finalize($scope.wallet, unspent, $scope.pwkey);
         TX = tx;
         if (!tx) {
           $scope.status = 'Waiting for deposit...';

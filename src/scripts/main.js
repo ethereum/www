@@ -35,15 +35,6 @@ $(function() {
     });
   });
 
-  $(function() {
-    $('#countdown').countdown({
-      until: $.countdown.UTCDate(0, new Date(2014, 03 - 1, 01)),
-      timezone: 0,
-      padZeroes: true,
-      layout: '<div class ="timer-wrap-all"><div class="timer-wrap"> <span class="timer-unit">{dnn}</span> <div class="timer-unit-desc">{dl}</div> </div> <div class="timer-wrap"> <span class="timer-unit-sep">:</span> </div> <div class="timer-wrap"> <span class="timer-unit">{hnn}</span> <div class="timer-unit-desc">{hl}</div> </div> <div class="timer-wrap"> <span class="timer-unit-sep">:</span> </div> <div class ="timer-wrap"> <span class="timer-unit">{mnn}</span> <div class="timer-unit-desc">{ml}</div> </div> <div class="timer-wrap"> <span class="timer-unit-sep">:</span> </div> <div class="timer-wrap"> <span class="timer-unit">{snn}</span> <div class="timer-unit-desc">{sl}</div> </div></div>',
-    });
-  });
-
   (function(){
     var activeFeatureIndex = 0;
     var updateFeature = function(direction) {
@@ -93,12 +84,6 @@ $(function() {
     includeTitle: false
   });
   window.api = $.data($('#news-slider')[0], 'liquidSlider');
-  $('#who-slider').liquidSlider({
-    autoSlide: false,
-    dynamicTabs: false,
-    dynamicArrows: false,
-    slideEaseDuration: 600,
-  });
   $('#code-slider').liquidSlider({
     autoSlide: false,
     dynamicTabs: false,
@@ -106,8 +91,6 @@ $(function() {
     autoHeight: true,
     dynamicArrows: false,
     dynamicArrowsGraphical: false,
-    // dynamicArrowLeftText: '<i class="fa fa-angle-left fa-3x" data-liquidslider-ref="#code-slider">',
-    // dynamicArrowRightText: '<i class="fa fa-angle-right fa-3x" data-liquidslider-ref="#code-slider">',
     crossLinks: true
   });
   $('#press-slider').liquidSlider({
@@ -118,8 +101,6 @@ $(function() {
     autoHeight: true,
     dynamicArrows: false,
     dynamicArrowsGraphical: false,
-    // dynamicArrowLeftText: '<i class="fa fa-angle-left fa-3x" data-liquidslider-ref="#code-slider">',
-    // dynamicArrowRightText: '<i class="fa fa-angle-right fa-3x" data-liquidslider-ref="#code-slider">',
     crossLinks: true
   });
   $('#media-slider').liquidSlider({
@@ -129,8 +110,6 @@ $(function() {
     autoHeight: true,
     dynamicArrows: false,
     dynamicArrowsGraphical: false,
-    // dynamicArrowLeftText: '<i class="fa fa-angle-left fa-3x" data-liquidslider-ref="#code-slider">',
-    // dynamicArrowRightText: '<i class="fa fa-angle-right fa-3x" data-liquidslider-ref="#code-slider">',
     crossLinks: true
   });
   $('#philosophy-slider').liquidSlider({
@@ -143,8 +122,7 @@ $(function() {
 
   $(".nano").nanoScroller();
 
-  var initPresaleCounters = function(){
-    /* UPDATE these constants with real values */
+  var initProstsaleCounters = function(){
     var ETHER_FOR_BTC = 2000,
         DECREASE_AMOUNT_PER_DAY = 30,
         MIN_ETH_FOR_BTC = 1337.07714935,
@@ -153,53 +131,12 @@ $(function() {
         START_DATETIME = "2014-07-22 22:00:00",
         DECREASE_AFTER = 14,
         ENDS_AFTER = 42,
-        $qrDepAddr = $("#qr-deposit-address"),
-        $purchaseCancel = $("#purchase-cancel"),
-        $backToStart = $("#back-to-start"),
-        $entropyProgress = $("#entropy-progress"),
-        $step41 = $("#step41"),
-        $step42 = $("#step42"),
-        $downloadLink = $("#downloadLink"),
-        $downloadLinkFirst = $("#downloadLinkFirst"),
-        // $downloadLinkTemp = $("#downloadLinkTemp"),
-        purchaseInputs = {
-          $email: $("#purchase-email"),
-          $emailRepeat: $("#purchase-email-repeat"),
-          $password: $("#password"),
-          $passwordRepeat: $("#password-checks")
-        },
-        $startBtn = $("#start-ether-purchase"),
-        $terms = $("#terms-modal"),
-        $termsText = $("#terms-text-container"),
-        $purchTerms = $("#purchase-modal"),
-        $purchTermsText = $("#purchase-text-container"),
         $docs = $("#docs-modal"),
         $docsContainer = $("#docs-container"),
-        btcToSend = 1,
-        didNotifyRememberPassword = false,
-        mainSlider,
-        appStepsSlider,
-        ethForBtcCalc = 2000,
-        nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY,
-        updateDialsInterval,
-        timerConfirmations,
-        timeoutTerms,
         $wallet,
-        $purchaseForm = $("[name=purchase_form]");
-
-    $(".show-after-end").hide();
-
-    $downloadLink.click(function(e){
-      e.preventDefault();
-    });
-
-    // $downloadLinkTemp.click(function(e){
-    //   e.preventDefault();
-    // });
-
-    $downloadLinkFirst.click(function(e){
-      e.preventDefault();
-    });
+        $recover = {},
+        $saleDurationDials = $(".sale-duration-container"),
+        $rateCountdownDials = $(".rate-countdown-container");
 
     var dhms = function(t){
       var cd = 24 * 60 * 60 * 1000,
@@ -219,127 +156,6 @@ $(function() {
       };
     };
 
-    var reset = function(){
-      purchaseInputs.$email.val("");
-      purchaseInputs.$emailRepeat.val("");
-      purchaseInputs.$password.val("");
-      purchaseInputs.$passwordRepeat.val("");
-      appStepsSlider.setNextPanel(0);
-      mainSlider.setNextPanel(1);
-      didNotifyRememberPassword = false;
-      $purchaseCancel.show();
-      $purchaseForm.find("input").each(function(){
-        $(this).attr("disabled", false);
-      });
-      $step41.removeClass('hidden');
-      $step42.removeClass('hidden').addClass('hidden');
-      $entropyProgress.show();
-      $(".step-breadcrumbs").attr("data-step", "1");
-      clearInterval(timerConfirmations);
-      return false;
-    };
-
-    $purchaseCancel.click(reset);
-    $backToStart.click(reset);
-    $('#restartTheProcess').click(reset);
-
-    var resizeTerms = function(){
-      $termsText.height($(window).height() - 185);
-    };
-
-    var closeTerms = function(){
-      $terms.modal("hide");
-      $(window).off("resize", resizeTerms);
-      $terms.find("[name=confirm-terms]").prop("checked", false);
-    };
-
-    $startBtn.click(function(e){
-      $terms.modal();
-      resizeTerms();
-      $(window).on("resize", resizeTerms);
-      $termsText.animate({scrollTop: 0}, 1000);
-      $terms.find("[name=confirm-terms]").attr("disabled", '');
-      $terms.find("[for=confirm-terms]").removeClass("disabled").addClass("disabled");
-      return false;
-    });
-
-    $("#terms-close").click(function(e){
-      closeTerms();
-      return false;
-    });
-
-    $terms.find(".print").click(function(){
-      $termsText.css("overflow", "visible").printArea();
-      $termsText.css("overflow", "auto");
-      return false;
-    });
-
-    $termsText.scroll(function(){
-      if($termsText.scrollTop() + $termsText.innerHeight() + 30 > $termsText.prop("scrollHeight")){
-        $terms.find("[name=confirm-terms]").attr("disabled", false);
-        $terms.find("[for=confirm-terms]").removeClass("disabled");
-      }
-    });
-
-    $terms.find("[name=confirm-terms]").change(function(){
-      if($(this).is(":checked")){
-        closeTerms();
-        timeoutTerms = setTimeout(showPurchTerms, 500);
-      }
-    });
-
-    var showPurchTerms = function(){
-      clearTimeout(timeoutTerms);
-      $purchTerms.modal();
-      resizePurchTerms();
-      $(window).on("resize", resizePurchTerms);
-      $purchTermsText.animate({scrollTop: 0}, 1000);
-      $purchTerms.find("[name=confirm-terms]").attr("disabled", '');
-      $purchTerms.find("[for=confirm-terms]").removeClass("disabled").addClass("disabled");
-    };
-
-    var closePurchTerms = function(){
-      $purchTerms.modal("hide");
-      $(window).off("resize", resizePurchTerms);
-      $purchTerms.find("[name=confirm-purch]").prop("checked", false);
-    };
-
-    var resizePurchTerms = function(){
-      $purchTermsText.height($(window).height() - 185);
-    };
-
-    $("#purch-close").click(function(e){
-      closePurchTerms();
-      return false;
-    });
-
-    $purchTerms.find(".print").click(function(){
-      $purchTermsText.css("overflow", "visible").printArea();
-      $purchTermsText.css("overflow", "auto");
-      return false;
-    });
-
-    $purchTermsText.scroll(function(){
-      if($purchTermsText.scrollTop() + $purchTermsText.innerHeight() + 30 > $purchTermsText.prop("scrollHeight")){
-        $purchTerms.find("[name=confirm-purch]").attr("disabled", false);
-        $purchTerms.find("[for=confirm-purch]").removeClass("disabled");
-      }
-    });
-
-    $purchTerms.find("[name=confirm-purch]").change(function(){
-      if($(this).is(":checked")){
-        mainSlider.setNextPanel(2);
-        closePurchTerms();
-      }
-    });
-
-    purchaseInputs.$password.focus(function(){
-      if(!didNotifyRememberPassword){
-        $('#remember-password-modal').modal();
-        didNotifyRememberPassword = true;
-      }
-    });
-
     var knobDefaults = {
       readOnly: true,
       thickness: 0.05,
@@ -350,14 +166,11 @@ $(function() {
     };
     var startsAt = moment( START_DATETIME ).utc(),
         decreasesAt = moment( START_DATETIME ).utc().add( 'days', DECREASE_AFTER ),
-        endsAt = moment( START_DATETIME ).utc().add( 'days', ENDS_AFTER ),
-        $saleDurationDials = $(".sale-duration-container"),
-        $rateCountdownDials = $(".rate-countdown-container");
+        endsAt = moment( START_DATETIME ).utc().add( 'days', ENDS_AFTER );
 
     var createKnob = function($el, settings){
       $el.knob(_.extend({}, knobDefaults, settings));
     };
-
 
     var setupTimerDials = function($container,maxdays){
       createKnob($container.find(".dial.days"), {max: maxdays });
@@ -366,12 +179,8 @@ $(function() {
       createKnob($container.find(".dial.seconds"), {max: 60});
     };
 
-    setupTimerDials($saleDurationDials, dhms( endsAt.diff(startsAt)).days );
-
-    var deltaForTimeTillNextRate = dhms( 1000 * (decreasesAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000 ).days;
-
-    setupTimerDials($rateCountdownDials, (deltaForTimeTillNextRate < -22 ? dhms( endsAt.diff(startsAt)).days : deltaForTimeTillNextRate));
-
+    setupTimerDials($saleDurationDials, 0 );
+    setupTimerDials($rateCountdownDials, 0 );
 
     $(".countdown-dials input").css({
       height: "26px",
@@ -379,93 +188,9 @@ $(function() {
       "font-size": "18px"
     });
 
-    var updateTimerDial = function($container, type, delta){
-      $container.find(".dial." + type).val(delta[type]).change();
-    };
-
-    var updateTimerDials = function($container, delta){
-      updateTimerDial($container, "days", delta);
-      updateTimerDial($container, "hours", delta);
-      updateTimerDial($container, "minutes", delta);
-      updateTimerDial($container, "seconds", delta);
-    };
-    var updateAllDials = function(){
-      if(endsAt.isAfter(moment().utc()))
-      {
-        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
-
-        var delta = dhms(1000*(moment().utc().unix() - startsAt.utc().unix()) + moment().zone()*60*1000);
-
-        if(delta.days >= DECREASE_AFTER)
-        {
-          ethForBtcCalc = ETHER_FOR_BTC - DECREASE_AMOUNT_PER_DAY * Math.max(delta.days - DECREASE_AFTER + 1, 0);
-        }
-        else
-        {
-          ethForBtcCalc = ETHER_FOR_BTC;
-        }
-
-        ethForBtcCalc = Math.max(ethForBtcCalc, MIN_ETH_FOR_BTC);
-
-        nextEthForBtc = Math.max(ethForBtcCalc - DECREASE_AMOUNT_PER_DAY, MIN_ETH_FOR_BTC);
-
-        delta.days = delta.days + 1;
-        delta.hours = 24 - delta.hours - 1;
-        delta.minutes = 60 - delta.minutes - 1;
-        delta.seconds = 60 - delta.seconds;
-
-        $(".eth-to-btc").text( numeral(ethForBtcCalc).format("0,0") );
-        $(".min-eth-to-btc").text( numeral(ethForBtcCalc/100).format("0,0.00") );
-        $(".next-eth-to-btc").text( numeral(nextEthForBtc).format("0,0") );
-        $(".max-eth-to-buy").text( numeral( MAX_ETH_TO_BUY ).format("0,0") );
-        $(".max-btc-to-buy").text( numeral( MAX_ETH_TO_BUY/ethForBtcCalc ).format("0,0.00") );
-
-        if(ethForBtcCalc === MIN_ETH_FOR_BTC)
-        {
-          updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
-          $('.nextPriceInfo').hide();
-        }
-        else
-        {
-          updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
-        }
-      }
-      else
-      {
-        $(".hide-after-end").hide();
-        $(".show-after-end").show();
-        $(".fade-after-end").css('opacity', 0.5);
-
-        clearInterval(updateDialsInterval);
-      }
-    };
-
-    _.extend(window, {
-      ethForBtc: function(btc){
-        return Math.round((typeof btc == "number" ? btc : 1) * ethForBtcCalc * 10000) / 10000;
-      },
-      btcForEth: function(eth){
-        return Math.round((typeof eth == "number" ? eth : 1) / ethForBtcCalc * 10000) / 10000;
-      }
-    });
-
-    var $step4 = $(".step4-content");
-
-    $("#print-purchase-page").click(function(e){
-      e.preventDefault();
-      $step4.css("width", "100%");
-      var $noPrint = $step4.find(".no-print").hide();
-      $step4.printArea();
-      $noPrint.show();
-      $step4.css("width", "20%");
-    });
-
-    updateAllDials();
-
-    updateDialsInterval = window.setInterval(function(){
-      updateAllDials();
-    },1000);
-
+    $(".hide-after-end").hide();
+    $(".show-after-end").show();
+    $(".fade-after-end").css('opacity', 0.5);
 
     var refreshEthSold = function(){
       $.ajax({
@@ -478,164 +203,227 @@ $(function() {
         },
         error: function( error )
         {
-          console.log( "ERROR:", error );
+          // console.log( "ERROR:", error );
+          // REMOVE
+          // TO
+          // DO
+          // TO
+          // DO
+          $("#total-sold-container .total").text(numeral(59283696).format("0,0"));
         }
       });
     };
 
     refreshEthSold();
 
-    // var refreshEthSoldInterval = setInterval(refreshEthSold, 60000);
+    //
+    // - Redeem lost funds
+    //
 
+    $('.open-redeem-modal').on('click', function(e)
+    {
+      e.preventDefault();
 
-    var $emailConfDial = $("#email-confirmations-dial");
+      resetRedeemFields();
 
-    $emailConfDial.knob({
-      readOnly: true,
-      thickness: 0.05,
-      width: 90,
-      fgColor: "#333",
-      bgColor: "#ddd",
-      font: "inherit",
-      max: 3,
-      displayInput: false
+      $("#redeem-lost-funds-modal").modal();
     });
 
-    $emailConfDial.val("0").change();
-    $("#email-dial-shim").text("0/6");
-
-    window.showPasswordValidation = function(){
-      $entropyProgress.hide();
-      $step41.removeClass('hidden');
-      $step42.removeClass('hidden').addClass('hidden');
-      appStepsSlider.setNextPanel(2);
-      setTimeout(function(){
-        $(window).trigger('resize');
-      }, 500);
-    };
-
-    window.goBackToCredentials = function(){
-      appStepsSlider.setNextPanel(0);
-      setTimeout(function(){
-        $(window).trigger('resize');
-      }, 500);
-    };
-
-    window.onFormReady = function(){
-      appStepsSlider.setNextPanel(1);
-      setTimeout(function(){
-        $(window).trigger('resize');
-      }, 500);
-    };
-
-    window.onWalletReady = function(downloadLinkHref, wallet){
-      $step41.removeClass('hidden').addClass('hidden');
-      $step42.removeClass('hidden');
-      $('.butProceedToPurchase').removeClass('disabled').addClass('disabled');
-      $(".step-breadcrumbs").attr("data-step", "2");
-
-      $downloadLink.attr("href", downloadLinkHref);
-      $downloadLinkFirst.attr("href", downloadLinkHref);
-
-      $downloadLink.click(saveWallet);
-      $downloadLinkFirst.click(saveWallet);
-
-      $wallet = wallet;
-
-      setTimeout(function(){
-        $(window).trigger('resize');
-      }, 500);
-
-      setTimeout(function(){
-        $(window).trigger('resize');
-        $('#presale-counters-slider').animate({height: '300px'});
-      }, 1500);
-    };
-
-    function saveWallet(e)
+    var resetRedeemFields = function()
     {
-      $('.butProceedToPurchase').removeClass('disabled');
-      if(typeof InstallTrigger !== 'undefined'){
-        e.preventDefault();
-        var blob = new Blob([JSON.stringify($wallet)], {type: "text/json"});
-        saveAs(blob, 'ethereum-wallet-' + $wallet.ethaddr + '.json');
+      $wallet = null;
+      $recover = {};
+
+      $('.wallet-uploader').val('');
+      $('.wallet-password').val('');
+      $('.wallet-exodus').val('');
+      $('.wallet-check').prop( "checked", false );
+
+      $('.step1').removeClass('hidden');
+
+      if( ! $('i.fa.fa-lg.fa-circle-o-notch.fa-spin').hasClass('hidden') )
+        $('i.fa.fa-lg.fa-circle-o-notch.fa-spin').addClass('hidden');
+
+      if( ! $('.upload-results').hasClass('hidden') )
+        $('.upload-results').addClass('hidden');
+
+      if( ! $('.step2').hasClass('hidden') )
+        $('.step2').addClass('hidden');
+
+      if( ! $('.wallet-transaction').hasClass('hidden') )
+      $('.wallet-transaction').addClass('hidden');
+
+      if( ! $('.wallet-transfer').hasClass('disabled') )
+        $('.wallet-transfer').addClass('disabled');
+    };
+
+    var recoverStep1Finished = function(unspent)
+    {
+      $('i.fa.fa-lg.fa-circle-o-notch.fa-spin').addClass('hidden');
+
+      $('.ethaddr').html($wallet.ethaddr);
+      $('.btcaddr').html('<a href="https://blockchain.info/address/' + $wallet.btcaddr + '" target="_blank">' + $wallet.btcaddr + '</a>');
+      $('.unspent').html(numeral(unspent/SATOSHIS_IN_BTC).format("0,0.00000000") + " BTC");
+
+      if(unspent > 10000)
+      {
+        $('.unspent').addClass('text-success');
+        $('.upload-results').removeClass('hidden');
+        $('.step2').removeClass('hidden');
+        $('.step1').addClass('hidden');
+      }
+      else
+      {
+        $('.unspent').addClass('text-danger');
+        $('.upload-results').removeClass('hidden');
+        showWalletErrorMessage('<b>Insufficient funds.</b><br>The intermediate BTC address has to have at least 10000 satosi in order to transfer the funds');
       }
     }
 
-    window.onDownloadConfirmation = function(){
-      if( ! $('.butProceedToPurchase').hasClass('disabled')){
-        $purchaseCancel.hide();
+    $('.wallet-uploader').change(function(evt)
+    {
+      var f = evt.target.files[0];
 
-        appStepsSlider.setNextPanel(3);
-        $(".step-breadcrumbs").attr("data-step", "3");
-
-        $(window).off('beforeunload');
-        $(window).on('beforeunload', function(){
-          return 'Do you really want to close and leave this page before receiving the full 6 BTC confirmations of your purchase transaction?';
-        });
-
-        setTimeout(function(){
-          $(window).trigger('resize');
-        }, 500);
-      }
-    };
-
-    // hack to make qr code render (not sure why the original code doesn't work)
-    window.showQrCode = function(address, amount){
-      $qrDepAddr.empty();
-      $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address + '?amount=' + amount});
-    };
-
-    window.onTransactionComplete = function(downloadLinkHref, transactionHash){
-      $entropyProgress.hide();
-      appStepsSlider.setNextPanel(4);
-
-      $(window).off('beforeunload');
-
-      clearInterval(timerConfirmations);
-      timerConfirmations = startConfirmationsInterval(transactionHash);
-
-      setTimeout(function(){
-        $(window).trigger('resize');
-      }, 500);
-    };
-
-
-
-    function startConfirmationsInterval(transactionHash){
-      return setInterval(function() {
-        $.getJSON(BLOCKCHAIN_URL + "/rawtx/" + transactionHash + "?cors=true&api_code=" + BLOCKCHAIN_API + "&format=json", function(data){
-          if( data.block_height === undefined ){
-            $('.confirmations-dial-shim').text("0/6");
-            return false;
-          }
-
-          $.get(BLOCKCHAIN_URL + "/q/getblockcount?api_code=" + BLOCKCHAIN_API, function(blockHeight)
+      var reader = new FileReader();
+      reader.onload = (function(theFile) {
+          return function(e)
           {
-            confirmations = blockHeight - data.block_height + 1;
+              $('i.fa.fa-lg.fa-circle-o-notch.fa-spin').removeClass('hidden');
 
-            if(confirmations == 6)
-            {
-              clearInterval(timerConfirmations);
-            }
-            $('.confirmations-dial-shim').text(confirmations + "/6");
-          });
-        });
-      }, 20000);
+              try
+              {
+                $wallet = $.parseJSON(e.target.result);
+              }
+              catch (e)
+              {
+                resetRedeemFields();
+                showWalletErrorMessage('<b>Wallet file not valid.</b><br>Please upload a valid wallet backup.');
+                return;
+              }
+
+              if($wallet.btcaddr === undefined || $wallet.encseed === undefined || $wallet.ethaddr === undefined)
+              {
+                resetRedeemFields();
+                showWalletErrorMessage('<b>Wallet file not valid.</b><br>Please upload a valid wallet backup.');
+                return;
+              }
+              console.log($wallet);
+
+              $.ajax({
+                type: "GET",
+                url: BLOCKCHAIN_URL + "/unspent?active=" + $wallet.btcaddr + "&cors=true&api_code=" + BLOCKCHAIN_API,
+                crossDomain: true,
+                success: function( response )
+                {
+                  var res = [];
+                  var conv = Bitcoin.convert;
+                  var total = 0;
+                  var unspent = response.unspent_outputs;
+
+                  for(var x = 0; x < unspent.length; x++)
+                  {
+                    hex = conv.bytesToHex(conv.hexToBytes(unspent[x].tx_hash).reverse());
+                    res.push({
+                      "output" : hex + ":" + unspent[x].tx_output_n,
+                      "value" : unspent[x].value
+                    });
+
+                    total = total + unspent[x].value;
+                  }
+
+                  $recover.unspent = res;
+
+                  recoverStep1Finished(total);
+                },
+                error: function( e )
+                {
+                  if(e.responseText === 'No free outputs to spend')
+                  {
+                    recoverStep1Finished(0);
+                  }
+                  else
+                  {
+                    resetRedeemFields();
+                  }
+                }
+              });
+          };
+      })(f);
+
+      reader.readAsText(f);
+    });
+
+    var showWalletErrorMessage = function(message)
+    {
+      $('.wallet-alert').removeClass('hidden');
+      $('.error-message').html(message);
     }
 
-    if( /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-      $('#start-ether-error').removeClass('hidden');
-
-      if( /webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ) {
-        $('#start-ether-purchase').addClass('disabled');
-
-        $startBtn.off('click');
-        $startBtn.click(function(e){
-          e.preventDefault();
-        });
+    var enableWalletTransferButton = function()
+    {
+      if($('.wallet-password').val().length >= 12 && $('.wallet-exodus').val().length >= 24 && $('.wallet-check').prop('checked')){
+        $('.wallet-transfer').removeClass('disabled');
+      } else {
+        if( ! $('.wallet-transfer').hasClass('disabled') )
+          $('.wallet-transfer').addClass('disabled');
       }
-    }
+      if( ! $('.wallet-alert').hasClass('hidden') )
+        $('.wallet-alert').addClass('hidden');
+    };
+
+    $('.wallet-password').on('change', enableWalletTransferButton);
+    $('.wallet-password').on('keyup', enableWalletTransferButton);
+    $('.wallet-exodus').on('change', enableWalletTransferButton);
+    $('.wallet-exodus').on('keyup', enableWalletTransferButton);
+    $('.wallet-check').on('change', enableWalletTransferButton);
+
+    $('.wallet-transfer').on('click', function(e){
+      e.preventDefault();
+      if($(this).hasClass('disabled'))
+        return false;
+
+      result = recoverFunds($wallet, $recover.unspent, pbkdf2($('.wallet-password').val()), $('.wallet-exodus').val());
+
+      if(!result.success)
+      {
+        showWalletErrorMessage(result.error);
+
+        return;
+      }
+
+      //push the tx
+      $recover.tx = result.tx;
+      $recover.hash = Bitcoin.convert.bytesToHex($recover.tx.getHash());
+
+      $.ajax({
+        type: "POST",
+        url: BLOCKCHAIN_URL + "/pushtx?cors=true&api_code=" + BLOCKCHAIN_API,
+        data: {'tx' : $recover.tx.serializeHex()},
+        crossDomain: true,
+        success: function( response )
+        {
+          console.log(response);
+
+          $('.step2').addClass('hidden');
+          $('.wallet-transaction').removeClass('hidden');
+          $('.txhash').html('<a href="'+ BLOCKCHAIN_URL +'/tx/' + $recover.hash + '" target="_blank">' + $recover.hash + '</a>');
+
+          if( ! $('.wallet-transfer').hasClass('disabled') )
+            $('.wallet-transfer').addClass('disabled');
+        },
+        error: function( e )
+        {
+          console.log(e);
+        }
+      });
+    });
+
+
+
+
+    //
+    // - Balance checker
+    //
 
     var base58checkEncode = function(x,vbyte) {
       vbyte = vbyte || 0;
@@ -648,8 +436,8 @@ $(function() {
 
     var getBalanceByDate = function(value, date)
     {
-      var delta = dhms((date - 1406066400)*1000);
-      var price = ETHER_FOR_BTC;console.log(delta);console.log(value);
+      var delta = dhms((date - 1406066400) * 1000);
+      var price = ETHER_FOR_BTC;
 
       if(delta.days < 0)
         return 0;
@@ -661,6 +449,7 @@ $(function() {
       price = Math.max(price, MIN_ETH_FOR_BTC);
 
       var total = value * price;
+
       return total;
     };
 
@@ -716,99 +505,6 @@ $(function() {
       });
     });
 
-    appStepsSlider = $("#app-steps-content").liquidSlider({
-      autoSlide: false,
-      dynamicTabs: false,
-      dynamicArrows: false,
-      hideSideArrows: false,
-      continuous: false,
-      firstPanelToLoad: 1,
-      swipe: false,
-      slideEaseDuration: 600
-    }).data("liquidSlider");
-
-    mainSlider = $('#presale-counters-slider').liquidSlider({
-      autoSlide: false,
-      dynamicTabs: false,
-      dynamicArrows: false,
-      hideSideArrows: true,
-      slideEaseDuration: 600,
-      swipe: false,
-      firstPanelToLoad: 2
-    }).data("liquidSlider");
-
-    $('.btn-show-charts').on('click', function(){
-      $("#fundsChart").empty();
-
-      var margin = {top: 20, right: 20, bottom: 30, left: 50},
-          width = 960 - margin.left - margin.right,
-          height = 250 - margin.top - margin.bottom;
-
-      var parseDate = d3.time.format("%d/%m/%Y %H:%M:%S").parse;
-
-      var x = d3.time.scale()
-          .range([0, width]);
-
-      var y = d3.scale.linear()
-          .range([height, 0]);
-
-      var xAxis = d3.svg.axis()
-          .scale(x)
-          .orient("bottom");
-
-      var yAxis = d3.svg.axis()
-          .scale(y)
-          .orient("left");
-
-      var line = d3.svg.line()
-          .x(function(d) { return x(d.date); })
-          .y(function(d) { return y(d.amount); });
-
-      var svg = d3.select("#fundsChart").append("svg")
-          .attr("width", width + margin.left + margin.right)
-          .attr("height", height + margin.top + margin.bottom)
-        .append("g")
-          .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-
-      d3.json(ETHERSALE_URL + "/chart/" + FUNDRAISING_ADDRESS, function(error, json) {
-          var data = json.slice();
-          var total = 0;
-
-          console.log(data);
-
-          data.forEach(function(d) {
-            d.date = parseDate(d.date);
-            total += parseFloat(d.amount);
-            d.amount = total;
-          });
-
-          console.log(data);
-
-          x.domain(d3.extent(data, function(d) { console.log(d); return d.date; }));
-          y.domain(d3.extent(data, function(d) { return d.amount; }));
-
-          svg.append("g")
-              .attr("class", "x axis")
-              .attr("transform", "translate(0," + height + ")")
-              .call(xAxis);
-
-          svg.append("g")
-              .attr("class", "y axis")
-              .call(yAxis)
-            .append("text")
-              .attr("transform", "rotate(-90)")
-              .attr("y", 6)
-              .attr("dy", ".71em")
-              .style("text-anchor", "end")
-              .text("Funds (BTC)");
-
-          svg.append("path")
-              .datum(data)
-              .attr("class", "line")
-              .attr("d", line);
-      });
-    });
-
     var resizeDocs = function(){
       $docsContainer.height($(window).height() - 155);
     };
@@ -840,7 +536,7 @@ $(function() {
     });
   };
 
-  initPresaleCounters();
+  initProstsaleCounters();
 
   function getYoutubeID(url) {
       var id = url.match("[\\?&]v=([^&#]*)");
