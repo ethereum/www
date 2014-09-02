@@ -390,7 +390,7 @@ $(function() {
       updateTimerDial($container, "seconds", delta);
     };
     var updateAllDials = function(){
-      if(endsAt.isAfter(moment().utc()))
+      if(endsAt.isAfter(moment().zone()))
       {
         updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
 
