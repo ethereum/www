@@ -198,19 +198,7 @@ $(function() {
     $(".fade-after-end").css('opacity', 0.5);
 
     var refreshEthSold = function(){
-      $.ajax({
-        type: "GET",
-        url: ETHERSALE_URL + "/getethersold",
-        crossDomain: true,
-        success: function( response )
-        {
-          $("#total-sold-container .total").text(numeral(response).format("0,0"));
-        },
-        error: function( error )
-        {
-          console.log( "ERROR:", error );
-        }
-      });
+      $("#total-sold-container .total").text(numeral(60102215.5675).format("0,0"));
     };
 
     refreshEthSold();
