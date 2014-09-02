@@ -91,7 +91,6 @@ module.exports = {
     'moment.min.js',
     'main.js',
 
-    'ethersale/angular.min.js',
     'ethersale/bitcoinjs-min.js',
     'ethersale/aes.js',
     'ethersale/pbkdf2.js',

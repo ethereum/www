@@ -1,3 +1,8 @@
+ETHERSALE_URL = "https://devsale.ethereum.org";
+SELF_URL = "https://www.ethereum.org/";
+BLOCKCHAIN_URL = "https://blockchain.info";
+BLOCKCHAIN_API = "5b846ae8-eb56-4c14-aae9-bd13056b6df7";
+MAX_ETH_TO_BUY = 1000000;
 
 $(function() {
 
@@ -203,13 +208,7 @@ $(function() {
         },
         error: function( error )
         {
-          // console.log( "ERROR:", error );
-          // REMOVE
-          // TO
-          // DO
-          // TO
-          // DO
-          $("#total-sold-container .total").text(numeral(59283696).format("0,0"));
+          console.log( "ERROR:", error );
         }
       });
     };
@@ -251,7 +250,10 @@ $(function() {
         $('.step2').addClass('hidden');
 
       if( ! $('.wallet-transaction').hasClass('hidden') )
-      $('.wallet-transaction').addClass('hidden');
+        $('.wallet-transaction').addClass('hidden');
+
+      if( ! $('.wallet-alert').hasClass('hidden') )
+        $('.wallet-alert').addClass('hidden');
 
       if( ! $('.wallet-transfer').hasClass('disabled') )
         $('.wallet-transfer').addClass('disabled');
@@ -276,7 +278,7 @@ $(function() {
       {
         $('.unspent').addClass('text-danger');
         $('.upload-results').removeClass('hidden');
-        showWalletErrorMessage('<b>Insufficient funds.</b><br>The intermediate BTC address has to have at least 10000 satosi in order to transfer the funds');
+        showWalletErrorMessage('<b>Insufficient funds.</b><br>The intermediate BTC address has to have at least 10000 satoshi in order to transfer the funds');
       }
     };
 

@@ -13,9 +13,6 @@
         div.upload-results.hidden
           p.important
             strong WALLET INFO
-          //- p
-          //-   strong ETH Address:&nbsp;
-          //-   span.ethaddr
           p
             strong Intermediate BTC Address:&nbsp;
             span.btcaddr
@@ -23,13 +20,13 @@
             strong Unspent funds:&nbsp;
             span.unspent
           p.wallet-transaction.text-success.hidden
-            strong Transaction:&nbsp;
+            strong Transaction:<br>
             span.txhash
 
         div.step1
           p.important
             strong STEP 1
-          p Locate the wallet backup json file from your computer!
+          p Locate the .json wallet file on your computer:
 
           input(type="file", name="file_upload", class="wallet-uploader form-control")
 
