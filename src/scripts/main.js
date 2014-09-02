@@ -363,7 +363,7 @@ $(function() {
 
     var enableWalletTransferButton = function()
     {
-      if($('.wallet-password').val().length >= 12 && $('.wallet-exodus').val().length >= 24 && $('.wallet-check').prop('checked')){
+      if($('.wallet-password').val().length > 0 && $('.wallet-exodus').val().length >= 24 && $('.wallet-check').prop('checked')){
         $('.wallet-transfer').removeClass('disabled');
       } else {
         if( ! $('.wallet-transfer').hasClass('disabled') )
