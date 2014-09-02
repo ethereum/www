@@ -35,13 +35,12 @@ function eth_privtoaddr(priv) {
     return addr;
 }
 
-function getseed(encseed, pwkey, ethaddr) {
-    var seed = decrypt(pwkey, conv.hexToBytes(encseed));
-    if (seed.length % 4) seed = conv.bytesToString(seed);
-    var ethpriv = binSHA3(seed),
-         ethaddr2 = eth_privtoaddr(ethpriv);
-    if (ethaddr == ethaddr2) return seed;
-    throw("Incorrect password, try again");
+function getseed(encseed,pwkey,ethaddr) {
+    var seed = conv.bytesToString(decrypt(pwkey,conv.hexToBytes(encseed))),
+        ethpriv = binSHA3(seed),
+        ethaddr2 = eth_privtoaddr(ethpriv);
+    if (ethaddr != ethaddr2) throw("Incorrect password, try again");
+    return seed;
 }
 
 function mkbackup(wallet,pwkey) {
