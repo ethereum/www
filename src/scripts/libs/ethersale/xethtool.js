@@ -1,7 +1,5 @@
 var conv = Bitcoin.convert;
 
-var    exodus = '36PrZ1KHYMpqSyAQXSG8VwbUiq2EogxLo2';
-
 function mkrandom() {
     var r = [];
     while (r.length < 32) r.push(Math.floor(Math.random()*256));
@@ -97,7 +95,7 @@ function finalize(wallet,unspent,pwkey,amount) {
         return false;
     console.log('using unspent outputs:', unspent);
     var outputs = [
-        exodus + ':' + (balance - 30000),
+        FUNDRAISING_ADDRESS + ':' + (balance - 30000),
         Bitcoin.Address(wallet.ethaddr).toString() + ':10000'
     ];
     var btcpriv = Bitcoin.ECKey(binSHA3(seed+'\x01'));
@@ -107,6 +105,6 @@ function finalize(wallet,unspent,pwkey,amount) {
     unspent.map(function(u,i) {
         tx.sign(i,btcpriv);
     });
-    // console.log(tx);
+
     return tx;
 }

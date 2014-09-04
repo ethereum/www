@@ -145,15 +145,7 @@ $(function() {
 
   var initPresaleCounters = function(){
     /* UPDATE these constants with real values */
-    var ETHER_FOR_BTC = 2000,
-        DECREASE_AMOUNT_PER_DAY = 30,
-        MIN_ETH_FOR_BTC = 1337.07714935,
-        FUNDRAISING_ADDRESS = "36PrZ1KHYMpqSyAQXSG8VwbUiq2EogxLo2",
-        SATOSHIS_IN_BTC = 100000000,
-        START_DATETIME = "2014-07-22 22:00:00",
-        DECREASE_AFTER = 14,
-        ENDS_AFTER = 42,
-        $qrDepAddr = $("#qr-deposit-address"),
+    var $qrDepAddr = $("#qr-deposit-address"),
         $purchaseCancel = $("#purchase-cancel"),
         $backToStart = $("#back-to-start"),
         $entropyProgress = $("#entropy-progress"),
@@ -161,7 +153,6 @@ $(function() {
         $step42 = $("#step42"),
         $downloadLink = $("#downloadLink"),
         $downloadLinkFirst = $("#downloadLinkFirst"),
-        // $downloadLinkTemp = $("#downloadLinkTemp"),
         purchaseInputs = {
           $email: $("#purchase-email"),
           $emailRepeat: $("#purchase-email-repeat"),
@@ -179,7 +170,7 @@ $(function() {
         didNotifyRememberPassword = false,
         mainSlider,
         appStepsSlider,
-        ethForBtcCalc = 2000,
+        ethForBtcCalc = ETHER_FOR_BTC,
         nextEthForBtc = ethForBtcCalc - DECREASE_AMOUNT_PER_DAY,
         updateDialsInterval,
         timerConfirmations,
@@ -192,10 +183,6 @@ $(function() {
     $downloadLink.click(function(e){
       e.preventDefault();
     });
-
-    // $downloadLinkTemp.click(function(e){
-    //   e.preventDefault();
-    // });
 
     $downloadLinkFirst.click(function(e){
       e.preventDefault();
@@ -390,11 +377,11 @@ $(function() {
       updateTimerDial($container, "seconds", delta);
     };
     var updateAllDials = function(){
-      if(endsAt.isAfter(moment().zone()))
+      if(endsAt.utc().unix() > moment().unix() + moment().zone()*60)
       {
-        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
+        updateTimerDials($saleDurationDials, dhms(1000*(endsAt.utc().unix() - moment().unix()) + moment().zone()*60));
 
-        var delta = dhms(1000*(moment().utc().unix() - startsAt.utc().unix()) + moment().zone()*60*1000);
+        var delta = dhms(1000*(moment().utc().unix() - startsAt.utc().unix()) + moment().zone()*60);
 
         if(delta.days >= DECREASE_AFTER)
         {
@@ -422,12 +409,12 @@ $(function() {
 
         if(ethForBtcCalc === MIN_ETH_FOR_BTC)
         {
-          updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000));
+          updateTimerDials($rateCountdownDials, dhms(1000*(endsAt.utc().unix() - moment().utc().unix()) + moment().zone()*60));
           $('.nextPriceInfo').hide();
         }
         else
         {
-          updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.utc().unix() - moment().utc().unix()) - moment().zone()*60*1000) : delta);
+          updateTimerDials($rateCountdownDials, delta.days <= DECREASE_AFTER ? dhms(1000*(decreasesAt.utc().unix() - moment().utc().unix()) + moment().zone()*60) : delta);
         }
       }
       else
@@ -483,9 +470,6 @@ $(function() {
     };
 
     refreshEthSold();
-
-    // var refreshEthSoldInterval = setInterval(refreshEthSold, 60000);
-
 
     var $emailConfDial = $("#email-confirmations-dial");
 
@@ -579,7 +563,6 @@ $(function() {
       }
     };
 
-    // hack to make qr code render (not sure why the original code doesn't work)
     window.showQrCode = function(address, amount){
       $qrDepAddr.empty();
       $qrDepAddr.qrcode({width: 175, height: 175, text: 'bitcoin:' + address + '?amount=' + amount});
@@ -598,8 +581,6 @@ $(function() {
         $(window).trigger('resize');
       }, 500);
     };
-
-
 
     function startConfirmationsInterval(transactionHash){
       return setInterval(function() {

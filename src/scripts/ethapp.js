@@ -1,9 +1,3 @@
-ETHERSALE_URL = "https://sale.ethereum.org";
-SELF_URL = "https://www.ethereum.org/";
-BLOCKCHAIN_URL = "https://blockchain.info";
-BLOCKCHAIN_API = "5b846ae8-eb56-4c14-aae9-bd13056b6df7";
-MAX_ETH_TO_BUY = 1000000;
-
 var ethereum = angular.module('ethereum', ['ngTouch']);
 
 ethereum.config([
@@ -131,13 +125,11 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
   };
 
   window.onmousemove = window.ontouchmove = function(e) {
-    // only work when the first steps are done
     if ( ! $scope.canCollectEntropy){
       $scope.entropy = "";
       return;
     }
 
-    // only work if a btcAddress doesn't already exist
     if (!$scope.wallet && $scope.collectingEntropy) {
       e.preventDefault();
       var roundSeed = '' + e.x + e.y + new Date().getTime() + Math.random();
@@ -160,14 +152,10 @@ ethereum.controller('PurchaseCtrl', ['Purchase', 'DownloadDataURI', '$scope', fu
         $scope.collectingEntropy = false;
         $scope.canCollectEntropy = false;
         $scope.wallet = 1;
-        // $scope.entropy = 'qwe'; // TODO remove debug;
-        // console.log('generating wallet'); // Add loading thingy
+
         $scope.pwkey = pbkdf2($scope.password);
-        // console.log(1);
         $scope.wallet = genwallet($scope.entropy, $scope.pwkey, $scope.email);
-        // console.log(2);
         $scope.backup = mkbackup($scope.wallet, $scope.pwkey);
-        // console.log(3);
         $scope.mkQRCode($scope.wallet.btcaddr, $scope.btcToSend);
 
         $scope.debug = 'entropy: ' + $scope.entropy + "\nbtcaddr: " + $scope.wallet.btcaddr;
@@ -492,8 +480,6 @@ ethereum.factory('Purchase', ['$http', function($http) {
         {
           var res = [];
           var conv = Bitcoin.convert;
-
-          console.log(response);
 
           var unspent = response.unspent_outputs;
 

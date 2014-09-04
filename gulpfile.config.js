@@ -72,6 +72,7 @@ module.exports = {
   },
 
   scriptOrder: [
+    'config.js',
     'jquery-2.1.0.min.js',
     'jquery.countdown.min.js',
     'jquery.easing.1.3.js',
