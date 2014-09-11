@@ -60,7 +60,9 @@ function bytesToWords(b) {
 }
 
 function binSHA3(x) {
-    if (typeof x != "string") x = bytesToWords(x);
+    if (typeof x != "string") {
+        x = CryptoJS.enc.Hex.parse(conv.bytesToHex(x));
+    }
     return conv.hexToBytes(CryptoJS.SHA3(x,{ outputLength: 256 }).toString());
 }
 
