@@ -49,6 +49,14 @@ footer {
 #interactive, #presale-counters {
   padding-top:5px;
   padding-bottom:20px;
+}
+
+#interactive {
+  padding-top: 25px;
+  background-color: #efefef;
+}
+
+#presale-counters {
   margin-top:-87px;
 }
 
